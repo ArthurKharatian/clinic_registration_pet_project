@@ -1,2 +1,4 @@
 # Project exclude paths
 /target/
+/clinic_registration_pet_project.iml
+/.idea/
