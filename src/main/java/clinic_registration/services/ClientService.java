@@ -50,13 +50,14 @@ public class ClientService {
         return false;
     }
 
-    public boolean delete(Integer id) {
-        try {
-            clientRepository.deleteById(id);
-            return true;
-        } catch (Exception e) {
-            return false;
+    public String delete(Integer id) {
+        for(ClientEntity clientEntity : clientRepository.findAll()){
+            if(clientEntity.getId().equals(id)){
+                clientRepository.delete(clientEntity);
+                return clientEntity.toString() + " has been successfully removed.";
+            }
         }
+        return "User is not found!";
     }
 
 }

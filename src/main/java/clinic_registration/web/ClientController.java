@@ -7,7 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
-@Controller
+@RestController
+@RequestMapping("/client")
 
 public class ClientController {
     private final ClientService clientService;
@@ -16,12 +17,12 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    @GetMapping("/clients")
+    @GetMapping
     public String addClient(Client  client){
         return clientService.create(client);
     }
 
-    @PutMapping("/clients/{id}")
+    @PutMapping("/{id}")
     public String update(@PathVariable Integer id, Client client){
        if(clientService.update(client, id)){
           return "Client " + client.getName() + " with ID: " + id + " is updated!";
@@ -29,12 +30,9 @@ public class ClientController {
        return "Client is not found!";
     }
 
-    @DeleteMapping("/clients/{id}")
+    @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") Integer id){
-        if(clientService.delete(id)){
-            return clientService.read(id).getName() + " was deleted!";
-        }
-        return "Client is not found!";
+        return clientService.delete(id);
     }
 
 }

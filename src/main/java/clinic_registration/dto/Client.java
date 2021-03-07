@@ -14,9 +14,21 @@ public class Client {
     public Client() {
     }
 
-    public Client(Integer id, String name) {
+    public Client(Integer id, String name, ClientGender clientGender, LocalDate birthdate, int phoneNumber, String email) {
         this.id = id;
         this.name = name;
+        this.clientGender = clientGender;
+        this.birthdate = birthdate;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
+
+    public Client(String name, ClientGender clientGender, LocalDate birthdate, int phoneNumber, String email) {
+        this.name = name;
+        this.clientGender = clientGender;
+        this.birthdate = birthdate;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
     }
 
     public Integer getId() {

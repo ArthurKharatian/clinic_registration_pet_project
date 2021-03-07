@@ -24,6 +24,7 @@ import java.time.Month;
 import static org.junit.Assert.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -60,21 +61,33 @@ public class ClientControllerTest {
     }
     @Test
     public void addClient() throws Exception {
-//        String content = objectMapper.writeValueAsString(client);
-//        System.out.println(content);
-//        String uri = "/clients";
-//        mockMvc.perform(put(uri)
-//               .contentType(MediaType.APPLICATION_JSON)
-//               .content(content))
-//               .andExpect(status().isOk())
-//               .andDo(document(uri));
+        String content = objectMapper.writeValueAsString(client);
+        System.out.println(content);
+        String uri = "/client";
+        mockMvc.perform(get(uri)
+               .contentType(MediaType.APPLICATION_JSON)
+               .content(content))
+               .andExpect(status().isOk())
+               .andDo(document(uri));
     }
 
     @Test
-    public void update() {
+    public void update() throws Exception {
+        String content = objectMapper.writeValueAsString(client);
+        System.out.println(content);
+        String uri = "/client/777";
+        mockMvc.perform(put(uri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content))
+                .andExpect(status().isOk())
+                .andDo(document(uri));
     }
 
     @Test
-    public void delete() {
+    public void delete() throws Exception {
+        String uri = "/client/777";
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete(uri))
+                .andExpect(status().isOk())
+                .andDo(document(uri));
     }
 }
