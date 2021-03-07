@@ -17,5 +17,8 @@ spring:
     password: postgres
     driver-class-name: org.postgresql.Driver
 
+server:
+  error:
+    include-message: always
 
 

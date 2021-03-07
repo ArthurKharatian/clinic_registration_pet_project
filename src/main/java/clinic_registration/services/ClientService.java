@@ -41,13 +41,13 @@ public class ClientService {
         return client;
     }
 
-    public boolean update(Client client, Integer id){
+    public String update(Integer id, Client client){
         if(clientRepository.findById(id).isPresent()){
             ClientEntity clientEntity = objectMapper.convertValue(client, ClientEntity.class);
             clientRepository.save(clientEntity);
-            return true;
+            return client.toString() + " is updated!";
         }
-        return false;
+        return "Client is not found!";
     }
 
     public String delete(Integer id) {
@@ -58,6 +58,8 @@ public class ClientService {
             }
         }
         return "User is not found!";
+//        clientRepository.deleteById(id);
+//        return "Client with id: " + id + " was deleted!";
     }
 
 }

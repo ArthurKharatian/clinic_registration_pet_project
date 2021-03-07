@@ -21,6 +21,7 @@ public class ClientEntity {
     private String email;
     private ClientGender clientGender;
 
+
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
     private List<SignToDoctorEntity> signToDoctorEntities;
@@ -80,6 +81,7 @@ public class ClientEntity {
     public void setClientGender(ClientGender clientGender) {
         this.clientGender = clientGender;
     }
+
 
     @Override
     public String toString() {

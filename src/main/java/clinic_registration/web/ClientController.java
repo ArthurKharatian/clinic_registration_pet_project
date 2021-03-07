@@ -3,7 +3,6 @@ package clinic_registration.web;
 
 import clinic_registration.dto.Client;
 import clinic_registration.services.ClientService;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -17,17 +16,14 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    @GetMapping
-    public String addClient(Client  client){
+    @PostMapping
+    public String addClient(@RequestBody Client  client){
         return clientService.create(client);
     }
 
     @PutMapping("/{id}")
     public String update(@PathVariable Integer id, Client client){
-       if(clientService.update(client, id)){
-          return "Client " + client.getName() + " with ID: " + id + " is updated!";
-       }
-       return "Client is not found!";
+       return clientService.update(id, client);
     }
 
     @DeleteMapping("/{id}")
