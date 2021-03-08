@@ -31,6 +31,7 @@ public class ClientEntity {
     @JoinColumn(name = "client_id")
     private List<SignToClinicServiceEntity> serviceEntities;
 
+
     public ClientEntity() {
     }
 
@@ -94,4 +95,6 @@ public class ClientEntity {
                 ", clientGender=" + clientGender +
                 '}';
     }
+
+
 }

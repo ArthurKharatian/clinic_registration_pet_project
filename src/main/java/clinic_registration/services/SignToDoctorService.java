@@ -2,7 +2,7 @@ package clinic_registration.services;
 
 import clinic_registration.db.entity.SignToDoctorEntity;
 import clinic_registration.db.repository.SignToDoctorRepository;
-import clinic_registration.dto.DoctorStorage;
+import clinic_registration.dto.Client;
 import clinic_registration.dto.SignToDoctor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
@@ -15,36 +15,45 @@ public class SignToDoctorService {
 
     private final SignToDoctorRepository doctorRepository;
     private final ObjectMapper objectMapper;
-    private DoctorStorage doctorStorage;
+
 
     public SignToDoctorService(SignToDoctorRepository doctorRepository, ObjectMapper objectMapper) {
         this.doctorRepository = doctorRepository;
         this.objectMapper = objectMapper;
     }
 
-    private SignToDoctorEntity getDocEntity(SignToDoctor signToDoctor) {
-        SignToDoctorEntity sign = new SignToDoctorEntity();
-        sign.setId(signToDoctor.getId());
-        sign.setVisitDate(signToDoctor.getVisitDate());
-        sign.setDoctorType(signToDoctor.getDoctorType());
-        sign.setDoctorName(doctorStorage.getDoctorByType(sign.getDoctorType()));
-        return sign;
-    }
+    public String create(SignToDoctor signToDoctor, Client client) {
 
-    public void create(SignToDoctor signToDoctor) {
-
-        SignToDoctorEntity sign = getDocEntity(signToDoctor);
-        LocalDate visitDate = sign.getVisitDate();
-        String docName = sign.getDoctorName();
+        SignToDoctorEntity sign = objectMapper.convertValue(signToDoctor, SignToDoctorEntity.class);
 
         List<SignToDoctorEntity> doctorRepositoryAll = doctorRepository.findAll();
         for (SignToDoctorEntity tempSign : doctorRepositoryAll) {
-            if(tempSign.getVisitDate() != visitDate && !docName.equals(tempSign.getDoctorName())){
+            if(!sign.equals(tempSign)){
+                sign.setClient_id(client.getId());
                 doctorRepository.save(sign);
+               return client.getName() + " is signed to " + sign.getDoctorType() + " " +
+                      sign.getDoctorName() + ", on " + sign.getVisitDate() + ".";
             }
         }
+        return "The sign to " + sign.getDoctorType() + " " + sign.getDoctorName() +
+                " on " + sign.getVisitDate() + " is already exist. Please choose another date.";
+    }
 
+    public String update(Integer id, SignToDoctor signToDoctor) {
+        if(doctorRepository.findById(id).isPresent()){
+            SignToDoctorEntity doctorEntity = objectMapper.convertValue(signToDoctor, SignToDoctorEntity.class);;
+            doctorRepository.save(doctorEntity);
+            return doctorEntity.toString() + " is updated!";
 
+        }
+        return "The sign with id: " + id + " is not found!";
+    }
 
+    public String delete(Integer id) {
+        if(doctorRepository.findById(id).isPresent()) {
+            doctorRepository.findAll().removeIf(cl -> cl.getId().equals(id));
+            return "The sign with id: " + id + " was deleted!";
+        }
+        return "The sign with id: " + id + " is not found!";
     }
 }

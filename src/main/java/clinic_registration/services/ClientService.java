@@ -51,15 +51,15 @@ public class ClientService {
     }
 
     public String delete(Integer id) {
-        for(ClientEntity clientEntity : clientRepository.findAll()){
-            if(clientEntity.getId().equals(id)){
-                clientRepository.delete(clientEntity);
-                return clientEntity.toString() + " has been successfully removed.";
-            }
-        }
-        return "User is not found!";
+
 //        clientRepository.deleteById(id);
 //        return "Client with id: " + id + " was deleted!";
+
+        if(clientRepository.findById(id).isPresent()) {
+           clientRepository.findAll().removeIf(cl -> cl.getId().equals(id));
+            return "Client with id: " + id + " was deleted!";
+        }
+        return "Client is not found!";
     }
 
 }

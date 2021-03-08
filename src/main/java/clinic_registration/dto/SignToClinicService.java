@@ -8,12 +8,15 @@ public class SignToClinicService {
     private Integer duration;
     private LocalDate visitDate;
 
+
+
     public SignToClinicService() {
     }
 
-    public SignToClinicService(Integer id, ClinicServiceType serviceType) {
-        this.id = id;
+    public SignToClinicService(ClinicServiceType serviceType, Integer duration, LocalDate visitDate) {
         this.serviceType = serviceType;
+        this.duration = duration;
+        this.visitDate = visitDate;
     }
 
     public Integer getId() {

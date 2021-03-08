@@ -2,6 +2,10 @@ package clinic_registration.db.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(schema = "public", name = "doctor_appointment")
@@ -47,9 +51,6 @@ public class SignToDoctorEntity {
         return doctorName;
     }
 
-    public void setDoctorName(String doctorName) {
-        this.doctorName = doctorName;
-    }
 
     public String getDoctorType() {
         return doctorType;
