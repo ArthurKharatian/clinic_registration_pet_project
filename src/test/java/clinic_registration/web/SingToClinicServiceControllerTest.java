@@ -2,7 +2,8 @@ package clinic_registration.web;
 
 import clinic_registration.dto.Client;
 import clinic_registration.dto.ClientGender;
-import clinic_registration.dto.SignToDoctor;
+import clinic_registration.dto.ClinicServiceType;
+import clinic_registration.dto.SignToClinicService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Rule;
@@ -30,9 +31,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class SingToDoctorControllerTest {
-
-    SignToDoctor sign = new SignToDoctor();
+public class SingToClinicServiceControllerTest {
+    SignToClinicService sign = new SignToClinicService();
     Client client = new Client();
     {
         client.setId(555);
@@ -44,7 +44,8 @@ public class SingToDoctorControllerTest {
 
         sign.setId(777);
         sign.setClient_id(client.getId());
-        sign.setDoctorType("THERAPIST");
+        sign.setServiceType(ClinicServiceType.MASSAGE);
+        sign.setDuration(60);
         sign.setVisitDate(LocalDate.of(2021, Month.AUGUST, 19));
 
     }
@@ -71,7 +72,7 @@ public class SingToDoctorControllerTest {
     public void addSign() throws Exception {
         String content = objectMapper.writeValueAsString(sign);
         System.out.println(sign);
-        String uri = "/signToDoc";
+        String uri = "/signToService";
         mockMvc.perform(post(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
@@ -84,7 +85,7 @@ public class SingToDoctorControllerTest {
     public void update() throws Exception {
         String content = objectMapper.writeValueAsString(sign);
         System.out.println(content);
-        String uri = "/signToDoc/777";
+        String uri = "/signToService/777";
         mockMvc.perform(put(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
@@ -94,7 +95,7 @@ public class SingToDoctorControllerTest {
 
     @Test
     public void delete() throws Exception {
-        String uri = "/signToDoc/777";
+        String uri = "/signToService/777";
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
                 .andExpect(status().isOk())
                 .andDo(document(uri));

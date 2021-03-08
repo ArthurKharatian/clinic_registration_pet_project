@@ -51,7 +51,7 @@ public class SignToDoctorService {
 
     public String delete(Integer id) {
         if(doctorRepository.findById(id).isPresent()) {
-            doctorRepository.findAll().removeIf(cl -> cl.getId().equals(id));
+            doctorRepository.findAll().removeIf(sign -> sign.getId().equals(id));
             return "The sign with id: " + id + " was deleted!";
         }
         return "The sign with id: " + id + " is not found!";

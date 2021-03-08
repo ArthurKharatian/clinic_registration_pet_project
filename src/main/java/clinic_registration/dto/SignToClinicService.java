@@ -7,6 +7,7 @@ public class SignToClinicService {
     private ClinicServiceType serviceType;
     private Integer duration;
     private LocalDate visitDate;
+    private Integer client_id;
 
 
 
@@ -49,5 +50,13 @@ public class SignToClinicService {
 
     public void setVisitDate(LocalDate visitDate) {
         this.visitDate = visitDate;
+    }
+
+    public Integer getClient_id() {
+        return client_id;
+    }
+
+    public void setClient_id(Integer client_id) {
+        this.client_id = client_id;
     }
 }
