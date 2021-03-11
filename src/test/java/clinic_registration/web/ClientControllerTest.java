@@ -23,6 +23,7 @@ import java.time.Month;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -33,12 +34,12 @@ public class ClientControllerTest {
 
      Client client = new Client();
     {
-        client.setId(777);
+        client.setId(0L);
         client.setName("Matvienko Valentina Ivanovna");
-        client.setClientGender(ClientGender.FEMALE);
+        client.setClient_gender(ClientGender.FEMALE);
         client.setBirthdate(LocalDate.of(1949, Month.APRIL, 7));
         client.setEmail("mvi@gov.ru");
-        client.setPhoneNumber(777555);
+        client.setPhone_number(777555);
     }
 
     MockMvc mockMvc;
@@ -71,10 +72,30 @@ public class ClientControllerTest {
     }
 
     @Test
+    public void readAll() throws Exception {
+        String uri = "/client/all";
+        mockMvc.perform(get(uri))
+                .andExpect(status().isOk())
+                .andDo(document(uri));
+    }
+
+    @Test
+    public void read() throws Exception {
+        String content = objectMapper.writeValueAsString(client);
+        System.out.println(content);
+        String uri = "/client/0";
+        mockMvc.perform(get(uri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content))
+                .andExpect(status().isOk())
+                .andDo(document(uri));
+    }
+
+    @Test
     public void update() throws Exception {
         String content = objectMapper.writeValueAsString(client);
         System.out.println(content);
-        String uri = "/client/777";
+        String uri = "/client/0";
         mockMvc.perform(put(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
@@ -84,9 +105,11 @@ public class ClientControllerTest {
 
     @Test
     public void delete() throws Exception {
-        String uri = "/client/777";
+        String uri = "/client/0";
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
                 .andExpect(status().isOk())
                 .andDo(document(uri));
     }
+
+
 }

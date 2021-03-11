@@ -11,11 +11,9 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
-public class Client {
+public class Doctor {
     private Long id;
-    private String name;
-    private ClientGender client_gender;
+    private String name, position_name, add_position_name, email;
+    private Integer phone_number;
     private LocalDate birthdate;
-    private int phone_number;
-    private String email;
 }

@@ -28,8 +28,8 @@ public class ClientService {
         try {
             clientEntity = objectMapper.convertValue(client, ClientEntity.class);
             clientRepository.save(clientEntity);
-        } catch (CreateException e) {
-            throw new CreateException(e.getMessage());
+        } catch (RuntimeException e) {
+            throw new CreateException("Can not create a client");
         }
         return clientEntity.toString() + "is created";
     }
@@ -39,42 +39,35 @@ public class ClientService {
         return clients.stream().map(cl -> objectMapper.convertValue(cl, Client.class)).collect(Collectors.toList());
     }
 
-    public Client read(Integer id) {
+    public Client read(Long id) {
         Client client = null;
         if (clientRepository.findById(id).isPresent()) {
-            ClientEntity clientEntity = clientRepository.findClientEntityByQuery(id).get(0);
+            ClientEntity clientEntity = clientRepository.findById(id).get();
             client = objectMapper.convertValue(clientEntity, Client.class);
         }
         return client;
     }
 
-    public String update(Integer id, Client client) {
+    public String update(Long id, Client client) {
         if (clientRepository.findById(id).isPresent()) {
             try {
                 ClientEntity clientEntity = objectMapper.convertValue(client, ClientEntity.class);
                 clientRepository.save(clientEntity);
                 return client.toString() + " is updated!";
-            } catch (UpdateException e) {
-                throw new UpdateException(e.getMessage());
+            } catch (RuntimeException e) {
+                throw new UpdateException("Client is not found!");
             }
         }
-        return "Client is not found!";
+        return "Client " + client.toString() + " is not found!";
     }
 
-    public String delete(Integer id) {
-
-//        clientRepository.deleteById(id);
-//        return "Client with id: " + id + " was deleted!";
-
-        if (clientRepository.findById(id).isPresent()) {
-            try {
-                clientRepository.findAll().removeIf(cl -> cl.getId().equals(id));
-                return "Client with id: " + id + " was deleted!";
-            } catch (DeleteException e) {
-                throw new DeleteException(e.getMessage());
+    public String delete(Long id) {
+        try {
+            clientRepository.deleteById(id);
+            return "Client with id: " + id + " was deleted!";
+        }catch (RuntimeException e) {
+                throw new DeleteException("Client is not found!");
             }
-        }
-        return "Client is not found!";
     }
 
 }

@@ -5,6 +5,8 @@ import clinic_registration.dto.Client;
 import clinic_registration.services.ClientService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/client")
@@ -22,13 +24,23 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
-    public String update(@PathVariable Integer id, Client client){
+    public String update(@PathVariable Long id, Client client){
        return clientService.update(id, client);
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") Integer id){
+    public String delete(@PathVariable("id") Long id){
         return clientService.delete(id);
+    }
+
+    @GetMapping("/all")
+    public List<Client> readAll(){
+        return clientService.readAll();
+    }
+
+    @GetMapping("/{id}")
+    public Client read(@PathVariable("id") Long id){
+        return clientService.read(id);
     }
 
 }

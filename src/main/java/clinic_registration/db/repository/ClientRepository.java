@@ -6,12 +6,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 
-public interface ClientRepository extends PagingAndSortingRepository<ClientEntity, Integer> {
+public interface ClientRepository extends PagingAndSortingRepository<ClientEntity, Long> {
 
     List<ClientEntity> findAll();
-
-    @Query("select c from ClientEntity c where c.id = :id")
-    List<ClientEntity> findClientEntityByQuery(Integer id);
-
-    void deleteById(Integer id);
+    void deleteById(Long id);
 }

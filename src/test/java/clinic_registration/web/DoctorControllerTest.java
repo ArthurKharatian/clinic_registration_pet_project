@@ -1,8 +1,6 @@
 package clinic_registration.web;
 
-import clinic_registration.dto.Client;
-import clinic_registration.dto.ClientGender;
-import clinic_registration.dto.SignToDoctor;
+import clinic_registration.dto.Doctor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Rule;
@@ -24,29 +22,23 @@ import java.time.Month;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class SingToDoctorControllerTest {
-
-    SignToDoctor sign = new SignToDoctor();
-    Client client = new Client();
+public class DoctorControllerTest {
+    Doctor doctor = new Doctor();
     {
-        client.setId(555);
-        client.setName("Matvienko Valentina Ivanovna");
-        client.setClientGender(ClientGender.FEMALE);
-        client.setBirthdate(LocalDate.of(1949, Month.APRIL, 7));
-        client.setEmail("mvi@gov.ru");
-        client.setPhoneNumber(777555);
-
-        sign.setId(777);
-        sign.setClient_id(client.getId());
-        sign.setDoctorType("THERAPIST");
-        sign.setVisitDate(LocalDate.of(2021, Month.AUGUST, 19));
-
+        doctor.setId(0L);
+        doctor.setName("John H. Watson");
+        doctor.setPosition_name("military doctor");
+        doctor.setAdd_position_name("medical doctor");
+        doctor.setEmail("watson@gmail.com");
+        doctor.setPhone_number(911);
+        doctor.setBirthdate(LocalDate.of(1850, Month.JULY, 7));
     }
 
     MockMvc mockMvc;
@@ -66,25 +58,42 @@ public class SingToDoctorControllerTest {
                         .apply(documentationConfiguration(this.restDocumentation));
         this.mockMvc = builder.build();
     }
-
     @Test
-    public void addSign() throws Exception {
-        String content = objectMapper.writeValueAsString(sign);
-        System.out.println(sign);
-        String uri = "/signToDoc";
+    public void addClient() throws Exception {
+        String content = objectMapper.writeValueAsString(doctor);
+        System.out.println(content);
+        String uri = "/doctor";
         mockMvc.perform(post(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isOk())
                 .andDo(document(uri));
+    }
+    @Test
+    public void readAll() throws Exception {
+        String uri = "/doctor/all";
+        mockMvc.perform(get(uri))
+                .andExpect(status().isOk())
+                .andDo(document(uri));
+    }
 
+    @Test
+    public void read() throws Exception {
+        String content = objectMapper.writeValueAsString(doctor);
+        System.out.println(content);
+        String uri = "/doctor/0";
+        mockMvc.perform(get(uri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content))
+                .andExpect(status().isOk())
+                .andDo(document(uri));
     }
 
     @Test
     public void update() throws Exception {
-        String content = objectMapper.writeValueAsString(sign);
+        String content = objectMapper.writeValueAsString(doctor);
         System.out.println(content);
-        String uri = "/signToDoc/777";
+        String uri = "/doctor/0";
         mockMvc.perform(put(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
@@ -94,7 +103,7 @@ public class SingToDoctorControllerTest {
 
     @Test
     public void delete() throws Exception {
-        String uri = "/signToDoc/777";
+        String uri = "/doctor/0";
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
                 .andExpect(status().isOk())
                 .andDo(document(uri));
