@@ -1,6 +1,6 @@
 package clinic_registration.web;
 
-import clinic_registration.dto.Doctor;
+import clinic_registration.dto.ClinicLab;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Rule;
@@ -17,9 +17,6 @@ import org.springframework.test.web.servlet.setup.ConfigurableMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.time.LocalDate;
-import java.time.Month;
-
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -29,17 +26,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class DoctorControllerTest {
-    Doctor doctor = new Doctor();
+public class ClinicLabControllerTest {
+
+    ClinicLab lab = new ClinicLab();
+
     {
-        doctor.setId(0L);
-        doctor.setName("John H. Watson");
-        doctor.setPosition_name("military doctor");
-        doctor.setAdd_position_name("medical doctor");
-        doctor.setEmail("watson@gmail.com");
-        doctor.setPhone_number(911);
-        doctor.setBirthdate(LocalDate.of(1850, Month.JULY, 7));
+        lab.setId(0L);
+        lab.setWorker_name("Borisov Aleksandr Petrovich");
+        lab.setPosition_name("Laboratory assistant");
+        lab.setOpen_time("7:00");
+        lab.setClose_time("16:00");
     }
+
 
     MockMvc mockMvc;
     @Autowired
@@ -58,20 +56,22 @@ public class DoctorControllerTest {
                         .apply(documentationConfiguration(this.restDocumentation));
         this.mockMvc = builder.build();
     }
+
     @Test
-    public void addDoc() throws Exception {
-        String content = objectMapper.writeValueAsString(doctor);
+    public void addLab() throws Exception {
+        String content = objectMapper.writeValueAsString(lab);
         System.out.println(content);
-        String uri = "/doctor";
+        String uri = "/lab";
         mockMvc.perform(post(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isOk())
                 .andDo(document(uri));
     }
+
     @Test
     public void readAll() throws Exception {
-        String uri = "/doctor/all";
+        String uri = "/lab/all";
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
                 .andDo(document(uri));
@@ -79,9 +79,9 @@ public class DoctorControllerTest {
 
     @Test
     public void read() throws Exception {
-        String content = objectMapper.writeValueAsString(doctor);
+        String content = objectMapper.writeValueAsString(lab);
         System.out.println(content);
-        String uri = "/doctor/0";
+        String uri = "/lab/0";
         mockMvc.perform(get(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
@@ -91,9 +91,9 @@ public class DoctorControllerTest {
 
     @Test
     public void update() throws Exception {
-        String content = objectMapper.writeValueAsString(doctor);
+        String content = objectMapper.writeValueAsString(lab);
         System.out.println(content);
-        String uri = "/doctor/0";
+        String uri = "/lab/0";
         mockMvc.perform(put(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
@@ -103,7 +103,7 @@ public class DoctorControllerTest {
 
     @Test
     public void delete() throws Exception {
-        String uri = "/doctor/0";
+        String uri = "/lab/0";
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
                 .andExpect(status().isOk())
                 .andDo(document(uri));

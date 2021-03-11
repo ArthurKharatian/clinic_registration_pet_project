@@ -56,7 +56,7 @@ public class AdminControllerTest {
         this.mockMvc = builder.build();
     }
     @Test
-    public void addClient() throws Exception {
+    public void addAdmin() throws Exception {
         String content = objectMapper.writeValueAsString(admin);
         System.out.println(content);
         String uri = "/admin";
