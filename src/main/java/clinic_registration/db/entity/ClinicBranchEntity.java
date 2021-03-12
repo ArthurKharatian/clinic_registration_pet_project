@@ -5,9 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(schema = "public", name = "clinic_branch")
@@ -17,6 +15,10 @@ import javax.persistence.Table;
 @ToString
 public class ClinicBranchEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name, address, open_time, close_time;
+    private String name;
+    private String address;
+    private String open_time;
+    private String close_time;
 }

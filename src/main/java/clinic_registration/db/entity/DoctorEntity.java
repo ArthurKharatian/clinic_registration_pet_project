@@ -5,9 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
@@ -18,8 +16,12 @@ import java.time.LocalDate;
 @ToString
 public class DoctorEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name, position_name, add_position_name, email;
+    private String name;
+    private String position_name;
+    private String add_position_name;
+    private String email;
     private Integer phone_number;
     private LocalDate birthdate;
 }

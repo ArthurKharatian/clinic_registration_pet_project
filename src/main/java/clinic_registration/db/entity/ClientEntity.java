@@ -18,7 +18,7 @@ import java.time.LocalDate;
 public class ClientEntity {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String name;
@@ -28,7 +28,7 @@ public class ClientEntity {
     private ClientGender client_gender;
 
 
-//    @OneToMany(fetch = FetchType.EAGER)
+    //    @OneToMany(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "client_id")
 //    private List<SignToDoctorEntity> signToDoctorEntities;
 //

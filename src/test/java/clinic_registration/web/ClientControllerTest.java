@@ -26,6 +26,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -68,6 +70,7 @@ public class ClientControllerTest {
                .contentType(MediaType.APPLICATION_JSON)
                .content(content))
                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.name").value("Ivanov Valentin Ivanovich"))
                .andDo(document(uri));
     }
 
@@ -84,11 +87,10 @@ public class ClientControllerTest {
         String content = objectMapper.writeValueAsString(client);
         System.out.println(content);
         String uri = "/client/0";
-        mockMvc.perform(get(uri)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(content))
+        mockMvc.perform(get(uri))
+                .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andExpect(jsonPath("$.name").value("Matvienko Valentina Ivanovna"));
     }
 
     @Test

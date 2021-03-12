@@ -5,9 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(schema = "public", name = "admin")
@@ -17,7 +15,10 @@ import javax.persistence.Table;
 @ToString
 public class AdminEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name, email, staff_name;
+    private String name;
+    private String  email;
+    private String staff_name;
     private Integer phone_number;
 }
