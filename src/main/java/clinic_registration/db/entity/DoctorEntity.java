@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(schema = "public", name = "doctor")
@@ -24,4 +25,8 @@ public class DoctorEntity {
     private String email;
     private Integer phone_number;
     private LocalDate birthdate;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "doctor_id")
+    private List<SignToDoctorEntity> signToDoctorEntities;
 }

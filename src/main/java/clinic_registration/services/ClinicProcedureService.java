@@ -1,10 +1,7 @@
 package clinic_registration.services;
 
-import clinic_registration.db.entity.AdminEntity;
 import clinic_registration.db.entity.ClinicProcedureEntity;
-import clinic_registration.db.repository.AdminRepository;
 import clinic_registration.db.repository.ClinicProcedureRepository;
-import clinic_registration.dto.Admin;
 import clinic_registration.dto.ClinicProcedure;
 import clinic_registration.exceptions.CreateException;
 import clinic_registration.exceptions.DeleteException;
@@ -32,7 +29,7 @@ public class ClinicProcedureService {
             procedureEntity = objectMapper.convertValue(procedure, ClinicProcedureEntity.class);
             procedureRepository.save(procedureEntity);
         } catch (RuntimeException e) {
-            throw new CreateException("Can not create an procedure");
+            throw new CreateException("Can not create a procedure");
         }
         return procedureEntity.toString() + "is created";
     }

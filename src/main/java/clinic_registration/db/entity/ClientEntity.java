@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(schema = "public", name = "client")
@@ -28,10 +29,10 @@ public class ClientEntity {
     private ClientGender client_gender;
 
 
-    //    @OneToMany(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "client_id")
-//    private List<SignToDoctorEntity> signToDoctorEntities;
-//
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "client_id")
+    private List<SignToDoctorEntity> signToDoctorEntities;
+
 //
 //    @OneToMany(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "client_id")

@@ -1,6 +1,6 @@
 package clinic_registration.web;
 
-import clinic_registration.dto.CliniсBranch;
+import clinic_registration.dto.SignToDoctor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Rule;
@@ -17,23 +17,27 @@ import org.springframework.test.web.servlet.setup.ConfigurableMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.time.LocalDate;
+import java.time.Month;
+
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class ClinicBranchControllerTest {
+public class SignToDoctorControllerTest {
 
-    CliniсBranch branch = new CliniсBranch();
+    SignToDoctor sign = new SignToDoctor();
     {
-        branch.setId(0L);
-        branch.setName("Nevsky");
-        branch.setAddress("Nevsky prospekt 120");
-        branch.setOpen_time("8:00");
-        branch.setClose_time("20:00");
+        sign.setId(0L);
+        sign.setClient_id(3L);
+        sign.setBranch_id(35L);
+        sign.setDoctor_id(11L);
+        sign.setVisit_date(LocalDate.of(2022, Month.APRIL, 22));
     }
 
     MockMvc mockMvc;
@@ -54,10 +58,10 @@ public class ClinicBranchControllerTest {
         this.mockMvc = builder.build();
     }
     @Test
-    public void addBranch() throws Exception {
-        String content = objectMapper.writeValueAsString(branch);
+    public void addSign() throws Exception {
+        String content = objectMapper.writeValueAsString(sign);
         System.out.println(content);
-        String uri = "/clinic";
+        String uri = "/signToDoc";
         mockMvc.perform(post(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
@@ -66,7 +70,7 @@ public class ClinicBranchControllerTest {
     }
     @Test
     public void readAll() throws Exception {
-        String uri = "/clinic/all";
+        String uri = "/signToDoc/all";
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
                 .andDo(document(uri));
@@ -74,9 +78,9 @@ public class ClinicBranchControllerTest {
 
     @Test
     public void read() throws Exception {
-        String content = objectMapper.writeValueAsString(branch);
+        String content = objectMapper.writeValueAsString(sign);
         System.out.println(content);
-        String uri = "/clinic/0";
+        String uri = "/signToDoc/0";
         mockMvc.perform(get(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
@@ -86,9 +90,9 @@ public class ClinicBranchControllerTest {
 
     @Test
     public void update() throws Exception {
-        String content = objectMapper.writeValueAsString(branch);
+        String content = objectMapper.writeValueAsString(sign);
         System.out.println(content);
-        String uri = "/clinic/0";
+        String uri = "/signToDoc/0";
         mockMvc.perform(put(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
@@ -98,7 +102,7 @@ public class ClinicBranchControllerTest {
 
     @Test
     public void delete() throws Exception {
-        String uri = "/clinic/0";
+        String uri = "/signToDoc/0";
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
                 .andExpect(status().isOk())
                 .andDo(document(uri));
