@@ -11,7 +11,8 @@ import lombok.ToString;
 @ToString
 public class Admin {
     private Long id;
-    private String name, email, staff_name;
+    private String name;
+    private String  email;
+    private String staff_name;
     private Integer phone_number;
-
 }
