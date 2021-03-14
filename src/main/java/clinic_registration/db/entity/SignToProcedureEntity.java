@@ -6,22 +6,20 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity
-@Table(schema = "public", name = "clinic_procedure")
+@Table(schema = "public", name = "procedure_appointment")
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
-public class ClinicProcedureEntity {
+public class SignToProcedureEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String name;
-    private Integer duration;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "procedure_id")
-    private List<SignToProcedureEntity> procedureEntities;
+    private Long procedure_id;
+    private Long client_id;
+    private Long branch_id;
+    private LocalDate visit_date;
 }

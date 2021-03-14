@@ -44,7 +44,7 @@ public class SignToDoctorService {
             ClientEntity clientEntity = clientRepository.findById(sign.getClient_id()).get();
             ClinicBranchEntity branchEntity = branchRepository.findById(signEntity.getBranch_id()).get();
             return "Sign to doctor " + doctorEntity.getPosition_name() + " " + doctorEntity.getName()
-                    + " to branch " + branchEntity.getName() + " on the " + branchEntity.getAddress()
+                    + " in branch " + branchEntity.getName() + " on the " + branchEntity.getAddress()
                     + " from client " + clientEntity.getName() + " is created.";
         } catch (RuntimeException e) {
             throw new CreateException("Can not create a sign");

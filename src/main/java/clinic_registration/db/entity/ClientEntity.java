@@ -33,10 +33,10 @@ public class ClientEntity {
     @JoinColumn(name = "client_id")
     private List<SignToDoctorEntity> signToDoctorEntities;
 
-//
-//    @OneToMany(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "client_id")
-//    private List<SignToClinicServiceEntity> serviceEntities;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id")
+    private List<SignToProcedureEntity> procedureEntities;
 
 
 }
