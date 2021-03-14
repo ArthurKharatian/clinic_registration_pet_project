@@ -35,7 +35,7 @@ public class SignToDoctorController {
     }
 
     @GetMapping("/{id}")
-    public SignToDoctor read(@PathVariable("id") Long id){
+    public String read(@PathVariable("id") Long id){
         return signService.read(id);
     }
 }
