@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(schema = "public", name = "clinic_lab")
@@ -17,8 +18,13 @@ public class ClinicLabEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private Long branch_id;
     private String worker_name;
     private String position_name;
     private String open_time;
     private String close_time;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lab_id")
+    private List<SignToTestEntity> testEntities;
 }

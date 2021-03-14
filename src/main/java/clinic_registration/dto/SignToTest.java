@@ -5,14 +5,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
+
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-public class CliniсBranch {
+public class SignToTest {
     private Long id;
     private String name;
-    private String address;
-    private String open_time;
-    private String close_time;
+    private Long lab_id;
+    private Long client_id;
+    private LocalDate visit_date;
 }

@@ -1,7 +1,6 @@
 package clinic_registration.web;
 
 import clinic_registration.dto.ClinicLab;
-import clinic_registration.dto.CliniсBranch;
 import clinic_registration.services.ClinicLabService;
 import org.springframework.web.bind.annotation.*;
 

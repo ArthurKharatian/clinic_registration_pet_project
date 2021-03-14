@@ -9,12 +9,11 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ClinicLab {
+public class ClinicBrach {
     private Long id;
-    private Long branch_id;
-    private String worker_name;
-    private String position_name;
+    private Long admin_id;
+    private String name;
+    private String address;
     private String open_time;
     private String close_time;
-
 }

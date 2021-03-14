@@ -1,6 +1,6 @@
 package clinic_registration.web;
 
-import clinic_registration.dto.CliniсBranch;
+import clinic_registration.dto.ClinicBrach;
 import clinic_registration.services.ClinicBranchService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +16,12 @@ public class ClinicBranchController {
     }
 
     @PostMapping
-    public String addClient(@RequestBody CliniсBranch branch){
+    public String addClient(@RequestBody ClinicBrach branch){
         return branchService.create(branch);
     }
 
     @PutMapping("/{id}")
-    public String update(@PathVariable Long id, CliniсBranch branch){
+    public String update(@PathVariable Long id, ClinicBrach branch){
         return branchService.update(id, branch);
     }
 
@@ -31,12 +31,12 @@ public class ClinicBranchController {
     }
 
     @GetMapping("/all")
-    public List<CliniсBranch> readAll(){
+    public List<ClinicBrach> readAll(){
         return branchService.readAll();
     }
 
     @GetMapping("/{id}")
-    public CliniсBranch read(@PathVariable("id") Long id){
+    public ClinicBrach read(@PathVariable("id") Long id){
         return branchService.read(id);
     }
 }

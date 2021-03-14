@@ -1,11 +1,8 @@
 package clinic_registration.services;
 
-import clinic_registration.db.entity.AdminEntity;
 import clinic_registration.db.entity.ClinicBranchEntity;
-import clinic_registration.db.repository.AdminRepository;
 import clinic_registration.db.repository.ClinicBranchRepository;
-import clinic_registration.dto.Admin;
-import clinic_registration.dto.CliniсBranch;
+import clinic_registration.dto.ClinicBrach;
 import clinic_registration.exceptions.CreateException;
 import clinic_registration.exceptions.DeleteException;
 import clinic_registration.exceptions.UpdateException;
@@ -26,7 +23,7 @@ public class ClinicBranchService {
         this.objectMapper = objectMapper;
     }
 
-    public String create(CliniсBranch branch) {
+    public String create(ClinicBrach branch) {
         ClinicBranchEntity branchEntity;
         try {
             branchEntity = objectMapper.convertValue(branch, ClinicBranchEntity.class);
@@ -37,21 +34,21 @@ public class ClinicBranchService {
         return branchEntity.toString() + "is created";
     }
 
-    public List<CliniсBranch> readAll() {
+    public List<ClinicBrach> readAll() {
         List<ClinicBranchEntity> branches = branchRepository.findAll();
-        return branches.stream().map(br -> objectMapper.convertValue(br, CliniсBranch.class)).collect(Collectors.toList());
+        return branches.stream().map(br -> objectMapper.convertValue(br, ClinicBrach.class)).collect(Collectors.toList());
     }
 
-    public CliniсBranch read(Long id) {
-        CliniсBranch branch = null;
+    public ClinicBrach read(Long id) {
+        ClinicBrach branch = null;
         if (branchRepository.findById(id).isPresent()) {
             ClinicBranchEntity branchEntity = branchRepository.findById(id).get();
-            branch = objectMapper.convertValue(branchEntity, CliniсBranch.class);
+            branch = objectMapper.convertValue(branchEntity, ClinicBrach.class);
         }
         return branch;
     }
 
-    public String update(Long id, CliniсBranch branch) {
+    public String update(Long id, ClinicBrach branch) {
         if (branchRepository.findById(id).isPresent()) {
             try {
                 ClinicBranchEntity branchEntity = objectMapper.convertValue(branch, ClinicBranchEntity.class);

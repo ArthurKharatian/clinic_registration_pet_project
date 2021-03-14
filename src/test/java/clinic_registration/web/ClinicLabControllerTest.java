@@ -36,6 +36,7 @@ public class ClinicLabControllerTest {
         lab.setPosition_name("Laboratory assistant");
         lab.setOpen_time("7:00");
         lab.setClose_time("16:00");
+        lab.setBranch_id(35L);
     }
 
 

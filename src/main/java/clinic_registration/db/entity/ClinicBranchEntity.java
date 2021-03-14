@@ -22,6 +22,7 @@ public class ClinicBranchEntity {
     private String address;
     private String open_time;
     private String close_time;
+    private Long admin_id;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_id")
@@ -30,4 +31,8 @@ public class ClinicBranchEntity {
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_id")
     private List<SignToProcedureEntity> procedureEntities;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "branch_id")
+    private List<ClinicLabEntity> labEntities;
 }

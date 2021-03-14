@@ -91,7 +91,7 @@ public class SignToProcedureControllerTest {
     public void update() throws Exception {
         String content = objectMapper.writeValueAsString(sign);
         System.out.println(content);
-        String uri = "/signToProcedure/39";
+        String uri = "/signToProcedure/0";
         mockMvc.perform(put(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))

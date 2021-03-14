@@ -44,7 +44,7 @@ public class SignToProcedureService {
             ClientEntity clientEntity = clientRepository.findById(sign.getClient_id()).get();
             ClinicBranchEntity branchEntity = branchRepository.findById(signEntity.getBranch_id()).get();
             return "Sign for procedure: " + procedureEntity.getName() + " with a duration of " + procedureEntity.getDuration()
-                    + " minute(s), in branch " + branchEntity.getName() + " on the " + branchEntity.getAddress()
+                    + " minute(s), in branch " + branchEntity.getName() + " on the " + branchEntity.getAddress() + " on " + sign.getVisit_date()
                     + " from client " + clientEntity.getName() + " is created.";
         } catch (RuntimeException e) {
             throw new CreateException("Can not create a sign");
@@ -67,6 +67,7 @@ public class SignToProcedureService {
         ClinicBranchEntity branchEntity = branchRepository.findById(sign.getBranch_id()).get();
         return "Sign for procedure: " + procedureEntity.getName() + " with a duration of " + procedureEntity.getDuration()
                 + " minute(s), in branch " + branchEntity.getName() + " on the " + branchEntity.getAddress()
+                +" on " + sign.getVisit_date()
                 + " from client " + clientEntity.getName();
 
     }
