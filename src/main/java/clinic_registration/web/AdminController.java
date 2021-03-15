@@ -21,8 +21,8 @@ public class AdminController {
         return adminService.create(admin);
     }
 
-    @PutMapping("/{id}")
-    public String update(@PathVariable Long id, Admin admin){
+    @PutMapping(value = "/{id}", headers = "Accept=application/json")
+    public String update(@PathVariable Long id, @RequestBody Admin admin){
         return adminService.update(id, admin);
     }
 

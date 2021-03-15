@@ -20,8 +20,8 @@ public class ClinicBranchController {
         return branchService.create(branch);
     }
 
-    @PutMapping("/{id}")
-    public String update(@PathVariable Long id, ClinicBrach branch){
+    @PutMapping(value = "/{id}", headers = "Accept=application/json")
+    public String update(@PathVariable Long id, @RequestBody ClinicBrach branch){
         return branchService.update(id, branch);
     }
 

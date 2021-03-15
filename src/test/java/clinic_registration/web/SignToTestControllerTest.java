@@ -34,10 +34,10 @@ public class SignToTestControllerTest {
     SignToTest sign = new SignToTest();
     {
         sign.setId(0L);
-        sign.setName("General blood test");
-        sign.setClient_id(2L);
+        sign.setName("Extended blood test");
+        sign.setClient_id(3L);
         sign.setLab_id(0L);
-        sign.setVisit_date(LocalDate.of(2025, Month.SEPTEMBER, 15));
+        sign.setVisit_date(LocalDate.of(2125, Month.SEPTEMBER, 15));
     }
     MockMvc mockMvc;
     @Autowired

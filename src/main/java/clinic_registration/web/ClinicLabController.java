@@ -20,8 +20,8 @@ public class ClinicLabController {
         return labService.create(lab);
     }
 
-    @PutMapping("/{id}")
-    public String update(@PathVariable Long id, ClinicLab lab){
+    @PutMapping(value = "/{id}", headers = "Accept=application/json")
+    public String update(@PathVariable Long id, @RequestBody ClinicLab lab){
         return labService.update(id, lab);
     }
 

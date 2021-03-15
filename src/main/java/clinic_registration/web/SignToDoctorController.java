@@ -19,8 +19,8 @@ public class SignToDoctorController {
         return signService.create(sign);
     }
 
-    @PutMapping("/{id}")
-    public String update(@PathVariable Long id, SignToDoctor sign){
+    @PutMapping(value = "/{id}", headers = "Accept=application/json")
+    public String update(@PathVariable Long id,@RequestBody SignToDoctor sign){
         return signService.update(id, sign);
     }
 

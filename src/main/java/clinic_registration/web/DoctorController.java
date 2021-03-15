@@ -20,8 +20,8 @@ public class DoctorController {
         return doctorService.create(doctor);
     }
 
-    @PutMapping("/{id}")
-    public String update(@PathVariable Long id, Doctor doctor){
+    @PutMapping(value = "/{id}", headers = "Accept=application/json")
+    public String update(@PathVariable Long id, @RequestBody Doctor doctor){
         return doctorService.update(id, doctor);
     }
 

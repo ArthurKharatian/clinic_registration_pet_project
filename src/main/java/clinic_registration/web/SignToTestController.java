@@ -20,8 +20,8 @@ public class SignToTestController {
         return testService.create(test);
     }
 
-    @PutMapping("/{id}")
-    public String update(@PathVariable Long id, SignToTest test){
+    @PutMapping(value = "/{id}", headers = "Accept=application/json")
+    public String update(@PathVariable Long id, @RequestBody SignToTest test){
         return testService.update(id, test);
     }
 

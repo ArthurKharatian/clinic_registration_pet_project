@@ -73,20 +73,22 @@ public class SignToProcedureService {
     }
 
     public String update(Long id, SignToProcedure sign) {
-        if (procedureRepository.findById(id).isPresent()) {
+
             try {
-                SignToProcedureEntity signEntity = objectMapper.convertValue(sign, SignToProcedureEntity.class);
-                procedureRepository.save(signEntity);
-                ClinicProcedureEntity procedureEntity = clinicProcedureRepository.findById(sign.getProcedure_id()).get();
-                ClientEntity clientEntity = clientRepository.findById(sign.getClient_id()).get();
-                ClinicBranchEntity branchEntity = branchRepository.findById(signEntity.getBranch_id()).get();
-                return "Sign for procedure: " + procedureEntity.getName() + " with a duration of " + procedureEntity.getDuration()
-                        + " minute(s), in branch " + branchEntity.getName() + " on the " + branchEntity.getAddress()
-                        + " from client " + clientEntity.getName() + " is updated.";
+                if (procedureRepository.findById(id).isPresent()) {
+                    SignToProcedureEntity signEntity = objectMapper.convertValue(sign, SignToProcedureEntity.class);
+                    procedureRepository.save(signEntity);
+                    ClinicProcedureEntity procedureEntity = clinicProcedureRepository.findById(sign.getProcedure_id()).get();
+                    ClientEntity clientEntity = clientRepository.findById(sign.getClient_id()).get();
+                    ClinicBranchEntity branchEntity = branchRepository.findById(signEntity.getBranch_id()).get();
+                    return "Sign for procedure: " + procedureEntity.getName() + " with a duration of " + procedureEntity.getDuration()
+                            + " minute(s), in branch " + branchEntity.getName() + " on the " + branchEntity.getAddress()
+                            + " from client " + clientEntity.getName() + " is updated.";
+                }
             } catch (RuntimeException e) {
                 throw new UpdateException("Sign is not found!");
             }
-        }
+
         return "Sign " + sign.toString() + " is not found!";
     }
 

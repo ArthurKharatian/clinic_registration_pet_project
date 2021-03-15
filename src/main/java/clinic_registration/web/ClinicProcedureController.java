@@ -19,8 +19,8 @@ public class ClinicProcedureController {
         return procedureService.create(procedure);
     }
 
-    @PutMapping("/{id}")
-    public String update(@PathVariable Long id, ClinicProcedure procedure){
+    @PutMapping(value = "/{id}", headers = "Accept=application/json")
+    public String update(@PathVariable Long id, @RequestBody ClinicProcedure procedure){
         return procedureService.update(id, procedure);
     }
 

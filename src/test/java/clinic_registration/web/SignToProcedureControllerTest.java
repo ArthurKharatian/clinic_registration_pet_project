@@ -34,10 +34,10 @@ public class SignToProcedureControllerTest {
     SignToProcedure sign = new SignToProcedure();
     {
         sign.setId(0L);
-        sign.setClient_id(2L);
+        sign.setClient_id(3L);
         sign.setBranch_id(35L);
         sign.setProcedure_id(38L);
-        sign.setVisit_date(LocalDate.of(2022, Month.SEPTEMBER, 1));
+        sign.setVisit_date(LocalDate.of(2122, Month.SEPTEMBER, 1));
     }
     MockMvc mockMvc;
     @Autowired

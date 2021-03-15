@@ -23,8 +23,8 @@ public class ClientController {
         return clientService.create(client);
     }
 
-    @PutMapping("/{id}")
-    public String update(@PathVariable Long id, Client client){
+    @PutMapping(value = "/{id}", headers = "Accept=application/json")
+    public String update(@PathVariable Long id, @RequestBody Client client){
        return clientService.update(id, client);
     }
 

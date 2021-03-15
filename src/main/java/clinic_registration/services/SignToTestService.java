@@ -78,10 +78,9 @@ public class SignToTestService {
     public String update(Long id, SignToTest sign) {
 
             try {
-
-                SignToTestEntity signEntity = testRepository.findById(id).get();
-
-
+                if (testRepository.findById(id).isPresent()) {
+                SignToTestEntity signEntity = objectMapper.convertValue(sign, SignToTestEntity.class);
+                signEntity.setId(id);
                 testRepository.save(signEntity);
                 ClinicLabEntity labEntity = labRepository.findById(sign.getLab_id()).get();
                 ClientEntity clientEntity = clientRepository.findById(sign.getClient_id()).get();
@@ -89,11 +88,12 @@ public class SignToTestService {
                 return "Sign for test: " + signEntity.getName() + " on " + sign.getVisit_date()
                         + " in branch " + branchEntity.getName() + " on the " + branchEntity.getAddress()
                         + " from client " + clientEntity.getName() + " is updated.";
-
+                }
             } catch (RuntimeException e) {
                 throw new UpdateException("Sign is not found!");
             }
 
+        return "Sign " + sign.toString() + " is not found!";
     }
 
     public String delete(Long id) {

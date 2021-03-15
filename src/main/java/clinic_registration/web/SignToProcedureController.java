@@ -19,8 +19,8 @@ public class SignToProcedureController {
         return procedureService.create(sign);
     }
 
-    @PutMapping("/{id}")
-    public String update(@PathVariable Long id, SignToProcedure sign){
+    @PutMapping(value = "/{id}", headers = "Accept=application/json")
+    public String update(@PathVariable Long id, @RequestBody SignToProcedure sign){
         return procedureService.update(id, sign);
     }
 
