@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @ToString
 public class SignToTestEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private Long lab_id;

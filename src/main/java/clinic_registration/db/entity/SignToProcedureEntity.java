@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @ToString
 public class SignToProcedureEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long procedure_id;
     private Long client_id;

@@ -37,7 +37,7 @@ public class SignToTestControllerTest {
         sign.setName("General blood test");
         sign.setClient_id(2L);
         sign.setLab_id(0L);
-        sign.setVisit_date(LocalDate.of(2022, Month.SEPTEMBER, 1));
+        sign.setVisit_date(LocalDate.of(2025, Month.SEPTEMBER, 15));
     }
     MockMvc mockMvc;
     @Autowired
@@ -101,7 +101,7 @@ public class SignToTestControllerTest {
 
     @Test
     public void delete() throws Exception {
-        String uri = "/signToTest/45";
+        String uri = "/signToTest/0";
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
                 .andExpect(status().isOk())
                 .andDo(document(uri));

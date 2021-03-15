@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @ToString
 public class SignToDoctorEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long doctor_id;
     private Long client_id;
