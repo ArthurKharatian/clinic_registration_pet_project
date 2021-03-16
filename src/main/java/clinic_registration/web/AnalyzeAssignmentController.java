@@ -1,27 +1,27 @@
 package clinic_registration.web;
 
-import clinic_registration.dto.SignToTest;
-import clinic_registration.services.SignToTestService;
+import clinic_registration.dto.AnalyzeAssignment;
+import clinic_registration.services.AnalyzeAssignmentService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/signToTest")
-public class SignToTestController {
-    private final SignToTestService testService;
+public class AnalyzeAssignmentController {
+    private final AnalyzeAssignmentService testService;
 
-    public SignToTestController(SignToTestService testService) {
+    public AnalyzeAssignmentController(AnalyzeAssignmentService testService) {
         this.testService = testService;
     }
 
     @PostMapping
-    public String addClient(@RequestBody SignToTest test){
+    public String addClient(@RequestBody AnalyzeAssignment test){
         return testService.create(test);
     }
 
     @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public String update(@PathVariable Long id, @RequestBody SignToTest test){
+    public String update(@PathVariable Long id, @RequestBody AnalyzeAssignment test){
         return testService.update(id, test);
     }
 
@@ -31,7 +31,7 @@ public class SignToTestController {
     }
 
     @GetMapping("/all")
-    public List<SignToTest> readAll(){
+    public List<AnalyzeAssignment> readAll(){
         return testService.readAll();
     }
 

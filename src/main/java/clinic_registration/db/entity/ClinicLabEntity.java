@@ -26,5 +26,5 @@ public class ClinicLabEntity {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "lab_id")
-    private List<SignToTestEntity> testEntities;
+    private List<AnalyzeAssignmentEntity> testEntities;
 }

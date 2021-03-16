@@ -31,14 +31,14 @@ public class ClientEntity {
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id")
-    private List<SignToDoctorEntity> signToDoctorEntities;
+    private List<DoctorAppointmentEntity> appointmentEntities;
 
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
-    private List<SignToProcedureEntity> procedureEntities;
+    private List<ProcedureAssignmentEntity> procedureEntities;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
-    private List<SignToTestEntity> testEntities;
+    private List<AnalyzeAssignmentEntity> testEntities;
 }

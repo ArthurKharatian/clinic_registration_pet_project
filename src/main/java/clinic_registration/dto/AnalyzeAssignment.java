@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
-public class SignToTest {
+public class AnalyzeAssignment {
     private Long id;
     private String name;
     private Long lab_id;

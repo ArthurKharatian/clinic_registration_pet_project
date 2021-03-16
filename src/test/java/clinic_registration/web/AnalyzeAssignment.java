@@ -1,6 +1,5 @@
 package clinic_registration.web;
 
-import clinic_registration.dto.SignToProcedure;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Rule;
@@ -29,15 +28,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class SignToProcedureControllerTest {
+public class AnalyzeAssignment {
 
-    SignToProcedure sign = new SignToProcedure();
+    clinic_registration.dto.AnalyzeAssignment sign = new clinic_registration.dto.AnalyzeAssignment();
     {
         sign.setId(0L);
+        sign.setName("Extended blood test");
         sign.setClient_id(3L);
-        sign.setBranch_id(35L);
-        sign.setProcedure_id(38L);
-        sign.setVisit_date(LocalDate.of(2122, Month.SEPTEMBER, 1));
+        sign.setLab_id(0L);
+        sign.setVisit_date(LocalDate.of(2125, Month.SEPTEMBER, 15));
     }
     MockMvc mockMvc;
     @Autowired
@@ -60,7 +59,7 @@ public class SignToProcedureControllerTest {
     public void addSign() throws Exception {
         String content = objectMapper.writeValueAsString(sign);
         System.out.println(content);
-        String uri = "/signToProcedure";
+        String uri = "/signToTest";
         mockMvc.perform(post(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
@@ -69,7 +68,7 @@ public class SignToProcedureControllerTest {
     }
     @Test
     public void readAll() throws Exception {
-        String uri = "/signToProcedure/all";
+        String uri = "/signToTest/all";
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
                 .andDo(document(uri));
@@ -79,7 +78,7 @@ public class SignToProcedureControllerTest {
     public void read() throws Exception {
         String content = objectMapper.writeValueAsString(sign);
         System.out.println(content);
-        String uri = "/signToProcedure/0";
+        String uri = "/signToTest/0";
         mockMvc.perform(get(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
@@ -91,7 +90,7 @@ public class SignToProcedureControllerTest {
     public void update() throws Exception {
         String content = objectMapper.writeValueAsString(sign);
         System.out.println(content);
-        String uri = "/signToProcedure/0";
+        String uri = "/signToTest/0";
         mockMvc.perform(put(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
@@ -101,7 +100,7 @@ public class SignToProcedureControllerTest {
 
     @Test
     public void delete() throws Exception {
-        String uri = "/signToProcedure/0";
+        String uri = "/signToTest/0";
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
                 .andExpect(status().isOk())
                 .andDo(document(uri));

@@ -28,5 +28,5 @@ public class DoctorEntity {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id")
-    private List<SignToDoctorEntity> signToDoctorEntities;
+    private List<DoctorAppointmentEntity> signToDoctorEntities;
 }

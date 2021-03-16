@@ -1,6 +1,6 @@
 package clinic_registration.web;
 
-import clinic_registration.dto.SignToDoctor;
+import clinic_registration.dto.DoctorAppointment;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Rule;
@@ -29,9 +29,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class SignToDoctorControllerTest {
+public class DoctorAppointmentControllerTest {
 
-    SignToDoctor sign = new SignToDoctor();
+    DoctorAppointment sign = new DoctorAppointment();
     {
         sign.setId(0L);
         sign.setClient_id(3L);

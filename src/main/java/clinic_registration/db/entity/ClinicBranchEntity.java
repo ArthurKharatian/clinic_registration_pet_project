@@ -26,11 +26,11 @@ public class ClinicBranchEntity {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_id")
-    private List<SignToDoctorEntity> signToDoctorEntities;
+    private List<DoctorAppointmentEntity> appointmentEntities;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_id")
-    private List<SignToProcedureEntity> procedureEntities;
+    private List<ProcedureAssignmentEntity> procedureEntities;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_id")

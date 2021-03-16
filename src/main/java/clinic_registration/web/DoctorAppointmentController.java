@@ -1,26 +1,26 @@
 package clinic_registration.web;
 
-import clinic_registration.dto.SignToDoctor;
-import clinic_registration.services.SignToDoctorService;
+import clinic_registration.dto.DoctorAppointment;
+import clinic_registration.services.DoctorAppointmentService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/signToDoc")
-public class SignToDoctorController {
-    private final SignToDoctorService signService;
+public class DoctorAppointmentController {
+    private final DoctorAppointmentService signService;
 
-    public SignToDoctorController(SignToDoctorService signService) {
+    public DoctorAppointmentController(DoctorAppointmentService signService) {
         this.signService = signService;
     }
     @PostMapping
-    public String addClient(@RequestBody SignToDoctor sign){
+    public String addClient(@RequestBody DoctorAppointment sign){
         return signService.create(sign);
     }
 
     @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public String update(@PathVariable Long id,@RequestBody SignToDoctor sign){
+    public String update(@PathVariable Long id,@RequestBody DoctorAppointment sign){
         return signService.update(id, sign);
     }
 
@@ -30,7 +30,7 @@ public class SignToDoctorController {
     }
 
     @GetMapping("/all")
-    public List<SignToDoctor> readAll(){
+    public List<DoctorAppointment> readAll(){
         return signService.readAll();
     }
 

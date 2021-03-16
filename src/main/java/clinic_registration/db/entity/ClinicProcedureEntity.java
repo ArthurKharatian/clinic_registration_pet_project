@@ -23,5 +23,5 @@ public class ClinicProcedureEntity {
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "procedure_id")
-    private List<SignToProcedureEntity> procedureEntities;
+    private List<ProcedureAssignmentEntity> procedureEntities;
 }

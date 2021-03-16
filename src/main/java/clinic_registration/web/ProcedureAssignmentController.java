@@ -1,26 +1,26 @@
 package clinic_registration.web;
 
-import clinic_registration.dto.SignToProcedure;
-import clinic_registration.services.SignToProcedureService;
+import clinic_registration.dto.ProcedureAssignment;
+import clinic_registration.services.ProcedureAssignmentService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/signToProcedure")
-public class SignToProcedureController {
-    private final SignToProcedureService procedureService;
+public class ProcedureAssignmentController {
+    private final ProcedureAssignmentService procedureService;
 
-    public SignToProcedureController(SignToProcedureService procedureService) {
+    public ProcedureAssignmentController(ProcedureAssignmentService procedureService) {
         this.procedureService = procedureService;
     }
     @PostMapping
-    public String addClient(@RequestBody SignToProcedure sign){
+    public String addClient(@RequestBody ProcedureAssignment sign){
         return procedureService.create(sign);
     }
 
     @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public String update(@PathVariable Long id, @RequestBody SignToProcedure sign){
+    public String update(@PathVariable Long id, @RequestBody ProcedureAssignment sign){
         return procedureService.update(id, sign);
     }
 
@@ -30,7 +30,7 @@ public class SignToProcedureController {
     }
 
     @GetMapping("/all")
-    public List<SignToProcedure> readAll(){
+    public List<ProcedureAssignment> readAll(){
         return procedureService.readAll();
     }
 

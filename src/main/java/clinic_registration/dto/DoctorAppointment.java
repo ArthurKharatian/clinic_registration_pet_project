@@ -11,10 +11,11 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString
-public class SignToProcedure {
+public class DoctorAppointment {
     private Long id;
-    private Long procedure_id;
+    private Long doctor_id;
     private Long client_id;
     private Long branch_id;
     private LocalDate visit_date;
+
 }

@@ -3,12 +3,12 @@ package clinic_registration.services;
 import clinic_registration.db.entity.ClientEntity;
 import clinic_registration.db.entity.ClinicBranchEntity;
 import clinic_registration.db.entity.ClinicLabEntity;
-import clinic_registration.db.entity.SignToTestEntity;
+import clinic_registration.db.entity.AnalyzeAssignmentEntity;
 import clinic_registration.db.repository.ClientRepository;
 import clinic_registration.db.repository.ClinicBranchRepository;
 import clinic_registration.db.repository.ClinicLabRepository;
-import clinic_registration.db.repository.SignToTestRepository;
-import clinic_registration.dto.SignToTest;
+import clinic_registration.db.repository.AnalyzeAssignmentEntityRepository;
+import clinic_registration.dto.AnalyzeAssignment;
 import clinic_registration.exceptions.CreateException;
 import clinic_registration.exceptions.DeleteException;
 import clinic_registration.exceptions.UpdateException;
@@ -19,16 +19,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class SignToTestService {
-    private final SignToTestRepository testRepository;
+public class AnalyzeAssignmentService {
+    private final AnalyzeAssignmentEntityRepository testRepository;
     private final ClientRepository clientRepository;
     private final ClinicLabRepository labRepository;
     private final ClinicBranchRepository branchRepository;
     private final ObjectMapper objectMapper;
 
-    public SignToTestService(SignToTestRepository testRepository, ClientRepository clientRepository,
-                             ClinicLabRepository labRepository, ClinicBranchRepository branchRepository,
-                             ObjectMapper objectMapper) {
+    public AnalyzeAssignmentService(AnalyzeAssignmentEntityRepository testRepository, ClientRepository clientRepository,
+                                    ClinicLabRepository labRepository, ClinicBranchRepository branchRepository,
+                                    ObjectMapper objectMapper) {
         this.testRepository = testRepository;
         this.clientRepository = clientRepository;
         this.labRepository = labRepository;
@@ -36,10 +36,10 @@ public class SignToTestService {
         this.objectMapper = objectMapper;
     }
 
-    public String create(SignToTest sign) {
-        SignToTestEntity signEntity;
+    public String create(AnalyzeAssignment sign) {
+        AnalyzeAssignmentEntity signEntity;
         try {
-            signEntity = objectMapper.convertValue(sign, SignToTestEntity.class);
+            signEntity = objectMapper.convertValue(sign, AnalyzeAssignmentEntity.class);
             testRepository.save(signEntity);
 
             ClinicLabEntity labEntity = labRepository.findById(sign.getLab_id()).get();
@@ -54,16 +54,16 @@ public class SignToTestService {
         }
     }
 
-    public List<SignToTest> readAll() {
-        List<SignToTestEntity> signs = testRepository.findAll();
-        return signs.stream().map(s -> objectMapper.convertValue(s, SignToTest.class)).collect(Collectors.toList());
+    public List<AnalyzeAssignment> readAll() {
+        List<AnalyzeAssignmentEntity> signs = testRepository.findAll();
+        return signs.stream().map(s -> objectMapper.convertValue(s, AnalyzeAssignment.class)).collect(Collectors.toList());
     }
 
     public String read(Long id) {
 
 
-        SignToTestEntity signEntity = testRepository.findById(id).get();
-        SignToTest sign = objectMapper.convertValue(signEntity, SignToTest.class);
+        AnalyzeAssignmentEntity signEntity = testRepository.findById(id).get();
+        AnalyzeAssignment sign = objectMapper.convertValue(signEntity, AnalyzeAssignment.class);
 
         ClinicLabEntity labEntity = labRepository.findById(sign.getLab_id()).get();
 
@@ -75,11 +75,11 @@ public class SignToTestService {
 
     }
 
-    public String update(Long id, SignToTest sign) {
+    public String update(Long id, AnalyzeAssignment sign) {
 
             try {
                 if (testRepository.findById(id).isPresent()) {
-                SignToTestEntity signEntity = objectMapper.convertValue(sign, SignToTestEntity.class);
+                AnalyzeAssignmentEntity signEntity = objectMapper.convertValue(sign, AnalyzeAssignmentEntity.class);
                 signEntity.setId(id);
                 testRepository.save(signEntity);
                 ClinicLabEntity labEntity = labRepository.findById(sign.getLab_id()).get();
