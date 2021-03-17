@@ -82,7 +82,7 @@ public class AdminControllerTest {
         mockMvc.perform(get(uri))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Ernesto"));
+                .andExpect(jsonPath("$.name").value("Amigo"));
     }
 
     @Test

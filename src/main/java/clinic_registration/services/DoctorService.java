@@ -4,6 +4,7 @@ import clinic_registration.db.entity.DoctorEntity;
 import clinic_registration.db.repository.DoctorRepository;
 import clinic_registration.dto.Doctor;
 import clinic_registration.exceptions.ClinicServiceException;
+import clinic_registration.exceptions.ErrorMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 

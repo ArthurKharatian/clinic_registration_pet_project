@@ -1,9 +1,7 @@
 package clinic_registration.services;
 
-import clinic_registration.db.entity.AdminEntity;
 import clinic_registration.db.entity.ClientEntity;
 import clinic_registration.db.repository.ClientRepository;
-import clinic_registration.dto.Admin;
 import clinic_registration.dto.Client;
 import clinic_registration.exceptions.ClinicServiceException;
 import clinic_registration.exceptions.ErrorMessage;
@@ -31,13 +29,13 @@ public class ClientService {
     }
 
     public List<Client> readAll() {
-        List<ClientEntity> cleints = clientRepository.findAll();
-        return cleints.stream().map(cl -> objectMapper.convertValue(cl, Client.class)).collect(Collectors.toList());
+        List<ClientEntity> clients = clientRepository.findAll();
+        return clients.stream().map(cl -> objectMapper.convertValue(cl, Client.class)).collect(Collectors.toList());
     }
 
     public Client read(Long id) {
         ClientEntity clientEntity = clientRepository.findById(id).orElseThrow(()->
-                new ClinicServiceException(String.format("Admin with id %d not found", id), ErrorMessage.NOT_FOUND));
+                new ClinicServiceException(String.format("Client with id %d is not found", id), ErrorMessage.NOT_FOUND));
         return objectMapper.convertValue(clientEntity, Client.class);
     }
 
@@ -45,12 +43,12 @@ public class ClientService {
         if (clientRepository.existsById(id)) {
             clientRepository.save(objectMapper.convertValue(client, ClientEntity.class));
         } else {
-            throw new ClinicServiceException(String.format("Admin with id %d not found", id), ErrorMessage.NOT_FOUND);
+            throw new ClinicServiceException(String.format("Client with id %d is not found", id), ErrorMessage.NOT_FOUND);
         }
 
     }
     public void delete(Long id) {
-        if(!clientRepository.existsById(id)){throw new ClinicServiceException(String.format("Admin with id %d not found", id), ErrorMessage.NOT_FOUND);}
+        if(!clientRepository.existsById(id)){throw new ClinicServiceException(String.format("Client with id %d is not found", id), ErrorMessage.NOT_FOUND);}
         clientRepository.deleteById(id);
     }
 

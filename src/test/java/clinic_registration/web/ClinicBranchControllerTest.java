@@ -22,18 +22,21 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class ClinicBranchControllerTest {
 
-    ClinicBrach branch = new ClinicBrach();
+    ClinicBrach brach = new ClinicBrach();
     {
-        branch.setId(0L);
-        branch.setName("Nevsky");
-        branch.setAddress("Nevsky prospekt 120");
-        branch.setOpen_time("8:00");
-        branch.setClose_time("20:00");
+        brach.setId(1L);
+        brach.setName("Petrogradsky");
+        brach.setAddress("B.P. 110");
+        brach.setOpen_time("9:00");
+        brach.setClose_time("21:00");
+        brach.setAdmin_id(6L);
     }
 
     MockMvc mockMvc;
@@ -55,13 +58,14 @@ public class ClinicBranchControllerTest {
     }
     @Test
     public void addBranch() throws Exception {
-        String content = objectMapper.writeValueAsString(branch);
+        String content = objectMapper.writeValueAsString(brach);
         System.out.println(content);
         String uri = "/clinic";
         mockMvc.perform(post(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
-                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(status().isCreated())
                 .andDo(document(uri));
     }
     @Test
@@ -74,32 +78,31 @@ public class ClinicBranchControllerTest {
 
     @Test
     public void read() throws Exception {
-        String content = objectMapper.writeValueAsString(branch);
-        System.out.println(content);
-        String uri = "/clinic/0";
-        mockMvc.perform(get(uri)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(content))
+        String uri = "/clinic/1";
+        mockMvc.perform(get(uri))
+                .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andExpect(jsonPath("$.name").value("Petrogradsky"));
     }
 
     @Test
     public void update() throws Exception {
-        String content = objectMapper.writeValueAsString(branch);
+        String content = objectMapper.writeValueAsString(brach);
         System.out.println(content);
-        String uri = "/clinic/0";
+        String uri = "/clinic/1";
         mockMvc.perform(put(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
-                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(status().isAccepted())
                 .andDo(document(uri));
     }
 
     @Test
     public void delete() throws Exception {
-        String uri = "/clinic/0";
+        String uri = "/clinic/1";
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document(uri));
     }

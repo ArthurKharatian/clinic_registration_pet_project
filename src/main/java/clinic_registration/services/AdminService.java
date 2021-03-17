@@ -35,7 +35,7 @@ public class AdminService {
 
     public Admin read(Long id) {
       AdminEntity adminEntity = adminRepository.findById(id).orElseThrow(()->
-               new ClinicServiceException(String.format("Admin with id %d not found", id), ErrorMessage.NOT_FOUND));
+               new ClinicServiceException(String.format("Admin with id %d is not found", id), ErrorMessage.NOT_FOUND));
       return objectMapper.convertValue(adminEntity, Admin.class);
     }
 
@@ -43,12 +43,12 @@ public class AdminService {
         if (adminRepository.existsById(id)) {
             adminRepository.save(objectMapper.convertValue(admin, AdminEntity.class));
         } else {
-            throw new ClinicServiceException(String.format("Admin with id %d not found", id), ErrorMessage.NOT_FOUND);
+            throw new ClinicServiceException(String.format("Admin with id %d is not found", id), ErrorMessage.NOT_FOUND);
         }
 
     }
     public void delete(Long id) {
-            if(!adminRepository.existsById(id)){throw new ClinicServiceException(String.format("Admin with id %d not found", id), ErrorMessage.NOT_FOUND);}
+            if(!adminRepository.existsById(id)){throw new ClinicServiceException(String.format("Admin with id %d is not found", id), ErrorMessage.NOT_FOUND);}
             adminRepository.deleteById(id);
     }
 }
