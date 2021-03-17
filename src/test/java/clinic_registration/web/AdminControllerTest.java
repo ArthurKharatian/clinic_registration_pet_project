@@ -22,6 +22,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -30,9 +32,9 @@ public class AdminControllerTest {
 
     Admin admin = new Admin();
     {
-        admin.setId(0L);
-        admin.setName("Ernesto");
-        admin.setEmail("ernesto@mail.ag");
+        admin.setId(1L);
+        admin.setName("Amigo");
+        admin.setEmail("Amigo@mail.ag");
         admin.setStaff_name("SysAdmin");
         admin.setPhone_number(112);
     }
@@ -63,7 +65,7 @@ public class AdminControllerTest {
         mockMvc.perform(post(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andDo(document(uri));
     }
     @Test
@@ -76,32 +78,31 @@ public class AdminControllerTest {
 
     @Test
     public void read() throws Exception {
-        String content = objectMapper.writeValueAsString(admin);
-        System.out.println(content);
-        String uri = "/admin/0";
-        mockMvc.perform(get(uri)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(content))
+        String uri = "/admin/1";
+        mockMvc.perform(get(uri))
+                .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andExpect(jsonPath("$.name").value("Ernesto"));
     }
 
     @Test
     public void update() throws Exception {
         String content = objectMapper.writeValueAsString(admin);
         System.out.println(content);
-        String uri = "/admin/0";
+        String uri = "/admin/1";
         mockMvc.perform(put(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
-                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(status().isAccepted())
                 .andDo(document(uri));
     }
 
     @Test
     public void delete() throws Exception {
-        String uri = "/admin/0";
+        String uri = "/admin/1";
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document(uri));
     }

@@ -9,9 +9,7 @@ import clinic_registration.db.repository.ClinicBranchRepository;
 import clinic_registration.db.repository.ClinicLabRepository;
 import clinic_registration.db.repository.AnalyzeAssignmentEntityRepository;
 import clinic_registration.dto.AnalyzeAssignment;
-import clinic_registration.exceptions.CreateException;
-import clinic_registration.exceptions.DeleteException;
-import clinic_registration.exceptions.UpdateException;
+import clinic_registration.exceptions.ClinicServiceException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +48,8 @@ public class AnalyzeAssignmentService {
                     + " in branch " + branchEntity.getName() + " on the " + branchEntity.getAddress()
                     + " from client " + clientEntity.getName() + " is created.";
         } catch (RuntimeException e) {
-            throw new CreateException("Can not create a sign");
+            // TODO: 3/16/21 what if its other RuntimeException Child (any of its 832 children)???
+            throw new ClinicServiceException("Can not create a sign");
         }
     }
 
@@ -77,7 +76,7 @@ public class AnalyzeAssignmentService {
 
     public String update(Long id, AnalyzeAssignment sign) {
 
-            try {
+
                 if (testRepository.findById(id).isPresent()) {
                 AnalyzeAssignmentEntity signEntity = objectMapper.convertValue(sign, AnalyzeAssignmentEntity.class);
                 signEntity.setId(id);
@@ -97,7 +96,7 @@ public class AnalyzeAssignmentService {
     }
 
     public String delete(Long id) {
-        try {
+
             testRepository.deleteById(id);
             return "Sign with id: " + id + " was deleted!";
         } catch (RuntimeException e) {

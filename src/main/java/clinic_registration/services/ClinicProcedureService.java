@@ -3,9 +3,7 @@ package clinic_registration.services;
 import clinic_registration.db.entity.ClinicProcedureEntity;
 import clinic_registration.db.repository.ClinicProcedureRepository;
 import clinic_registration.dto.ClinicProcedure;
-import clinic_registration.exceptions.CreateException;
-import clinic_registration.exceptions.DeleteException;
-import clinic_registration.exceptions.UpdateException;
+import clinic_registration.exceptions.ClinicServiceException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +23,7 @@ public class ClinicProcedureService {
 
     public String create(ClinicProcedure procedure) {
         ClinicProcedureEntity procedureEntity;
-        try {
+
             procedureEntity = objectMapper.convertValue(procedure, ClinicProcedureEntity.class);
             procedureRepository.save(procedureEntity);
         } catch (RuntimeException e) {
@@ -50,7 +48,7 @@ public class ClinicProcedureService {
 
     public String update(Long id, ClinicProcedure procedure) {
         if (procedureRepository.findById(id).isPresent()) {
-            try {
+
                 ClinicProcedureEntity procedureEntity = objectMapper.convertValue(procedure, ClinicProcedureEntity.class);
                 procedureRepository.save(procedureEntity);
                 return procedure.toString() + " is updated!";
@@ -62,11 +60,9 @@ public class ClinicProcedureService {
     }
 
     public String delete(Long id) {
-        try {
+
             procedureRepository.deleteById(id);
             return "Procedure with id: " + id + " was deleted!";
-        }catch (RuntimeException e) {
-            throw new DeleteException("Procedure is not found!");
-        }
+
     }
 }

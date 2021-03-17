@@ -3,6 +3,8 @@ package clinic_registration.web;
 
 import clinic_registration.dto.Admin;
 import clinic_registration.services.AdminService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,18 +19,21 @@ public class AdminController {
     }
 
     @PostMapping
-    public String addClient(@RequestBody Admin admin){
-        return adminService.create(admin);
+    public ResponseEntity<Admin> addClient(@RequestBody Admin admin){
+         adminService.create(admin);
+         return new ResponseEntity<>(admin, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public String update(@PathVariable Long id, @RequestBody Admin admin){
-        return adminService.update(id, admin);
+    public ResponseEntity<Admin> update(@PathVariable Long id, @RequestBody Admin admin){
+        adminService.update(id, admin);
+        return new ResponseEntity<>(admin, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") Long id){
-        return adminService.delete(id);
+    public ResponseEntity<Admin> delete(@PathVariable("id") Long id){
+          adminService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/all")
@@ -37,8 +42,9 @@ public class AdminController {
     }
 
     @GetMapping("/{id}")
-    public Admin read(@PathVariable("id") Long id){
-        return adminService.read(id);
+    public ResponseEntity<Admin> read(@PathVariable("id") Long id){
+        Admin admin = adminService.read(id);
+        return new ResponseEntity<>(admin, HttpStatus.OK);
     }
 
 }

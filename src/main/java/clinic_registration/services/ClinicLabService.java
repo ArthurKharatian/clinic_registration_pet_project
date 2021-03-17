@@ -3,9 +3,7 @@ package clinic_registration.services;
 import clinic_registration.db.entity.ClinicLabEntity;
 import clinic_registration.db.repository.ClinicLabRepository;
 import clinic_registration.dto.ClinicLab;
-import clinic_registration.exceptions.CreateException;
-import clinic_registration.exceptions.DeleteException;
-import clinic_registration.exceptions.UpdateException;
+import clinic_registration.exceptions.ClinicServiceException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +23,10 @@ public class ClinicLabService {
 
     public String create(ClinicLab laboratory) {
         ClinicLabEntity labEntity;
-        try {
+
             labEntity = objectMapper.convertValue(laboratory, ClinicLabEntity.class);
             labRepository.save(labEntity);
-        } catch (RuntimeException e) {
-            throw new CreateException("Can not create a laboratory");
-        }
+
         return labEntity.toString() + "is created";
     }
 
@@ -50,7 +46,7 @@ public class ClinicLabService {
 
     public String update(Long id, ClinicLab lab) {
         if (labRepository.findById(id).isPresent()) {
-            try {
+
                 ClinicLabEntity labEntity = objectMapper.convertValue(lab, ClinicLabEntity.class);
                 labRepository.save(labEntity);
                 return lab.toString() + " is updated!";
@@ -62,12 +58,10 @@ public class ClinicLabService {
     }
 
     public String delete(Long id) {
-        try {
+
             labRepository.deleteById(id);
             return "Laboratory with id: " + id + " was deleted!";
-        }catch (RuntimeException e) {
-            throw new DeleteException("Laboratory is not found!");
-        }
+
     }
 
 

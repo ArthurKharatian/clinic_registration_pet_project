@@ -9,9 +9,6 @@ import clinic_registration.db.repository.ClinicBranchRepository;
 import clinic_registration.db.repository.ClinicProcedureRepository;
 import clinic_registration.db.repository.ProcedureAssignmentRepository;
 import clinic_registration.dto.ProcedureAssignment;
-import clinic_registration.exceptions.CreateException;
-import clinic_registration.exceptions.DeleteException;
-import clinic_registration.exceptions.UpdateException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +34,7 @@ public class ProcedureAssignmentService {
 
     public String create(ProcedureAssignment sign) {
         ProcedureAssignmentEntity signEntity;
-        try {
+
             signEntity = objectMapper.convertValue(sign, ProcedureAssignmentEntity.class);
             procedureRepository.save(signEntity);
             ClinicProcedureEntity procedureEntity = clinicProcedureRepository.findById(sign.getProcedure_id()).get();
@@ -46,10 +43,7 @@ public class ProcedureAssignmentService {
             return "Sign for procedure: " + procedureEntity.getName() + " with a duration of " + procedureEntity.getDuration()
                     + " minute(s), in branch " + branchEntity.getName() + " on the " + branchEntity.getAddress() + " on " + sign.getVisit_date()
                     + " from client " + clientEntity.getName() + " is created.";
-        } catch (RuntimeException e) {
-            // TODO: 3/16/21 what if its other RuntimeException Child (any of its 832 children)???
-            throw new CreateException("Can not create a sign");
-        }
+
     }
 
     public List<ProcedureAssignment> readAll() {
@@ -76,7 +70,7 @@ public class ProcedureAssignmentService {
 
     public String update(Long id, ProcedureAssignment sign) {
 
-            try {
+
                 if (procedureRepository.findById(id).isPresent()) {
                     ProcedureAssignmentEntity signEntity = objectMapper.convertValue(sign, ProcedureAssignmentEntity.class);
                     procedureRepository.save(signEntity);
@@ -87,21 +81,15 @@ public class ProcedureAssignmentService {
                             + " minute(s), in branch " + branchEntity.getName() + " on the " + branchEntity.getAddress()
                             + " from client " + clientEntity.getName() + " is updated.";
                 }
-            } catch (RuntimeException e) {
-            // TODO: 3/16/21 what if its other RuntimeException Child (any of its 832 children)???
-                throw new UpdateException("Sign is not found!");
-            }
+
 
         return "Sign " + sign.toString() + " is not found!";
     }
 
     public String delete(Long id) {
-        try {
+
             procedureRepository.deleteById(id);
             return "Sign with id: " + id + " was deleted!";
-        } catch (RuntimeException e) {
-            // TODO: 3/16/21 what if its other RuntimeException Child (any of its 832 children)???
-            throw new DeleteException("Sign is not found!");
-        }
+
     }
 }

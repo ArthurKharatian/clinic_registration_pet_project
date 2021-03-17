@@ -3,9 +3,7 @@ package clinic_registration.services;
 import clinic_registration.db.entity.DoctorEntity;
 import clinic_registration.db.repository.DoctorRepository;
 import clinic_registration.dto.Doctor;
-import clinic_registration.exceptions.CreateException;
-import clinic_registration.exceptions.DeleteException;
-import clinic_registration.exceptions.UpdateException;
+import clinic_registration.exceptions.ClinicServiceException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +23,10 @@ public class DoctorService {
 
     public String create(Doctor doctor) {
         DoctorEntity doctorEntity;
-        try {
+
             doctorEntity = objectMapper.convertValue(doctor, DoctorEntity.class);
             doctorRepository.save(doctorEntity);
-        } catch (RuntimeException e) {
-            throw new CreateException("Can not create an doctor");
-        }
+
         return doctorEntity.toString() + "is created";
     }
 
@@ -50,7 +46,7 @@ public class DoctorService {
 
     public String update(Long id, Doctor doctor) {
         if (doctorRepository.findById(id).isPresent()) {
-            try {
+
                 DoctorEntity doctorEntity = objectMapper.convertValue(doctor, DoctorEntity.class);
                 doctorRepository.save(doctorEntity);
                 return doctor.toString() + " is updated!";
@@ -62,7 +58,7 @@ public class DoctorService {
     }
 
     public String delete(Long id) {
-        try {
+
             doctorRepository.deleteById(id);
             return "Doctor with id: " + id + " was deleted!";
         } catch (RuntimeException e) {

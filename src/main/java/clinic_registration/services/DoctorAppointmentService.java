@@ -9,9 +9,7 @@ import clinic_registration.db.repository.ClinicBranchRepository;
 import clinic_registration.db.repository.DoctorRepository;
 import clinic_registration.db.repository.DoctorAppointmentRepository;
 import clinic_registration.dto.DoctorAppointment;
-import clinic_registration.exceptions.CreateException;
-import clinic_registration.exceptions.DeleteException;
-import clinic_registration.exceptions.UpdateException;
+import clinic_registration.exceptions.ClinicServiceException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +50,7 @@ public class DoctorAppointmentService {
                     + " from client " + clientEntity.getName() + " is created.";
         } catch (RuntimeException e) {
             // TODO: 3/16/21 what if its other RuntimeException Child (any of its 832 children)???
-            throw new CreateException("Can not create a sign");
+            throw new ClinicServiceException("Can not create a sign");
         }
     }
 
@@ -93,19 +91,15 @@ public class DoctorAppointmentService {
                 }
             } catch (RuntimeException e) {
             // TODO: 3/16/21 what if its other RuntimeException Child (any of its 832 children)???
-                throw new UpdateException("Sign is not found!");
+
             }
 
         return "Sign " + sign.toString() + " is not found!";
     }
 
     public String delete(Long id) {
-        try {
+
             doctorAppointmentRepository.deleteById(id);
             return "Sign with id: " + id + " was deleted!";
-        } catch (RuntimeException e) {
-            // TODO: 3/16/21 what if its other RuntimeException Child (any of its 832 children)???
-            throw new DeleteException("Sign is not found!");
         }
-    }
 }

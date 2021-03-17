@@ -3,9 +3,8 @@ package clinic_registration.services;
 import clinic_registration.db.entity.AdminEntity;
 import clinic_registration.db.repository.AdminRepository;
 import clinic_registration.dto.Admin;
-import clinic_registration.exceptions.CreateException;
-import clinic_registration.exceptions.DeleteException;
-import clinic_registration.exceptions.UpdateException;
+import clinic_registration.exceptions.ClinicServiceException;
+import clinic_registration.exceptions.ErrorMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
@@ -23,15 +22,10 @@ public class AdminService {
         this.objectMapper = objectMapper;
     }
 
-    public String create(Admin admin) {
-        AdminEntity adminEntity;
-        try {
-            adminEntity = objectMapper.convertValue(admin, AdminEntity.class);
-            adminRepository.save(adminEntity);
-        } catch (RuntimeException e) {
-            throw new CreateException("Can not create an admin");
-        }
-        return adminEntity.toString() + "is created";
+    public void create(Admin admin) {
+        if(admin == null){throw new ClinicServiceException("admin is null", ErrorMessage.UNKNOWN);}
+        AdminEntity adminEntity = objectMapper.convertValue(admin, AdminEntity.class);
+        adminRepository.save(adminEntity);
     }
 
     public List<Admin> readAll() {
@@ -40,33 +34,21 @@ public class AdminService {
     }
 
     public Admin read(Long id) {
-        Admin admin = null;
-        if (adminRepository.findById(id).isPresent()) {
-            AdminEntity adminEntity = adminRepository.findById(id).get();
-            admin = objectMapper.convertValue(adminEntity, Admin.class);
-        }
-        return admin;
+      AdminEntity adminEntity = adminRepository.findById(id).orElseThrow(()->
+               new ClinicServiceException(String.format("Admin with id %d not found", id), ErrorMessage.NOT_FOUND));
+      return objectMapper.convertValue(adminEntity, Admin.class);
     }
 
-    public String update(Long id, Admin admin) {
-        if (adminRepository.findById(id).isPresent()) {
-            try {
-                AdminEntity adminEntity = objectMapper.convertValue(admin, AdminEntity.class);
-                adminRepository.save(adminEntity);
-                return admin.toString() + " is updated!";
-            } catch (RuntimeException e) {
-                throw new UpdateException("Admin is not found!");
-            }
+    public void update(Long id, Admin admin) {
+        if (adminRepository.existsById(id)) {
+            adminRepository.save(objectMapper.convertValue(admin, AdminEntity.class));
+        } else {
+            throw new ClinicServiceException(String.format("Admin with id %d not found", id), ErrorMessage.NOT_FOUND);
         }
-        return "Admin " + admin.toString() + " is not found!";
-    }
 
-    public String delete(Long id) {
-        try {
+    }
+    public void delete(Long id) {
+            if(!adminRepository.existsById(id)){throw new ClinicServiceException(String.format("Admin with id %d not found", id), ErrorMessage.NOT_FOUND);}
             adminRepository.deleteById(id);
-            return "Admin with id: " + id + " was deleted!";
-        }catch (RuntimeException e) {
-            throw new DeleteException("Admin is not found!");
-        }
     }
 }

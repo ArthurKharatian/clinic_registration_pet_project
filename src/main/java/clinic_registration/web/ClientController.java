@@ -3,6 +3,8 @@ package clinic_registration.web;
 
 import clinic_registration.dto.Client;
 import clinic_registration.services.ClientService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,18 +21,21 @@ public class ClientController {
     }
 
     @PostMapping
-    public String addClient(@RequestBody Client  client){
-        return clientService.create(client);
+    public ResponseEntity<Client> addClient(@RequestBody Client client){
+        clientService.create(client);
+        return new ResponseEntity<>(client, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public String update(@PathVariable Long id, @RequestBody Client client){
-       return clientService.update(id, client);
+    public ResponseEntity<Client> update(@PathVariable Long id, @RequestBody Client client){
+        clientService.update(id, client);
+        return new ResponseEntity<>(client, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") Long id){
-        return clientService.delete(id);
+    public ResponseEntity<Client> delete(@PathVariable("id") Long id){
+        clientService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/all")
@@ -39,8 +44,9 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
-    public Client read(@PathVariable("id") Long id){
-        return clientService.read(id);
+    public ResponseEntity<Client> read(@PathVariable("id") Long id){
+        Client client = clientService.read(id);
+        return new ResponseEntity<>(client, HttpStatus.OK);
     }
 
 }

@@ -3,9 +3,7 @@ package clinic_registration.services;
 import clinic_registration.db.entity.ClinicBranchEntity;
 import clinic_registration.db.repository.ClinicBranchRepository;
 import clinic_registration.dto.ClinicBrach;
-import clinic_registration.exceptions.CreateException;
-import clinic_registration.exceptions.DeleteException;
-import clinic_registration.exceptions.UpdateException;
+import clinic_registration.exceptions.ClinicServiceException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +27,8 @@ public class ClinicBranchService {
             branchEntity = objectMapper.convertValue(branch, ClinicBranchEntity.class);
             branchRepository.save(branchEntity);
         } catch (RuntimeException e) {
-            throw new CreateException("Can not create a branch");
+            // TODO: 3/16/21 what if its other RuntimeException Child (any of its 832 children)???
+            throw new ClinicServiceException("Can not create a branch");
         }
         return branchEntity.toString() + "is created";
     }
@@ -50,7 +49,7 @@ public class ClinicBranchService {
 
     public String update(Long id, ClinicBrach branch) {
         if (branchRepository.findById(id).isPresent()) {
-            try {
+
                 ClinicBranchEntity branchEntity = objectMapper.convertValue(branch, ClinicBranchEntity.class);
                 branchRepository.save(branchEntity);
                 return branch.toString() + " is updated!";
@@ -62,11 +61,9 @@ public class ClinicBranchService {
     }
 
     public String delete(Long id) {
-        try {
+
             branchRepository.deleteById(id);
             return "Branch with id: " + id + " was deleted!";
-        }catch (RuntimeException e) {
-            throw new DeleteException("Branch is not found!");
-        }
+
     }
 }

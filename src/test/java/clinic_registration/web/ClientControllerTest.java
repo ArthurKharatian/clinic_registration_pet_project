@@ -36,7 +36,7 @@ public class ClientControllerTest {
 
      Client client = new Client();
     {
-        client.setId(0L);
+        client.setId(1L);
         client.setName("Matvienko Valentina Ivanovna");
         client.setClient_gender(ClientGender.FEMALE);
         client.setBirthdate(LocalDate.of(1949, Month.APRIL, 7));
@@ -84,9 +84,7 @@ public class ClientControllerTest {
 
     @Test
     public void read() throws Exception {
-        String content = objectMapper.writeValueAsString(client);
-        System.out.println(content);
-        String uri = "/client/0";
+        String uri = "/client/1";
         mockMvc.perform(get(uri))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -97,18 +95,20 @@ public class ClientControllerTest {
     public void update() throws Exception {
         String content = objectMapper.writeValueAsString(client);
         System.out.println(content);
-        String uri = "/client/0";
+        String uri = "/client/1";
         mockMvc.perform(put(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
-                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(status().isAccepted())
                 .andDo(document(uri));
     }
 
     @Test
     public void delete() throws Exception {
-        String uri = "/client/0";
+        String uri = "/client/1";
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document(uri));
     }
