@@ -1,8 +1,7 @@
 package clinic_registration.services;
 
-import clinic_registration.db.entity.*;
+import clinic_registration.db.entity.AnalyzeAssignmentEntity;
 import clinic_registration.db.repository.AnalyzeAssignmentEntityRepository;
-import clinic_registration.dto.Admin;
 import clinic_registration.dto.AnalyzeAssignment;
 import clinic_registration.exceptions.ClinicServiceException;
 import clinic_registration.exceptions.ErrorMessage;

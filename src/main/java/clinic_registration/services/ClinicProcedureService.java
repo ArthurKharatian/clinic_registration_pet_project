@@ -3,7 +3,6 @@ package clinic_registration.services;
 import clinic_registration.db.entity.ClinicProcedureEntity;
 import clinic_registration.db.repository.ClinicProcedureRepository;
 import clinic_registration.dto.ClinicProcedure;
-import clinic_registration.exceptions.ClinicServiceException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 

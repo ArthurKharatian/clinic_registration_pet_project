@@ -1,8 +1,6 @@
 package clinic_registration.web;
 
-import clinic_registration.dto.Admin;
 import clinic_registration.dto.ClinicBrach;
-import clinic_registration.dto.Doctor;
 import clinic_registration.services.ClinicBranchService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
 import java.time.LocalDate;
 
 @NoArgsConstructor

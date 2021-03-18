@@ -7,15 +7,11 @@ public class ClinicServiceException extends RuntimeException{
 
     public ClinicServiceException(String message) {
         super(message);
-        errorMessage = ErrorMessage.UNKNOWN;
+        this.errorMessage = ErrorMessage.UNKNOWN;
     }
 
     public ClinicServiceException(String message, ErrorMessage errorMessage) {
         super(message);
         this.errorMessage = errorMessage;
-    }
-
-    public ErrorMessage getErrorMessage() {
-        return errorMessage;
     }
 }
