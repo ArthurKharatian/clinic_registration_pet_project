@@ -1,5 +1,6 @@
 package clinic_registration.web;
 
+import clinic_registration.db.entity.ClinicBranchEntity;
 import clinic_registration.dto.ClinicLab;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -29,16 +30,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class ClinicLabControllerTest {
-
+    ClinicBranchEntity branch = new ClinicBranchEntity();
     ClinicLab lab = new ClinicLab();
 
     {
+        branch.setId(3L);
         lab.setId(1L);
         lab.setWorker_name("Borisov Aleksandr Petrovich");
         lab.setPosition_name("Laboratory assistant");
         lab.setOpen_time("7:00");
         lab.setClose_time("16:00");
-        lab.setBranch_id(35L);
+        lab.setBranch(branch);
     }
 
 

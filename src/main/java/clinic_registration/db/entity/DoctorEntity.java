@@ -26,7 +26,4 @@ public class DoctorEntity {
     private Integer phone_number;
     private LocalDate birthdate;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doctor_id")
-    private List<DoctorAppointmentEntity> signToDoctorEntities;
 }

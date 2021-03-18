@@ -1,15 +1,11 @@
 package clinic_registration.services;
 
-import clinic_registration.db.entity.ClientEntity;
-import clinic_registration.db.entity.ClinicBranchEntity;
-import clinic_registration.db.entity.ClinicLabEntity;
-import clinic_registration.db.entity.AnalyzeAssignmentEntity;
-import clinic_registration.db.repository.ClientRepository;
-import clinic_registration.db.repository.ClinicBranchRepository;
-import clinic_registration.db.repository.ClinicLabRepository;
+import clinic_registration.db.entity.*;
 import clinic_registration.db.repository.AnalyzeAssignmentEntityRepository;
+import clinic_registration.dto.Admin;
 import clinic_registration.dto.AnalyzeAssignment;
 import clinic_registration.exceptions.ClinicServiceException;
+import clinic_registration.exceptions.ErrorMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
@@ -19,85 +15,40 @@ import java.util.stream.Collectors;
 @Service
 public class AnalyzeAssignmentService {
     private final AnalyzeAssignmentEntityRepository testRepository;
-    private final ClientRepository clientRepository;
-    private final ClinicLabRepository labRepository;
-    private final ClinicBranchRepository branchRepository;
     private final ObjectMapper objectMapper;
 
-    public AnalyzeAssignmentService(AnalyzeAssignmentEntityRepository testRepository, ClientRepository clientRepository,
-                                    ClinicLabRepository labRepository, ClinicBranchRepository branchRepository,
-                                    ObjectMapper objectMapper) {
+    public AnalyzeAssignmentService(AnalyzeAssignmentEntityRepository testRepository, ObjectMapper objectMapper) {
         this.testRepository = testRepository;
-        this.clientRepository = clientRepository;
-        this.labRepository = labRepository;
-        this.branchRepository = branchRepository;
         this.objectMapper = objectMapper;
     }
 
-    public String create(AnalyzeAssignment sign) {
-        AnalyzeAssignmentEntity signEntity;
-        try {
-            signEntity = objectMapper.convertValue(sign, AnalyzeAssignmentEntity.class);
-            testRepository.save(signEntity);
-
-            ClinicLabEntity labEntity = labRepository.findById(sign.getLab_id()).get();
-
-            ClientEntity clientEntity = clientRepository.findById(sign.getClient_id()).get();
-            ClinicBranchEntity branchEntity = branchRepository.findById(labEntity.getBranch_id()).get();
-            return "Sign for test: " + signEntity.getName() + " on " + sign.getVisit_date()
-                    + " in branch " + branchEntity.getName() + " on the " + branchEntity.getAddress()
-                    + " from client " + clientEntity.getName() + " is created.";
-        } catch (RuntimeException e) {
-            // TODO: 3/16/21 what if its other RuntimeException Child (any of its 832 children)???
-            throw new ClinicServiceException("Can not create a sign");
-        }
+    public void create(AnalyzeAssignment assigment) {
+        if(assigment == null){throw new ClinicServiceException("assigment is null", ErrorMessage.UNKNOWN);}
+        AnalyzeAssignmentEntity assignmentEntity = objectMapper.convertValue(assigment, AnalyzeAssignmentEntity.class);
+        testRepository.save(assignmentEntity);
     }
 
     public List<AnalyzeAssignment> readAll() {
-        List<AnalyzeAssignmentEntity> signs = testRepository.findAll();
-        return signs.stream().map(s -> objectMapper.convertValue(s, AnalyzeAssignment.class)).collect(Collectors.toList());
+        List<AnalyzeAssignmentEntity> assignments = testRepository.findAll();
+        return assignments.stream().map(as -> objectMapper.convertValue(as, AnalyzeAssignment.class)).collect(Collectors.toList());
     }
 
-    public String read(Long id) {
-
-
-        AnalyzeAssignmentEntity signEntity = testRepository.findById(id).get();
-        AnalyzeAssignment sign = objectMapper.convertValue(signEntity, AnalyzeAssignment.class);
-
-        ClinicLabEntity labEntity = labRepository.findById(sign.getLab_id()).get();
-
-        ClientEntity clientEntity = clientRepository.findById(sign.getClient_id()).get();
-        ClinicBranchEntity branchEntity = branchRepository.findById(labEntity.getBranch_id()).get();
-        return "Sign for test: " + signEntity.getName() + " on " + sign.getVisit_date()
-                + " in branch " + branchEntity.getName() + " on the " + branchEntity.getAddress()
-                + " from client " + clientEntity.getName();
-
+    public AnalyzeAssignment read(Long id) {
+        AnalyzeAssignmentEntity assignmentEntity = testRepository.findById(id).orElseThrow(()->
+                new ClinicServiceException(String.format("The assignment with id %d is not found", id), ErrorMessage.NOT_FOUND));
+        return objectMapper.convertValue(assignmentEntity, AnalyzeAssignment.class);
     }
 
-    public String update(Long id, AnalyzeAssignment sign) {
+    public void update(Long id, AnalyzeAssignment assignment) {
+        if (testRepository.existsById(id)) {
+            testRepository.save(objectMapper.convertValue(assignment, AnalyzeAssignmentEntity.class));
+        } else {
+            throw new ClinicServiceException(String.format("The assignment with id %d is not found", id), ErrorMessage.NOT_FOUND);
+        }
 
-
-                if (testRepository.findById(id).isPresent()) {
-                AnalyzeAssignmentEntity signEntity = objectMapper.convertValue(sign, AnalyzeAssignmentEntity.class);
-                signEntity.setId(id);
-                testRepository.save(signEntity);
-                ClinicLabEntity labEntity = labRepository.findById(sign.getLab_id()).get();
-                ClientEntity clientEntity = clientRepository.findById(sign.getClient_id()).get();
-                ClinicBranchEntity branchEntity = branchRepository.findById(labEntity.getBranch_id()).get();
-                return "Sign for test: " + signEntity.getName() + " on " + sign.getVisit_date()
-                        + " in branch " + branchEntity.getName() + " on the " + branchEntity.getAddress()
-                        + " from client " + clientEntity.getName() + " is updated.";
-                }
-
-
-        return "Sign " + sign.toString() + " is not found!";
     }
-
-    public String delete(Long id) {
-
-            testRepository.deleteById(id);
-            return "Sign with id: " + id + " was deleted!";
+    public void delete(Long id) {
+        if(!testRepository.existsById(id)){throw new ClinicServiceException(String.format("The assignment with id %d is not found", id), ErrorMessage.NOT_FOUND);}
+        testRepository.deleteById(id);
     }
-
-
 }

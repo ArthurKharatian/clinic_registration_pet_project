@@ -1,5 +1,6 @@
 package clinic_registration.dto;
 
+import clinic_registration.db.entity.ClinicBranchEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +12,7 @@ import lombok.ToString;
 @ToString
 public class ClinicLab {
     private Long id;
-    private Long branch_id;
+    private ClinicBranchEntity branch;
     private String worker_name;
     private String position_name;
     private String open_time;

@@ -6,7 +6,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(schema = "public", name = "clinic_branch")
@@ -22,17 +21,8 @@ public class ClinicBranchEntity {
     private String address;
     private String open_time;
     private String close_time;
-    private Long admin_id;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "branch_id")
-    private List<DoctorAppointmentEntity> appointmentEntities;
+    @OneToOne(fetch = FetchType.EAGER)
+    private AdminEntity admin;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "branch_id")
-    private List<ProcedureAssignmentEntity> procedureEntities;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "branch_id")
-    private List<ClinicLabEntity> labEntities;
 }

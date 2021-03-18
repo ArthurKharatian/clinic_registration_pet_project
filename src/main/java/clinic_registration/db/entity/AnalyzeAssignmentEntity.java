@@ -20,7 +20,10 @@ public class AnalyzeAssignmentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Long lab_id;
-    private Long client_id;
     private LocalDate visit_date;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private ClinicLabEntity lab;
+    @OneToOne(fetch = FetchType.EAGER)
+    private ClientEntity client;
 }

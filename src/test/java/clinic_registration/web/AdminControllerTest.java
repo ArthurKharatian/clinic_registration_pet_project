@@ -31,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AdminControllerTest {
 
     Admin admin = new Admin();
+
     {
         admin.setId(1L);
         admin.setName("Amigo");
@@ -57,6 +58,7 @@ public class AdminControllerTest {
                         .apply(documentationConfiguration(this.restDocumentation));
         this.mockMvc = builder.build();
     }
+
     @Test
     public void addAdmin() throws Exception {
         String content = objectMapper.writeValueAsString(admin);
@@ -68,6 +70,7 @@ public class AdminControllerTest {
                 .andExpect(status().isCreated())
                 .andDo(document(uri));
     }
+
     @Test
     public void readAll() throws Exception {
         String uri = "/admin/all";
@@ -106,6 +109,5 @@ public class AdminControllerTest {
                 .andExpect(status().isOk())
                 .andDo(document(uri));
     }
-
 
 }

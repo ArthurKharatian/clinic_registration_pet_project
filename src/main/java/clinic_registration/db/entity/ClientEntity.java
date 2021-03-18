@@ -27,18 +27,4 @@ public class ClientEntity {
     private int phone_number;
     private String email;
     private ClientGender client_gender;
-
-
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "client_id")
-    private List<DoctorAppointmentEntity> appointmentEntities;
-
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id")
-    private List<ProcedureAssignmentEntity> procedureEntities;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id")
-    private List<AnalyzeAssignmentEntity> testEntities;
 }

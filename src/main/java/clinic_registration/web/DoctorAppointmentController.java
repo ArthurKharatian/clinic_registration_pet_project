@@ -2,6 +2,8 @@ package clinic_registration.web;
 
 import clinic_registration.dto.DoctorAppointment;
 import clinic_registration.services.DoctorAppointmentService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -9,33 +11,38 @@ import java.util.List;
 @RestController
 @RequestMapping("/signToDoc")
 public class DoctorAppointmentController {
-    private final DoctorAppointmentService signService;
+    private final DoctorAppointmentService appointmentService;
 
-    public DoctorAppointmentController(DoctorAppointmentService signService) {
-        this.signService = signService;
+    public DoctorAppointmentController(DoctorAppointmentService appointmentService) {
+        this.appointmentService = appointmentService;
     }
+
     @PostMapping
-    public String addClient(@RequestBody DoctorAppointment sign){
-        return signService.create(sign);
+    public ResponseEntity<DoctorAppointment> addAppointment(@RequestBody DoctorAppointment appointment){
+        appointmentService.create(appointment);
+        return new ResponseEntity<>(appointment, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public String update(@PathVariable Long id,@RequestBody DoctorAppointment sign){
-        return signService.update(id, sign);
+    public ResponseEntity<DoctorAppointment> update(@PathVariable Long id, @RequestBody DoctorAppointment appointment){
+        appointmentService.update(id, appointment);
+        return new ResponseEntity<>(appointment, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") Long id){
-        return signService.delete(id);
+    public ResponseEntity<DoctorAppointment> delete(@PathVariable("id") Long id){
+        appointmentService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/all")
     public List<DoctorAppointment> readAll(){
-        return signService.readAll();
+        return appointmentService.readAll();
     }
 
     @GetMapping("/{id}")
-    public String read(@PathVariable("id") Long id){
-        return signService.read(id);
+    public ResponseEntity<DoctorAppointment> read(@PathVariable("id") Long id){
+        DoctorAppointment appointment = appointmentService.read(id);
+        return new ResponseEntity<>(appointment, HttpStatus.OK);
     }
 }

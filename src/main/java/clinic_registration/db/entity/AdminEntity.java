@@ -23,7 +23,4 @@ public class AdminEntity {
     private String staff_name;
     private Integer phone_number;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "admin_id")
-    private List<ClinicBranchEntity> branchEntities;
 }

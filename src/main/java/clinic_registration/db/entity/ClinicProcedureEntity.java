@@ -20,8 +20,4 @@ public class ClinicProcedureEntity {
     private Long id;
     private String name;
     private Integer duration;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "procedure_id")
-    private List<ProcedureAssignmentEntity> procedureEntities;
 }

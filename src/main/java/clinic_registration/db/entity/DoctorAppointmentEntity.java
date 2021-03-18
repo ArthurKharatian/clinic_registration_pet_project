@@ -19,8 +19,12 @@ public class DoctorAppointmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long doctor_id;
-    private Long client_id;
-    private Long branch_id;
     private LocalDate visit_date;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private DoctorEntity doctor;
+    @OneToOne(fetch = FetchType.EAGER)
+    private ClientEntity client;
+    @OneToOne(fetch = FetchType.EAGER)
+    private ClinicBranchEntity branch;
 }

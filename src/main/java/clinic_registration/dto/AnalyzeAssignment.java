@@ -1,10 +1,14 @@
 package clinic_registration.dto;
 
+import clinic_registration.db.entity.ClientEntity;
+import clinic_registration.db.entity.ClinicLabEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -14,7 +18,7 @@ import java.time.LocalDate;
 public class AnalyzeAssignment {
     private Long id;
     private String name;
-    private Long lab_id;
-    private Long client_id;
+    private ClinicLabEntity lab;
+    private ClientEntity client;
     private LocalDate visit_date;
 }

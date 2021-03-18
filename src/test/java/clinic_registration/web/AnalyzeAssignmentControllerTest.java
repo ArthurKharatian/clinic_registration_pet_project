@@ -1,5 +1,8 @@
 package clinic_registration.web;
 
+import clinic_registration.db.entity.ClientEntity;
+import clinic_registration.db.entity.ClinicLabEntity;
+import clinic_registration.dto.AnalyzeAssignment;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Rule;
@@ -24,20 +27,27 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class AnalyzeAssignment {
-
-    clinic_registration.dto.AnalyzeAssignment sign = new clinic_registration.dto.AnalyzeAssignment();
+public class AnalyzeAssignmentControllerTest {
+    ClientEntity client = new ClientEntity();
+    ClinicLabEntity lab = new ClinicLabEntity();
+    AnalyzeAssignment assignment = new AnalyzeAssignment();
     {
-        sign.setId(0L);
-        sign.setName("Extended blood test");
-        sign.setClient_id(3L);
-        sign.setLab_id(0L);
-        sign.setVisit_date(LocalDate.of(2125, Month.SEPTEMBER, 15));
+        client.setId(4L);
+        lab.setId(5L);
+
+        assignment.setId(1L);
+        assignment.setName("Blood test");
+        assignment.setVisit_date(LocalDate.of(2022, Month.APRIL, 22));
+        assignment.setClient(client);
+        assignment.setLab(lab);
     }
+
     MockMvc mockMvc;
     @Autowired
     WebApplicationContext webApplicationContext;
@@ -56,16 +66,17 @@ public class AnalyzeAssignment {
         this.mockMvc = builder.build();
     }
     @Test
-    public void addSign() throws Exception {
-        String content = objectMapper.writeValueAsString(sign);
+    public void addAssigment() throws Exception {
+        String content = objectMapper.writeValueAsString(assignment);
         System.out.println(content);
         String uri = "/signToTest";
         mockMvc.perform(post(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andDo(document(uri));
     }
+
     @Test
     public void readAll() throws Exception {
         String uri = "/signToTest/all";
@@ -76,33 +87,33 @@ public class AnalyzeAssignment {
 
     @Test
     public void read() throws Exception {
-        String content = objectMapper.writeValueAsString(sign);
-        System.out.println(content);
-        String uri = "/signToTest/0";
-        mockMvc.perform(get(uri)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(content))
+        String uri = "/signToTest/1";
+        mockMvc.perform(get(uri))
+                .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andExpect(jsonPath("$.name").value("Blood test"));
     }
 
     @Test
     public void update() throws Exception {
-        String content = objectMapper.writeValueAsString(sign);
+        String content = objectMapper.writeValueAsString(assignment);
         System.out.println(content);
-        String uri = "/signToTest/0";
+        String uri = "/signToTest/1";
         mockMvc.perform(put(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
-                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(status().isAccepted())
                 .andDo(document(uri));
     }
 
     @Test
     public void delete() throws Exception {
-        String uri = "/signToTest/0";
+        String uri = "/signToTest/1";
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document(uri));
     }
+
 }

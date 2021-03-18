@@ -18,8 +18,12 @@ public class ProcedureAssignmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long procedure_id;
-    private Long client_id;
-    private Long branch_id;
     private LocalDate visit_date;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private ClinicProcedureEntity procedure;
+    @OneToOne(fetch = FetchType.EAGER)
+    private ClientEntity client;
+    @OneToOne(fetch = FetchType.EAGER)
+    private ClinicBranchEntity branch;
 }

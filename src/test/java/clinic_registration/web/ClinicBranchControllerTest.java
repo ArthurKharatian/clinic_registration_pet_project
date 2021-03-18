@@ -1,5 +1,6 @@
 package clinic_registration.web;
 
+import clinic_registration.db.entity.AdminEntity;
 import clinic_registration.dto.ClinicBrach;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -25,18 +26,23 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class ClinicBranchControllerTest {
 
+    AdminEntity admin = new AdminEntity();
     ClinicBrach brach = new ClinicBrach();
+
     {
+        admin.setId(1L);
+
         brach.setId(1L);
         brach.setName("Petrogradsky");
         brach.setAddress("B.P. 110");
         brach.setOpen_time("9:00");
         brach.setClose_time("21:00");
-        brach.setAdmin_id(6L);
+        brach.setAdmin(admin);
     }
 
     MockMvc mockMvc;

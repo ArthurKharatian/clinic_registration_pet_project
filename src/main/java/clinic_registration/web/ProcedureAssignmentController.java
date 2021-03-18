@@ -1,7 +1,10 @@
 package clinic_registration.web;
 
+import clinic_registration.dto.DoctorAppointment;
 import clinic_registration.dto.ProcedureAssignment;
 import clinic_registration.services.ProcedureAssignmentService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,18 +18,21 @@ public class ProcedureAssignmentController {
         this.procedureService = procedureService;
     }
     @PostMapping
-    public String addClient(@RequestBody ProcedureAssignment sign){
-        return procedureService.create(sign);
+    public ResponseEntity<ProcedureAssignment> addAppointment(@RequestBody ProcedureAssignment procedure){
+        procedureService.create(procedure);
+        return new ResponseEntity<>(procedure, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public String update(@PathVariable Long id, @RequestBody ProcedureAssignment sign){
-        return procedureService.update(id, sign);
+    public ResponseEntity<ProcedureAssignment> update(@PathVariable Long id, @RequestBody ProcedureAssignment procedure){
+        procedureService.update(id, procedure);
+        return new ResponseEntity<>(procedure, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") Long id){
-        return procedureService.delete(id);
+    public ResponseEntity<ProcedureAssignment> delete(@PathVariable("id") Long id){
+        procedureService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/all")
@@ -35,7 +41,8 @@ public class ProcedureAssignmentController {
     }
 
     @GetMapping("/{id}")
-    public String read(@PathVariable("id") Long id){
-        return procedureService.read(id);
+    public ResponseEntity<ProcedureAssignment> read(@PathVariable("id") Long id){
+        ProcedureAssignment procedure = procedureService.read(id);
+        return new ResponseEntity<>(procedure, HttpStatus.OK);
     }
 }
