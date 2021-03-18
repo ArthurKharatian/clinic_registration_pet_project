@@ -67,11 +67,10 @@ public class ClientControllerTest {
         System.out.println(content);
         String uri = "/client";
         mockMvc.perform(post(uri)
-               .contentType(MediaType.APPLICATION_JSON)
-               .content(content))
-               .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.name").value("Ivanov Valentin Ivanovich"))
-               .andDo(document(uri));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content))
+                .andExpect(status().isCreated())
+                .andDo(document(uri));
     }
 
     @Test

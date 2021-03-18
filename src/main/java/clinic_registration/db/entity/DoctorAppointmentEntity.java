@@ -14,7 +14,8 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @ToString
-public class SignToDoctorEntity {
+
+public class DoctorAppointmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @Slf4j
 @ControllerAdvice
 public class ClinicExcHandler extends ResponseEntityExceptionHandler {
+
     @ExceptionHandler(value = {Throwable.class})
     protected ResponseEntity<Object> handleConflict(Throwable ex, WebRequest request) {
         return handleExceptionInternal(new RuntimeException(), ex.getMessage(), new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);

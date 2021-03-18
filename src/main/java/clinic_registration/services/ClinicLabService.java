@@ -21,14 +21,10 @@ public class ClinicLabService {
         this.labRepository = labRepository;
         this.objectMapper = objectMapper;
     }
-
-    public String create(ClinicLab laboratory) {
-        ClinicLabEntity labEntity;
-
-            labEntity = objectMapper.convertValue(laboratory, ClinicLabEntity.class);
-            labRepository.save(labEntity);
-
-        return labEntity.toString() + "is created";
+    public void create(ClinicLab brach) {
+        if(brach == null){throw new ClinicServiceException("laboratory is null", ErrorMessage.UNKNOWN);}
+        ClinicLabEntity labEntity = objectMapper.convertValue(brach, ClinicLabEntity.class);
+        labRepository.save(labEntity);
     }
 
     public List<ClinicLab> readAll() {
@@ -37,33 +33,21 @@ public class ClinicLabService {
     }
 
     public ClinicLab read(Long id) {
-        ClinicLab lab = null;
-        if (labRepository.findById(id).isPresent()) {
-            ClinicLabEntity labEntity = labRepository.findById(id).get();
-            lab = objectMapper.convertValue(labEntity, ClinicLab.class);
+        ClinicLabEntity labEntity = labRepository.findById(id).orElseThrow(()->
+                new ClinicServiceException(String.format("The laboratory with id %d is not found", id), ErrorMessage.NOT_FOUND));
+        return objectMapper.convertValue(labEntity, ClinicLab.class);
+    }
+
+    public void update(Long id, ClinicLab lab) {
+        if (labRepository.existsById(id)) {
+            labRepository.save(objectMapper.convertValue(lab, ClinicLabEntity.class));
+        } else {
+            throw new ClinicServiceException(String.format("The laboratory with id %d is not found", id), ErrorMessage.NOT_FOUND);
         }
-        return lab;
-    }
-
-    public String update(Long id, ClinicLab lab) {
-        if (labRepository.findById(id).isPresent()) {
-
-                ClinicLabEntity labEntity = objectMapper.convertValue(lab, ClinicLabEntity.class);
-                labRepository.save(labEntity);
-                return lab.toString() + " is updated!";
-            } catch (RuntimeException e) {
-                throw new UpdateException("Laboratory is not found!");
-            }
-        }
-        return "Laboratory " + lab.toString() + " is not found!";
-    }
-
-    public String delete(Long id) {
-
-            labRepository.deleteById(id);
-            return "Laboratory with id: " + id + " was deleted!";
 
     }
-
-
+    public void delete(Long id) {
+        if(!labRepository.existsById(id)){throw new ClinicServiceException(String.format("The laboratory with id %d is not found", id), ErrorMessage.NOT_FOUND);}
+        labRepository.deleteById(id);
+    }
 }

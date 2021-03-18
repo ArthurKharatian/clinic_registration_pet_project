@@ -22,49 +22,33 @@ public class ClinicBranchService {
         this.objectMapper = objectMapper;
     }
 
-    public String create(ClinicBrach branch) {
-        ClinicBranchEntity branchEntity;
-        try {
-            branchEntity = objectMapper.convertValue(branch, ClinicBranchEntity.class);
-            branchRepository.save(branchEntity);
-        } catch (RuntimeException e) {
-            // TODO: 3/16/21 what if its other RuntimeException Child (any of its 832 children)???
-            throw new ClinicServiceException("Can not create a branch");
-        }
-        return branchEntity.toString() + "is created";
+    public void create(ClinicBrach brach) {
+        if(brach == null){throw new ClinicServiceException("brach is null", ErrorMessage.UNKNOWN);}
+        ClinicBranchEntity branchEntity = objectMapper.convertValue(brach, ClinicBranchEntity.class);
+        branchRepository.save(branchEntity);
     }
 
     public List<ClinicBrach> readAll() {
         List<ClinicBranchEntity> branches = branchRepository.findAll();
-        return branches.stream().map(br -> objectMapper.convertValue(br, ClinicBrach.class)).collect(Collectors.toList());
+        return branches.stream().map(branch -> objectMapper.convertValue(branch, ClinicBrach.class)).collect(Collectors.toList());
     }
 
     public ClinicBrach read(Long id) {
-        ClinicBrach branch = null;
-        if (branchRepository.findById(id).isPresent()) {
-            ClinicBranchEntity branchEntity = branchRepository.findById(id).get();
-            branch = objectMapper.convertValue(branchEntity, ClinicBrach.class);
-        }
-        return branch;
+        ClinicBranchEntity branchEntity = branchRepository.findById(id).orElseThrow(()->
+                new ClinicServiceException(String.format("The branch with id %d is not found", id), ErrorMessage.NOT_FOUND));
+        return objectMapper.convertValue(branchEntity, ClinicBrach.class);
     }
 
-    public String update(Long id, ClinicBrach branch) {
-        if (branchRepository.findById(id).isPresent()) {
-
-                ClinicBranchEntity branchEntity = objectMapper.convertValue(branch, ClinicBranchEntity.class);
-                branchRepository.save(branchEntity);
-                return branch.toString() + " is updated!";
-            } catch (RuntimeException e) {
-                throw new UpdateException("Branch is not found!");
-            }
+    public void update(Long id, ClinicBrach brach) {
+        if (branchRepository.existsById(id)) {
+            branchRepository.save(objectMapper.convertValue(brach, ClinicBranchEntity.class));
+        } else {
+            throw new ClinicServiceException(String.format("The branch with id %d is not found", id), ErrorMessage.NOT_FOUND);
         }
-        return "Branch " + branch.toString() + " is not found!";
+
     }
-
-    public String delete(Long id) {
-
-            branchRepository.deleteById(id);
-            return "Branch with id: " + id + " was deleted!";
-
+    public void delete(Long id) {
+        if(!branchRepository.existsById(id)){throw new ClinicServiceException(String.format("The branch with id %d is not found", id), ErrorMessage.NOT_FOUND);}
+        branchRepository.deleteById(id);
     }
 }

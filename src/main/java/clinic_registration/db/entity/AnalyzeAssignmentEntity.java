@@ -9,17 +9,18 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(schema = "public", name = "procedure_appointment")
+@Table(schema = "public", name = "take_test_appointment")
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
-public class SignToProcedureEntity {
+
+public class AnalyzeAssignmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long procedure_id;
+    private String name;
+    private Long lab_id;
     private Long client_id;
-    private Long branch_id;
     private LocalDate visit_date;
 }

@@ -26,9 +26,7 @@ public class ClinicProcedureService {
 
             procedureEntity = objectMapper.convertValue(procedure, ClinicProcedureEntity.class);
             procedureRepository.save(procedureEntity);
-        } catch (RuntimeException e) {
-            throw new CreateException("Can not create a procedure");
-        }
+
         return procedureEntity.toString() + "is created";
     }
 
@@ -52,9 +50,7 @@ public class ClinicProcedureService {
                 ClinicProcedureEntity procedureEntity = objectMapper.convertValue(procedure, ClinicProcedureEntity.class);
                 procedureRepository.save(procedureEntity);
                 return procedure.toString() + " is updated!";
-            } catch (RuntimeException e) {
-                throw new UpdateException("Procedure is not found!");
-            }
+
         }
         return "Procedure " + procedure.toString() + " is not found!";
     }

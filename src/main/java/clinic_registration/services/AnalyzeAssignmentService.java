@@ -88,9 +88,7 @@ public class AnalyzeAssignmentService {
                         + " in branch " + branchEntity.getName() + " on the " + branchEntity.getAddress()
                         + " from client " + clientEntity.getName() + " is updated.";
                 }
-            } catch (RuntimeException e) {
-                throw new UpdateException("Sign is not found!");
-            }
+
 
         return "Sign " + sign.toString() + " is not found!";
     }
@@ -99,9 +97,6 @@ public class AnalyzeAssignmentService {
 
             testRepository.deleteById(id);
             return "Sign with id: " + id + " was deleted!";
-        } catch (RuntimeException e) {
-            throw new DeleteException("Sign is not found!");
-        }
     }
 
 

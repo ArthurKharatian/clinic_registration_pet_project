@@ -22,13 +22,10 @@ public class DoctorService {
         this.objectMapper = objectMapper;
     }
 
-    public String create(Doctor doctor) {
-        DoctorEntity doctorEntity;
-
-            doctorEntity = objectMapper.convertValue(doctor, DoctorEntity.class);
-            doctorRepository.save(doctorEntity);
-
-        return doctorEntity.toString() + "is created";
+    public void create(Doctor doctor) {
+        if(doctor == null){throw new ClinicServiceException("doctor is null", ErrorMessage.UNKNOWN);}
+        DoctorEntity doctorEntity = objectMapper.convertValue(doctor, DoctorEntity.class);
+        doctorRepository.save(doctorEntity);
     }
 
     public List<Doctor> readAll() {
@@ -37,33 +34,21 @@ public class DoctorService {
     }
 
     public Doctor read(Long id) {
-        Doctor doctor = null;
-        if (doctorRepository.findById(id).isPresent()) {
-            DoctorEntity doctorEntity = doctorRepository.findById(id).get();
-            doctor = objectMapper.convertValue(doctorEntity, Doctor.class);
-        }
-        return doctor;
+        DoctorEntity doctorEntity = doctorRepository.findById(id).orElseThrow(()->
+                new ClinicServiceException(String.format("Doctor with id %d is not found", id), ErrorMessage.NOT_FOUND));
+        return objectMapper.convertValue(doctorEntity, Doctor.class);
     }
 
-    public String update(Long id, Doctor doctor) {
-        if (doctorRepository.findById(id).isPresent()) {
-
-                DoctorEntity doctorEntity = objectMapper.convertValue(doctor, DoctorEntity.class);
-                doctorRepository.save(doctorEntity);
-                return doctor.toString() + " is updated!";
-            } catch (RuntimeException e) {
-                throw new UpdateException("Doctor is not found!");
-            }
+    public void update(Long id, Doctor doctor) {
+        if (doctorRepository.existsById(id)) {
+            doctorRepository.save(objectMapper.convertValue(doctor, DoctorEntity.class));
+        } else {
+            throw new ClinicServiceException(String.format("Doctor with id %d is not found", id), ErrorMessage.NOT_FOUND);
         }
-        return "Doctor " + doctor.toString() + " is not found!";
+
     }
-
-    public String delete(Long id) {
-
-            doctorRepository.deleteById(id);
-            return "Doctor with id: " + id + " was deleted!";
-        } catch (RuntimeException e) {
-            throw new DeleteException("Doctor is not found!");
-        }
+    public void delete(Long id) {
+        if(!doctorRepository.existsById(id)){throw new ClinicServiceException(String.format("Doctor with id %d is not found", id), ErrorMessage.NOT_FOUND);}
+        doctorRepository.deleteById(id);
     }
 }
