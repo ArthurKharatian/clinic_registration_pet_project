@@ -20,7 +20,7 @@ public class ClinicBranchController {
     }
 
     @PostMapping
-    public ResponseEntity<ClinicBrach> addClient(@RequestBody ClinicBrach brach){
+    public ResponseEntity<ClinicBrach> addBranch(@RequestBody ClinicBrach brach){
         branchService.create(brach);
         return new ResponseEntity<>(brach, HttpStatus.CREATED);
     }

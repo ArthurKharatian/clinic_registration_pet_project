@@ -22,6 +22,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -31,7 +33,7 @@ public class ClinicLabControllerTest {
     ClinicLab lab = new ClinicLab();
 
     {
-        lab.setId(0L);
+        lab.setId(1L);
         lab.setWorker_name("Borisov Aleksandr Petrovich");
         lab.setPosition_name("Laboratory assistant");
         lab.setOpen_time("7:00");
@@ -66,10 +68,10 @@ public class ClinicLabControllerTest {
         mockMvc.perform(post(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
-                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(status().isCreated())
                 .andDo(document(uri));
     }
-
     @Test
     public void readAll() throws Exception {
         String uri = "/lab/all";
@@ -80,32 +82,31 @@ public class ClinicLabControllerTest {
 
     @Test
     public void read() throws Exception {
-        String content = objectMapper.writeValueAsString(lab);
-        System.out.println(content);
-        String uri = "/lab/0";
-        mockMvc.perform(get(uri)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(content))
+        String uri = "/lab/1";
+        mockMvc.perform(get(uri))
+                .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andExpect(jsonPath("$.worker_name").value("Borisov Aleksandr Petrovich"));
     }
 
     @Test
     public void update() throws Exception {
         String content = objectMapper.writeValueAsString(lab);
         System.out.println(content);
-        String uri = "/lab/0";
+        String uri = "/lab/1";
         mockMvc.perform(put(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
-                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(status().isAccepted())
                 .andDo(document(uri));
     }
 
     @Test
     public void delete() throws Exception {
-        String uri = "/lab/0";
+        String uri = "/lab/1";
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document(uri));
     }

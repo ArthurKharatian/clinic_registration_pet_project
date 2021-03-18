@@ -2,6 +2,8 @@ package clinic_registration.web;
 
 import clinic_registration.dto.ClinicLab;
 import clinic_registration.services.ClinicLabService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,18 +18,21 @@ public class ClinicLabController {
     }
 
     @PostMapping
-    public String addClient(@RequestBody ClinicLab lab){
-        return labService.create(lab);
+    public ResponseEntity<ClinicLab> addLab(@RequestBody ClinicLab lab){
+        labService.create(lab);
+        return new ResponseEntity<>(lab, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public String update(@PathVariable Long id, @RequestBody ClinicLab lab){
-        return labService.update(id, lab);
+    public ResponseEntity<ClinicLab> update(@PathVariable Long id, @RequestBody ClinicLab lab){
+        labService.update(id, lab);
+        return new ResponseEntity<>(lab, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") Long id){
-        return labService.delete(id);
+    public ResponseEntity<ClinicLab> delete(@PathVariable("id") Long id){
+        labService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/all")
@@ -36,7 +41,8 @@ public class ClinicLabController {
     }
 
     @GetMapping("/{id}")
-    public ClinicLab read(@PathVariable("id") Long id){
-        return labService.read(id);
+    public ResponseEntity<ClinicLab> read(@PathVariable("id") Long id){
+        ClinicLab lab = labService.read(id);
+        return new ResponseEntity<>(lab, HttpStatus.OK);
     }
 }

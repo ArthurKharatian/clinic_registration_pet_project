@@ -61,7 +61,7 @@ public class DoctorControllerTest {
         this.mockMvc = builder.build();
     }
     @Test
-    public void addDoc() throws Exception {
+    public void addDoctor() throws Exception {
         String content = objectMapper.writeValueAsString(doctor);
         System.out.println(content);
         String uri = "/doctor";
