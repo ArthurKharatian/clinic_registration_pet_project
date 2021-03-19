@@ -1,8 +1,8 @@
 package clinic_registration.web;
 
-import clinic_registration.db.entity.ClientEntity;
-import clinic_registration.db.entity.ClinicLabEntity;
 import clinic_registration.dto.AnalyzeAssignment;
+import clinic_registration.dto.Client;
+import clinic_registration.dto.ClinicLab;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Rule;
@@ -34,8 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class AnalyzeAssignmentControllerTest {
-    ClientEntity client = new ClientEntity();
-    ClinicLabEntity lab = new ClinicLabEntity();
+    Client client = new Client();
+    ClinicLab lab = new ClinicLab();
     AnalyzeAssignment assignment = new AnalyzeAssignment();
     {
         client.setId(4L);
