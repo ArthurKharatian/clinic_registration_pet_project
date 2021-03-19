@@ -41,6 +41,7 @@ public class DoctorService {
 
     public void update(Long id, Doctor doctor) {
         if (doctorRepository.existsById(id)) {
+            doctor.setId(id);
             doctorRepository.save(objectMapper.convertValue(doctor, DoctorEntity.class));
         } else {
             throw new ClinicServiceException(String.format("Doctor with id %d is not found", id), ErrorMessage.NOT_FOUND);

@@ -40,6 +40,7 @@ public class AnalyzeAssignmentService {
 
     public void update(Long id, AnalyzeAssignment assignment) {
         if (testRepository.existsById(id)) {
+            assignment.setId(id);
             testRepository.save(objectMapper.convertValue(assignment, AnalyzeAssignmentEntity.class));
         } else {
             throw new ClinicServiceException(String.format("The assignment with id %d is not found", id), ErrorMessage.NOT_FOUND);

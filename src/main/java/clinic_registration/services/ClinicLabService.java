@@ -40,6 +40,7 @@ public class ClinicLabService {
 
     public void update(Long id, ClinicLab lab) {
         if (labRepository.existsById(id)) {
+            lab.setId(id);
             labRepository.save(objectMapper.convertValue(lab, ClinicLabEntity.class));
         } else {
             throw new ClinicServiceException(String.format("The laboratory with id %d is not found", id), ErrorMessage.NOT_FOUND);

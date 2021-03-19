@@ -40,6 +40,7 @@ public class ProcedureAssignmentService {
 
     public void update(Long id, ProcedureAssignment procedure) {
         if (procedureRepository.existsById(id)) {
+            procedure.setId(id);
             procedureRepository.save(objectMapper.convertValue(procedure, ProcedureAssignmentEntity.class));
         } else {
             throw new ClinicServiceException(String.format("The procedure with id %d is not found", id), ErrorMessage.NOT_FOUND);

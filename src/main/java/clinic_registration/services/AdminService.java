@@ -41,6 +41,7 @@ public class AdminService {
 
     public void update(Long id, Admin admin) {
         if (adminRepository.existsById(id)) {
+            admin.setId(id);
             adminRepository.save(objectMapper.convertValue(admin, AdminEntity.class));
         } else {
             throw new ClinicServiceException(String.format("Admin with id %d is not found", id), ErrorMessage.NOT_FOUND);

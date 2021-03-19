@@ -32,7 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AdminControllerTest {
 
     Admin admin = new Admin();
-
     {
         admin.setId(1L);
         admin.setName("Amigo");
@@ -98,7 +97,7 @@ public class AdminControllerTest {
     public void update() throws Exception {
 
         String content = objectMapper.writeValueAsString(admin);
-        System.out.println(content);
+
         String uri = "/admin/1";
         mockMvc.perform(put(uri)
                 .contentType(MediaType.APPLICATION_JSON)

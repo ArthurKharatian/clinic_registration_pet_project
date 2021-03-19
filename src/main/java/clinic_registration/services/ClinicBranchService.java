@@ -41,6 +41,7 @@ public class ClinicBranchService {
 
     public void update(Long id, ClinicBrach brach) {
         if (branchRepository.existsById(id)) {
+            brach.setId(id);
             branchRepository.save(objectMapper.convertValue(brach, ClinicBranchEntity.class));
         } else {
             throw new ClinicServiceException(String.format("The branch with id %d is not found", id), ErrorMessage.NOT_FOUND);

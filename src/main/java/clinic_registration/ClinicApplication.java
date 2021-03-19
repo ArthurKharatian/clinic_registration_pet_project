@@ -13,5 +13,3 @@ public class ClinicApplication {
 
 }
 
-
-// TODO: 3/16/21 add in memory database (H2) configuration in test resources.

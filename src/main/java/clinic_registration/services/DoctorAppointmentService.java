@@ -40,6 +40,7 @@ public class DoctorAppointmentService {
 
     public void update(Long id, DoctorAppointment appointment) {
         if (appointmentRepository.existsById(id)) {
+            appointment.setId(id);
             appointmentRepository.save(objectMapper.convertValue(appointment, DoctorAppointmentEntity.class));
         } else {
             throw new ClinicServiceException(String.format("The appointment with id %d is not found", id), ErrorMessage.NOT_FOUND);

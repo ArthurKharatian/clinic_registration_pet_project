@@ -33,7 +33,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ClinicLabControllerTest {
     ClinicBrach branch = new ClinicBrach();
     ClinicLab lab = new ClinicLab();
-
     {
         branch.setId(1L);
         lab.setId(1L);

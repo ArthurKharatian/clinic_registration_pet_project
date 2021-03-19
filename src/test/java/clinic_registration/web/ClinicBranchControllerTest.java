@@ -34,7 +34,6 @@ public class ClinicBranchControllerTest {
 
     Admin admin = new Admin();
     ClinicBrach brach = new ClinicBrach();
-
     {
         admin.setId(1L);
 

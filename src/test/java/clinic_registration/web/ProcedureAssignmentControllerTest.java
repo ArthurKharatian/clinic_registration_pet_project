@@ -99,7 +99,8 @@ public class ProcedureAssignmentControllerTest {
         mockMvc.perform(get(uri))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.visit_date").value("2122-09-01"));
+                .andExpect(jsonPath("$.visit_date").value("2122-09-01"))
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
