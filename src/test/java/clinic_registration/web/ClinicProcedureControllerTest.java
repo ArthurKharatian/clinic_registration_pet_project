@@ -62,8 +62,8 @@ public class ClinicProcedureControllerTest {
         mockMvc.perform(post(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
-                .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andExpect(status().isCreated())
+                .andDo(document(uri.replace("/", "\\")));
     }
     @Test
     @Transactional
@@ -71,7 +71,7 @@ public class ClinicProcedureControllerTest {
         String uri = "/procedure/all";
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -84,7 +84,8 @@ public class ClinicProcedureControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andExpect(jsonPath("$.duration").value("60"))
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -96,8 +97,9 @@ public class ClinicProcedureControllerTest {
         mockMvc.perform(put(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
-                .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.duration").value("60"))
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -106,6 +108,6 @@ public class ClinicProcedureControllerTest {
         String uri = "/procedure/1";
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andDo(document(uri.replace("/", "\\")));
     }
 }

@@ -80,7 +80,8 @@ public class ProcedureAssignmentControllerTest {
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andDo(document(uri));
+                .andExpect(jsonPath("$.visit_date").value("2122-09-01"))
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -89,7 +90,7 @@ public class ProcedureAssignmentControllerTest {
         String uri = "/signToProcedure/all";
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -114,7 +115,8 @@ public class ProcedureAssignmentControllerTest {
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isAccepted())
-                .andDo(document(uri));
+                .andExpect(jsonPath("$.visit_date").value("2122-09-01"))
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -124,7 +126,7 @@ public class ProcedureAssignmentControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andDo(document(uri.replace("/", "\\")));
     }
 
 }

@@ -73,7 +73,8 @@ public class ClinicLabControllerTest {
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andDo(document(uri));
+                .andExpect(jsonPath("$.position_name").value("Laboratory assistant"))
+                .andDo(document(uri.replace("/", "\\")));
     }
     @Test
     @Transactional
@@ -81,7 +82,7 @@ public class ClinicLabControllerTest {
         String uri = "/lab/all";
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -105,7 +106,8 @@ public class ClinicLabControllerTest {
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isAccepted())
-                .andDo(document(uri));
+                .andExpect(jsonPath("$.position_name").value("Laboratory assistant"))
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -115,6 +117,6 @@ public class ClinicLabControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andDo(document(uri.replace("/", "\\")));
     }
 }

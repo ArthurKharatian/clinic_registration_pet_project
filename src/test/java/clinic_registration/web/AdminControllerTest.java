@@ -69,7 +69,8 @@ public class AdminControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isCreated())
-                .andDo(document(uri));
+                .andExpect(jsonPath("$.email").value("Amigo@mail.ag"))
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -78,7 +79,7 @@ public class AdminControllerTest {
         String uri = "/admin/all";
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -104,7 +105,9 @@ public class AdminControllerTest {
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isAccepted())
-                .andDo(document(uri));
+                .andExpect(jsonPath("$.staff_name").value("SysAdmin"))
+                .andDo(document(uri.replace("/", "\\")));
+        System.out.println(content);
     }
 
     @Test
@@ -114,7 +117,7 @@ public class AdminControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andDo(document(uri.replace("/", "\\")));
     }
 
 }

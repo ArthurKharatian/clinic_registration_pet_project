@@ -17,18 +17,21 @@ public class ClinicProcedureController {
         this.procedureService = procedureService;
     }
     @PostMapping
-    public String addClient(@RequestBody ClinicProcedure procedure){
-        return procedureService.create(procedure);
+    public ResponseEntity<ClinicProcedure> addProcedure(@RequestBody ClinicProcedure procedure){
+        procedureService.create(procedure);
+        return new ResponseEntity<>(procedure, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public String update(@PathVariable Long id, @RequestBody ClinicProcedure procedure){
-        return procedureService.update(id, procedure);
+    public ResponseEntity<ClinicProcedure> update(@PathVariable Long id, @RequestBody ClinicProcedure procedure){
+        procedureService.update(id, procedure);
+        return new ResponseEntity<>(procedure, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") Long id){
-        return procedureService.delete(id);
+    public ResponseEntity<ClinicProcedure> delete(@PathVariable("id") Long id){
+        procedureService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/all")
@@ -37,8 +40,10 @@ public class ClinicProcedureController {
     }
 
     @GetMapping("/{id}")
-    public ClinicProcedure read(@PathVariable("id") Long id){
-        return procedureService.read(id);
-    }
+    public ResponseEntity<ClinicProcedure> read(@PathVariable("id") Long id){
+        ClinicProcedure procedure = procedureService.read(id);
 
+        return new ResponseEntity<>(procedure, HttpStatus.OK);
+    }
 }
+

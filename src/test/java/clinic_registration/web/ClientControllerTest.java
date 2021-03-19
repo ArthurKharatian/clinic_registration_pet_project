@@ -72,7 +72,8 @@ public class ClientControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isCreated())
-                .andDo(document(uri));
+                .andExpect(jsonPath("$.email").value("mvi@gov.ru"))
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -81,7 +82,7 @@ public class ClientControllerTest {
         String uri = "/client/all";
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -105,7 +106,8 @@ public class ClientControllerTest {
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isAccepted())
-                .andDo(document(uri));
+                .andExpect(jsonPath("$.name").value("Matvienko Valentina Ivanovna"))
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -115,7 +117,7 @@ public class ClientControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andDo(document(uri.replace("/", "\\")));
     }
 
 

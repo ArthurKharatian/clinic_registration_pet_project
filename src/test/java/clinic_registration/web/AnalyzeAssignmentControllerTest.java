@@ -76,7 +76,8 @@ public class AnalyzeAssignmentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isCreated())
-                .andDo(document(uri));
+                .andExpect(jsonPath("$.name").value("Blood test"))
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -85,7 +86,7 @@ public class AnalyzeAssignmentControllerTest {
         String uri = "/signToTest/all";
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -109,7 +110,8 @@ public class AnalyzeAssignmentControllerTest {
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isAccepted())
-                .andDo(document(uri));
+                .andExpect(jsonPath("$.name").value("Blood test"))
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -119,7 +121,7 @@ public class AnalyzeAssignmentControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andDo(document(uri.replace("/", "\\")));
     }
 
 }

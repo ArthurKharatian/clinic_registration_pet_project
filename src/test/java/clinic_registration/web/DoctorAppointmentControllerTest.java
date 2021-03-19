@@ -82,7 +82,8 @@ public class DoctorAppointmentControllerTest {
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andDo(document(uri));
+                .andExpect(jsonPath("$.visit_date").value("2022-04-22"))
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -91,7 +92,7 @@ public class DoctorAppointmentControllerTest {
         String uri = "/signToDoc/all";
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -116,7 +117,8 @@ public class DoctorAppointmentControllerTest {
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isAccepted())
-                .andDo(document(uri));
+                .andExpect(jsonPath("$.visit_date").value("2022-04-22"))
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -126,7 +128,7 @@ public class DoctorAppointmentControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andDo(document(uri.replace("/", "\\")));
     }
 
 }

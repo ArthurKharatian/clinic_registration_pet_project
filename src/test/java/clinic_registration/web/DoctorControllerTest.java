@@ -71,7 +71,8 @@ public class DoctorControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isCreated())
-                .andDo(document(uri));
+                .andExpect(jsonPath("$.position_name").value("military doctor"))
+                .andDo(document(uri.replace("/", "\\")));
     }
     @Test
     @Transactional
@@ -79,7 +80,7 @@ public class DoctorControllerTest {
         String uri = "/doctor/all";
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -89,7 +90,8 @@ public class DoctorControllerTest {
         mockMvc.perform(get(uri))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("John H. Watson"));
+                .andExpect(jsonPath("$.name").value("John H. Watson"))
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -103,7 +105,8 @@ public class DoctorControllerTest {
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isAccepted())
-                .andDo(document(uri));
+                .andExpect(jsonPath("$.email").value("watson@gmail.com"))
+                .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
@@ -113,6 +116,6 @@ public class DoctorControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andDo(document(uri));
+                .andDo(document(uri.replace("/", "\\")));
     }
 }
