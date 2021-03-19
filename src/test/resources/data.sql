@@ -16,7 +16,6 @@ values (1, 60, 'GYM');
 insert into public.doctor(id, position_name, add_position_name, birthdate, email, name, phone_number)
 values (1, 'military doctor', 'medical doctor', '1850-07-07', 'watson@gmail.com', 'John H. Watson', 911);
 
-
 insert into public.doctor_appointment(id, visit_date, branch_id, client_id, doctor_id)
 values (1, '2022-04-22', 1, 1, 1);
 
