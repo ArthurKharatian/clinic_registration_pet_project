@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.ConfigurableMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDate;
@@ -38,8 +39,8 @@ public class AnalyzeAssignmentControllerTest {
     ClinicLab lab = new ClinicLab();
     AnalyzeAssignment assignment = new AnalyzeAssignment();
     {
-        client.setId(4L);
-        lab.setId(5L);
+        client.setId(1L);
+        lab.setId(1L);
 
         assignment.setId(1L);
         assignment.setName("Blood test");
@@ -66,6 +67,7 @@ public class AnalyzeAssignmentControllerTest {
         this.mockMvc = builder.build();
     }
     @Test
+    @Transactional
     public void addAssigment() throws Exception {
         String content = objectMapper.writeValueAsString(assignment);
         System.out.println(content);
@@ -78,6 +80,7 @@ public class AnalyzeAssignmentControllerTest {
     }
 
     @Test
+    @Transactional
     public void readAll() throws Exception {
         String uri = "/signToTest/all";
         mockMvc.perform(get(uri))
@@ -86,6 +89,7 @@ public class AnalyzeAssignmentControllerTest {
     }
 
     @Test
+    @Transactional
     public void read() throws Exception {
         String uri = "/signToTest/1";
         mockMvc.perform(get(uri))
@@ -95,6 +99,7 @@ public class AnalyzeAssignmentControllerTest {
     }
 
     @Test
+    @Transactional
     public void update() throws Exception {
         String content = objectMapper.writeValueAsString(assignment);
         System.out.println(content);
@@ -108,6 +113,7 @@ public class AnalyzeAssignmentControllerTest {
     }
 
     @Test
+    @Transactional
     public void delete() throws Exception {
         String uri = "/signToTest/1";
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))

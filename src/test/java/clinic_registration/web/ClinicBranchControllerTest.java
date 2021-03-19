@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.ConfigurableMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -63,6 +64,7 @@ public class ClinicBranchControllerTest {
         this.mockMvc = builder.build();
     }
     @Test
+    @Transactional
     public void addBranch() throws Exception {
         String content = objectMapper.writeValueAsString(brach);
         System.out.println(content);
@@ -75,6 +77,7 @@ public class ClinicBranchControllerTest {
                 .andDo(document(uri));
     }
     @Test
+    @Transactional
     public void readAll() throws Exception {
         String uri = "/clinic/all";
         mockMvc.perform(get(uri))
@@ -83,6 +86,7 @@ public class ClinicBranchControllerTest {
     }
 
     @Test
+    @Transactional
     public void read() throws Exception {
         String uri = "/clinic/1";
         mockMvc.perform(get(uri))
@@ -92,6 +96,7 @@ public class ClinicBranchControllerTest {
     }
 
     @Test
+    @Transactional
     public void update() throws Exception {
         String content = objectMapper.writeValueAsString(brach);
         System.out.println(content);
@@ -105,6 +110,7 @@ public class ClinicBranchControllerTest {
     }
 
     @Test
+    @Transactional
     public void delete() throws Exception {
         String uri = "/clinic/1";
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))

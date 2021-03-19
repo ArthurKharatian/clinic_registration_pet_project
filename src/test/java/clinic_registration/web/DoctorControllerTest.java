@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.ConfigurableMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDate;
@@ -61,6 +62,7 @@ public class DoctorControllerTest {
         this.mockMvc = builder.build();
     }
     @Test
+    @Transactional
     public void addDoctor() throws Exception {
         String content = objectMapper.writeValueAsString(doctor);
         System.out.println(content);
@@ -72,6 +74,7 @@ public class DoctorControllerTest {
                 .andDo(document(uri));
     }
     @Test
+    @Transactional
     public void readAll() throws Exception {
         String uri = "/doctor/all";
         mockMvc.perform(get(uri))
@@ -80,6 +83,7 @@ public class DoctorControllerTest {
     }
 
     @Test
+    @Transactional
     public void read() throws Exception {
         String uri = "/doctor/1";
         mockMvc.perform(get(uri))
@@ -89,6 +93,7 @@ public class DoctorControllerTest {
     }
 
     @Test
+    @Transactional
     public void update() throws Exception {
         String content = objectMapper.writeValueAsString(doctor);
         System.out.println(content);
@@ -102,6 +107,7 @@ public class DoctorControllerTest {
     }
 
     @Test
+    @Transactional
     public void delete() throws Exception {
         String uri = "/doctor/1";
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))

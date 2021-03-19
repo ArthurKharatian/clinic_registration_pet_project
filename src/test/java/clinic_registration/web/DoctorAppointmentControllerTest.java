@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.ConfigurableMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDate;
@@ -41,9 +42,9 @@ public class DoctorAppointmentControllerTest {
     DoctorAppointment appointment = new DoctorAppointment();
 
     {
-        client.setId(4L);
-        branch.setId(4L);
-        doctor.setId(10L);
+        client.setId(1L);
+        branch.setId(1L);
+        doctor.setId(1L);
 
         appointment.setId(1L);
         appointment.setClient(client);
@@ -71,6 +72,7 @@ public class DoctorAppointmentControllerTest {
     }
 
     @Test
+    @Transactional
     public void addAppointment() throws Exception {
         String content = objectMapper.writeValueAsString(appointment);
         System.out.println(content);
@@ -84,6 +86,7 @@ public class DoctorAppointmentControllerTest {
     }
 
     @Test
+    @Transactional
     public void readAll() throws Exception {
         String uri = "/signToDoc/all";
         mockMvc.perform(get(uri))
@@ -92,6 +95,7 @@ public class DoctorAppointmentControllerTest {
     }
 
     @Test
+    @Transactional
     public void read() throws Exception {
         String uri = "/signToDoc/1";
         mockMvc.perform(get(uri))
@@ -101,6 +105,7 @@ public class DoctorAppointmentControllerTest {
     }
 
     @Test
+    @Transactional
     public void update() throws Exception {
         String content = objectMapper.writeValueAsString(appointment);
         System.out.println(content);
@@ -114,6 +119,7 @@ public class DoctorAppointmentControllerTest {
     }
 
     @Test
+    @Transactional
     public void delete() throws Exception {
         String uri = "/signToDoc/1";
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))

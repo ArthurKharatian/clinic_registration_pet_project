@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.ConfigurableMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -40,7 +41,6 @@ public class AdminControllerTest {
         admin.setPhone_number(112);
     }
 
-
     MockMvc mockMvc;
     @Autowired
     WebApplicationContext webApplicationContext;
@@ -53,6 +53,7 @@ public class AdminControllerTest {
 
     @Before
     public void setUp() {
+
         ConfigurableMockMvcBuilder builder =
                 MockMvcBuilders.webAppContextSetup(this.webApplicationContext)
                         .apply(documentationConfiguration(this.restDocumentation));
@@ -60,6 +61,7 @@ public class AdminControllerTest {
     }
 
     @Test
+    @Transactional
     public void addAdmin() throws Exception {
         String content = objectMapper.writeValueAsString(admin);
         System.out.println(content);
@@ -72,6 +74,7 @@ public class AdminControllerTest {
     }
 
     @Test
+    @Transactional
     public void readAll() throws Exception {
         String uri = "/admin/all";
         mockMvc.perform(get(uri))
@@ -80,7 +83,9 @@ public class AdminControllerTest {
     }
 
     @Test
+    @Transactional
     public void read() throws Exception {
+
         String uri = "/admin/1";
         mockMvc.perform(get(uri))
                 .andDo(print())
@@ -89,7 +94,9 @@ public class AdminControllerTest {
     }
 
     @Test
+    @Transactional
     public void update() throws Exception {
+
         String content = objectMapper.writeValueAsString(admin);
         System.out.println(content);
         String uri = "/admin/1";
@@ -102,6 +109,7 @@ public class AdminControllerTest {
     }
 
     @Test
+    @Transactional
     public void delete() throws Exception {
         String uri = "/admin/1";
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))

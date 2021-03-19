@@ -1,8 +1,5 @@
 package clinic_registration.web;
 
-import clinic_registration.db.entity.ClientEntity;
-import clinic_registration.db.entity.ClinicBranchEntity;
-import clinic_registration.db.entity.ClinicProcedureEntity;
 import clinic_registration.dto.Client;
 import clinic_registration.dto.ClinicBrach;
 import clinic_registration.dto.ClinicProcedure;
@@ -21,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.ConfigurableMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDate;
@@ -44,11 +42,11 @@ public class ProcedureAssignmentControllerTest {
     ClinicProcedure procedure = new ClinicProcedure();
     ProcedureAssignment assignment = new ProcedureAssignment();
     {
-        client.setId(4L);
-        branch.setId(4L);
+        client.setId(1L);
+        branch.setId(1L);
         procedure.setId(1L);
 
-        assignment.setId(0L);
+        assignment.setId(1L);
         assignment.setProcedure(procedure);
         assignment.setBranch(branch);
         assignment.setClient(client);
@@ -72,6 +70,7 @@ public class ProcedureAssignmentControllerTest {
         this.mockMvc = builder.build();
     }
     @Test
+    @Transactional
     public void addAssigment() throws Exception {
         String content = objectMapper.writeValueAsString(assignment);
         System.out.println(content);
@@ -85,6 +84,7 @@ public class ProcedureAssignmentControllerTest {
     }
 
     @Test
+    @Transactional
     public void readAll() throws Exception {
         String uri = "/signToProcedure/all";
         mockMvc.perform(get(uri))
@@ -93,15 +93,17 @@ public class ProcedureAssignmentControllerTest {
     }
 
     @Test
+    @Transactional
     public void read() throws Exception {
         String uri = "/signToProcedure/1";
         mockMvc.perform(get(uri))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.visit_date").value("2122-01-09"));
+                .andExpect(jsonPath("$.visit_date").value("2122-09-01"));
     }
 
     @Test
+    @Transactional
     public void update() throws Exception {
         String content = objectMapper.writeValueAsString(assignment);
         System.out.println(content);
@@ -115,6 +117,7 @@ public class ProcedureAssignmentControllerTest {
     }
 
     @Test
+    @Transactional
     public void delete() throws Exception {
         String uri = "/signToProcedure/1";
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
