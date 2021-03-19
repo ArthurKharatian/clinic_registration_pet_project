@@ -3,6 +3,9 @@ package clinic_registration.web;
 import clinic_registration.db.entity.ClientEntity;
 import clinic_registration.db.entity.ClinicBranchEntity;
 import clinic_registration.db.entity.ClinicProcedureEntity;
+import clinic_registration.dto.Client;
+import clinic_registration.dto.ClinicBrach;
+import clinic_registration.dto.ClinicProcedure;
 import clinic_registration.dto.ProcedureAssignment;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -36,9 +39,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 public class ProcedureAssignmentControllerTest {
 
-    ClientEntity client = new ClientEntity();
-    ClinicBranchEntity branch = new ClinicBranchEntity();
-    ClinicProcedureEntity procedure = new ClinicProcedureEntity();
+    Client client = new Client();
+    ClinicBrach branch = new ClinicBrach();
+    ClinicProcedure procedure = new ClinicProcedure();
     ProcedureAssignment assignment = new ProcedureAssignment();
     {
         client.setId(4L);

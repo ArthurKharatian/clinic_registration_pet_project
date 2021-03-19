@@ -1,6 +1,6 @@
 package clinic_registration.web;
 
-import clinic_registration.db.entity.ClinicBranchEntity;
+import clinic_registration.dto.ClinicBrach;
 import clinic_registration.dto.ClinicLab;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class ClinicLabControllerTest {
-    ClinicBranchEntity branch = new ClinicBranchEntity();
+    ClinicBrach branch = new ClinicBrach();
     ClinicLab lab = new ClinicLab();
 
     {

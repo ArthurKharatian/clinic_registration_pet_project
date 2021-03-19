@@ -1,8 +1,8 @@
 package clinic_registration.web;
 
-import clinic_registration.db.entity.ClientEntity;
-import clinic_registration.db.entity.ClinicBranchEntity;
-import clinic_registration.db.entity.DoctorEntity;
+import clinic_registration.dto.Client;
+import clinic_registration.dto.ClinicBrach;
+import clinic_registration.dto.Doctor;
 import clinic_registration.dto.DoctorAppointment;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -35,9 +35,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class DoctorAppointmentControllerTest {
-    ClientEntity client = new ClientEntity();
-    ClinicBranchEntity branch = new ClinicBranchEntity();
-    DoctorEntity doctor = new DoctorEntity();
+    Client client = new Client();
+    ClinicBrach branch = new ClinicBrach();
+    Doctor doctor = new Doctor();
     DoctorAppointment appointment = new DoctorAppointment();
 
     {

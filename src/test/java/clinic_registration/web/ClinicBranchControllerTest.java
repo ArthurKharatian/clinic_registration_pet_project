@@ -1,6 +1,6 @@
 package clinic_registration.web;
 
-import clinic_registration.db.entity.AdminEntity;
+import clinic_registration.dto.Admin;
 import clinic_registration.dto.ClinicBrach;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 public class ClinicBranchControllerTest {
 
-    AdminEntity admin = new AdminEntity();
+    Admin admin = new Admin();
     ClinicBrach brach = new ClinicBrach();
 
     {
