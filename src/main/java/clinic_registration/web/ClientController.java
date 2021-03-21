@@ -21,26 +21,29 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<Client> addClient(@RequestBody Client client){
+    public ResponseEntity<ServiceMessageDto> addClient(@RequestBody Client client){
         clientService.create(client);
-        return new ResponseEntity<>(client, HttpStatus.CREATED);
+        return new ResponseEntity<>(new ServiceMessageDto(777,
+                "Client is created!"), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public ResponseEntity<Client> update(@PathVariable Long id, @RequestBody Client client){
+    public ResponseEntity<ServiceMessageDto> update(@PathVariable Long id, @RequestBody Client client){
         clientService.update(id, client);
-        return new ResponseEntity<>(client, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ServiceMessageDto(555,
+                String.format("Client with id %d is updated!", id)), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Client> delete(@PathVariable("id") Long id){
+    public ResponseEntity<ServiceMessageDto> delete(@PathVariable("id") Long id){
         clientService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new ServiceMessageDto(666,
+                String.format("Client with id %d is deleted!", id)), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public List<Client> readAll(){
-        return clientService.readAll();
+    public ResponseEntity<List<Client>>readAll(){
+        return new ResponseEntity<>(clientService.readAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

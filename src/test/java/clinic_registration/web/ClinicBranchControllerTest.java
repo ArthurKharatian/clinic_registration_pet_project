@@ -14,6 +14,7 @@ import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.ConfigurableMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,7 +74,8 @@ public class ClinicBranchControllerTest {
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.address").value("B.P. 110"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string("{\"code\":777,\"message\":\"Brach is created!\"}"))
                 .andDo(document(uri.replace("/", "\\")));
     }
     @Test
@@ -106,7 +108,8 @@ public class ClinicBranchControllerTest {
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isAccepted())
-                .andExpect(jsonPath("$.address").value("B.P. 110"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string("{\"code\":555,\"message\":\"Brach with id 1 is updated!\"}"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 
@@ -117,6 +120,8 @@ public class ClinicBranchControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content()
+                        .string("{\"code\":666,\"message\":\"Brach with id 1 is deleted!\"}"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 }

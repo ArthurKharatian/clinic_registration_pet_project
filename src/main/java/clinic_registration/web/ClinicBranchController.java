@@ -18,26 +18,29 @@ public class ClinicBranchController {
     }
 
     @PostMapping
-    public ResponseEntity<ClinicBrach> addBranch(@RequestBody ClinicBrach brach){
+    public ResponseEntity<ServiceMessageDto> addBranch(@RequestBody ClinicBrach brach){
         branchService.create(brach);
-        return new ResponseEntity<>(brach, HttpStatus.CREATED);
+        return new ResponseEntity<>(new ServiceMessageDto(777,
+                "Brach is created!"), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public ResponseEntity<ClinicBrach> update(@PathVariable Long id, @RequestBody ClinicBrach brach){
+    public ResponseEntity<ServiceMessageDto> update(@PathVariable Long id, @RequestBody ClinicBrach brach){
         branchService.update(id, brach);
-        return new ResponseEntity<>(brach, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ServiceMessageDto(555,
+                String.format("Brach with id %d is updated!", id)), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ClinicBrach> delete(@PathVariable("id") Long id){
+    public ResponseEntity<ServiceMessageDto> delete(@PathVariable("id") Long id){
         branchService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new ServiceMessageDto(666,
+                String.format("Brach with id %d is deleted!", id)), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public List<ClinicBrach> readAll(){
-        return branchService.readAll();
+    public ResponseEntity<List<ClinicBrach>> readAll(){
+        return new ResponseEntity<>(branchService.readAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

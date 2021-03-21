@@ -5,6 +5,7 @@ class ServiceMessageDto {
     int code;
     String message;
 
+
     public ServiceMessageDto(int code, String message) {
         this.code = code;
         this.message = message;
@@ -25,4 +26,5 @@ class ServiceMessageDto {
     public void setMessage(String message) {
         this.message = message;
     }
+
 }

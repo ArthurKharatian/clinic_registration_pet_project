@@ -18,26 +18,29 @@ public class AnalyzeAssignmentController {
     }
 
     @PostMapping
-    public ResponseEntity<AnalyzeAssignment> addAssigment(@RequestBody AnalyzeAssignment assignment){
+    public ResponseEntity<ServiceMessageDto> addAssigment(@RequestBody AnalyzeAssignment assignment){
         assigmentService.create(assignment);
-        return new ResponseEntity<>(assignment, HttpStatus.CREATED);
+        return new ResponseEntity<>(new ServiceMessageDto(777,
+                "Analyze assignment is created!"), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public ResponseEntity<AnalyzeAssignment> update(@PathVariable Long id, @RequestBody AnalyzeAssignment assignment){
+    public ResponseEntity<ServiceMessageDto> update(@PathVariable Long id, @RequestBody AnalyzeAssignment assignment){
         assigmentService.update(id, assignment);
-        return new ResponseEntity<>(assignment, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ServiceMessageDto(555,
+                String.format("Analyze assignment with id %d is updated!", id)), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<AnalyzeAssignment> delete(@PathVariable("id") Long id){
+    public ResponseEntity<ServiceMessageDto> delete(@PathVariable("id") Long id){
         assigmentService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new ServiceMessageDto(666,
+                String.format("Analyze assignment with id %d is deleted!", id)), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public List<AnalyzeAssignment> readAll(){
-        return assigmentService.readAll();
+    public ResponseEntity<List<AnalyzeAssignment>> readAll(){
+        return new ResponseEntity<>(assigmentService.readAll(), HttpStatus.OK) ;
     }
 
     @GetMapping("/{id}")

@@ -15,6 +15,7 @@ import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.ConfigurableMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,7 +77,8 @@ public class AnalyzeAssignmentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").value("Blood test"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string("{\"code\":777,\"message\":\"Analyze assignment is created!\"}"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 
@@ -110,7 +112,8 @@ public class AnalyzeAssignmentControllerTest {
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isAccepted())
-                .andExpect(jsonPath("$.name").value("Blood test"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string("{\"code\":555,\"message\":\"Analyze assignment with id 1 is updated!\"}"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 
@@ -121,6 +124,8 @@ public class AnalyzeAssignmentControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content()
+                        .string("{\"code\":666,\"message\":\"Analyze assignment with id 1 is deleted!\"}"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 

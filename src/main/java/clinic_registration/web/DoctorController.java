@@ -18,26 +18,29 @@ public class DoctorController {
     }
 
     @PostMapping
-    public ResponseEntity<Doctor> addDoctor(@RequestBody Doctor doctor){
+    public ResponseEntity<ServiceMessageDto> addDoctor(@RequestBody Doctor doctor){
         doctorService.create(doctor);
-        return new ResponseEntity<>(doctor, HttpStatus.CREATED);
+        return new ResponseEntity<>(new ServiceMessageDto(777,
+                "Doctor is created!"), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public ResponseEntity<Doctor> update(@PathVariable Long id, @RequestBody Doctor doctor){
+    public ResponseEntity<ServiceMessageDto> update(@PathVariable Long id, @RequestBody Doctor doctor){
         doctorService.update(id, doctor);
-        return new ResponseEntity<>(doctor, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ServiceMessageDto(555,
+                String.format("Doctor with id %d is updated!", id)), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Doctor> delete(@PathVariable("id") Long id){
+    public ResponseEntity<ServiceMessageDto> delete(@PathVariable("id") Long id){
         doctorService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new ServiceMessageDto(666,
+                String.format("Doctor with id %d is deleted!", id)), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public List<Doctor> readAll(){
-        return doctorService.readAll();
+    public ResponseEntity<List<Doctor>> readAll(){
+        return new ResponseEntity<>(doctorService.readAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

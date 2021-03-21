@@ -17,26 +17,29 @@ public class ClinicProcedureController {
         this.procedureService = procedureService;
     }
     @PostMapping
-    public ResponseEntity<ClinicProcedure> addProcedure(@RequestBody ClinicProcedure procedure){
+    public ResponseEntity<ServiceMessageDto> addProcedure(@RequestBody ClinicProcedure procedure){
         procedureService.create(procedure);
-        return new ResponseEntity<>(procedure, HttpStatus.CREATED);
+        return new ResponseEntity<>(new ServiceMessageDto(777,
+                "Procedure is created!"), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public ResponseEntity<ClinicProcedure> update(@PathVariable Long id, @RequestBody ClinicProcedure procedure){
+    public ResponseEntity<ServiceMessageDto> update(@PathVariable Long id, @RequestBody ClinicProcedure procedure){
         procedureService.update(id, procedure);
-        return new ResponseEntity<>(procedure, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ServiceMessageDto(555,
+                String.format("Procedure with id %d is updated!", id)), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ClinicProcedure> delete(@PathVariable("id") Long id){
+    public ResponseEntity<ServiceMessageDto> delete(@PathVariable("id") Long id){
         procedureService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new ServiceMessageDto(666,
+                String.format("Procedure with id %d is deleted!", id)), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public List<ClinicProcedure> readAll(){
-        return procedureService.readAll();
+    public ResponseEntity<List<ClinicProcedure>> readAll(){
+        return new ResponseEntity<>(procedureService.readAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

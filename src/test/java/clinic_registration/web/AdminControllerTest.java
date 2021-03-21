@@ -13,6 +13,7 @@ import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.ConfigurableMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AdminControllerTest {
 
     Admin admin = new Admin();
+
     {
         admin.setId(1L);
         admin.setName("Amigo");
@@ -69,7 +71,8 @@ public class AdminControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.email").value("Amigo@mail.ag"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string("{\"code\":777,\"message\":\"Admin is created!\"}"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 
@@ -105,7 +108,8 @@ public class AdminControllerTest {
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isAccepted())
-                .andExpect(jsonPath("$.staff_name").value("SysAdmin"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string("{\"code\":555,\"message\":\"Admin with id 1 is updated!\"}"))
                 .andDo(document(uri.replace("/", "\\")));
         System.out.println(content);
     }
@@ -117,6 +121,8 @@ public class AdminControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete(uri))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content()
+                        .string("{\"code\":666,\"message\":\"Admin with id 1 is deleted!\"}"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 

@@ -17,26 +17,29 @@ public class ProcedureAssignmentController {
         this.procedureService = procedureService;
     }
     @PostMapping
-    public ResponseEntity<ProcedureAssignment> addAppointment(@RequestBody ProcedureAssignment procedure){
+    public ResponseEntity<ServiceMessageDto> addAppointment(@RequestBody ProcedureAssignment procedure){
         procedureService.create(procedure);
-        return new ResponseEntity<>(procedure, HttpStatus.CREATED);
+        return new ResponseEntity<>(new ServiceMessageDto(777,
+                "Procedure assignment is created!"), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public ResponseEntity<ProcedureAssignment> update(@PathVariable Long id, @RequestBody ProcedureAssignment procedure){
+    public ResponseEntity<ServiceMessageDto> update(@PathVariable Long id, @RequestBody ProcedureAssignment procedure){
         procedureService.update(id, procedure);
-        return new ResponseEntity<>(procedure, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ServiceMessageDto(555,
+                String.format("Procedure assignment with id %d is updated!", id)), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ProcedureAssignment> delete(@PathVariable("id") Long id){
+    public ResponseEntity<ServiceMessageDto> delete(@PathVariable("id") Long id){
         procedureService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new ServiceMessageDto(666,
+                String.format("Procedure assignment with id %d is deleted!", id)), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public List<ProcedureAssignment> readAll(){
-        return procedureService.readAll();
+    public ResponseEntity<List<ProcedureAssignment>> readAll(){
+        return new ResponseEntity<>(procedureService.readAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

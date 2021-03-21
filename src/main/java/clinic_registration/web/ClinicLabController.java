@@ -18,26 +18,29 @@ public class ClinicLabController {
     }
 
     @PostMapping
-    public ResponseEntity<ClinicLab> addLab(@RequestBody ClinicLab lab){
+    public ResponseEntity<ServiceMessageDto> addLab(@RequestBody ClinicLab lab){
         labService.create(lab);
-        return new ResponseEntity<>(lab, HttpStatus.CREATED);
+        return new ResponseEntity<>(new ServiceMessageDto(777,
+                "Laboratory is created!"), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public ResponseEntity<ClinicLab> update(@PathVariable Long id, @RequestBody ClinicLab lab){
+    public ResponseEntity<ServiceMessageDto> update(@PathVariable Long id, @RequestBody ClinicLab lab){
         labService.update(id, lab);
-        return new ResponseEntity<>(lab, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ServiceMessageDto(555,
+                String.format("Laboratory with id %d is updated!", id)), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ClinicLab> delete(@PathVariable("id") Long id){
+    public ResponseEntity<ServiceMessageDto> delete(@PathVariable("id") Long id){
         labService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new ServiceMessageDto(666,
+                String.format("Laboratory with id %d is deleted!", id)), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public List<ClinicLab> readAll(){
-        return labService.readAll();
+    public ResponseEntity<List<ClinicLab>> readAll(){
+        return new ResponseEntity<>(labService.readAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

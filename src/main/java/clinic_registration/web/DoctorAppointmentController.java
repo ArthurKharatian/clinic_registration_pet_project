@@ -18,26 +18,29 @@ public class DoctorAppointmentController {
     }
 
     @PostMapping
-    public ResponseEntity<DoctorAppointment> addAppointment(@RequestBody DoctorAppointment appointment){
+    public ResponseEntity<ServiceMessageDto> addAppointment(@RequestBody DoctorAppointment appointment){
         appointmentService.create(appointment);
-        return new ResponseEntity<>(appointment, HttpStatus.CREATED);
+        return new ResponseEntity<>(new ServiceMessageDto(777,
+                "Appointment to doctor is created!"), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public ResponseEntity<DoctorAppointment> update(@PathVariable Long id, @RequestBody DoctorAppointment appointment){
+    public ResponseEntity<ServiceMessageDto> update(@PathVariable Long id, @RequestBody DoctorAppointment appointment){
         appointmentService.update(id, appointment);
-        return new ResponseEntity<>(appointment, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ServiceMessageDto(555,
+                String.format("Appointment to doctor with id %d is updated!", id)), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<DoctorAppointment> delete(@PathVariable("id") Long id){
+    public ResponseEntity<ServiceMessageDto> delete(@PathVariable("id") Long id){
         appointmentService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new ServiceMessageDto(666,
+                String.format("Appointment to doctor with id %d is deleted!", id)), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public List<DoctorAppointment> readAll(){
-        return appointmentService.readAll();
+    public ResponseEntity<List<DoctorAppointment>> readAll(){
+        return new ResponseEntity<>(appointmentService.readAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

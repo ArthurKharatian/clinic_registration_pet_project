@@ -19,26 +19,29 @@ public class AdminController {
     }
 
     @PostMapping
-    public ResponseEntity<Admin> addClient(@RequestBody Admin admin){
+    public ResponseEntity<ServiceMessageDto> addAdmin(@RequestBody Admin admin){
          adminService.create(admin);
-         return new ResponseEntity<>(admin, HttpStatus.CREATED);
+         return new ResponseEntity<>(new ServiceMessageDto(777,
+                 "Admin is created!"), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public ResponseEntity<Admin> update(@PathVariable Long id, @RequestBody Admin admin){
+    public ResponseEntity<ServiceMessageDto> update(@PathVariable Long id, @RequestBody Admin admin){
         adminService.update(id, admin);
-        return new ResponseEntity<>(admin, HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(new ServiceMessageDto(555,
+                String.format("Admin with id %d is updated!", id)), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Admin> delete(@PathVariable("id") Long id){
+    public ResponseEntity<ServiceMessageDto> delete(@PathVariable("id") Long id){
           adminService.delete(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new ServiceMessageDto(666,
+                String.format("Admin with id %d is deleted!", id)),HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public List<Admin> readAll(){
-        return adminService.readAll();
+    public ResponseEntity<List<Admin>> readAll(){
+        return new ResponseEntity<>(adminService.readAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
