@@ -85,14 +85,17 @@ public class ClientControllerTest {
         String uri = "/client/all";
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$..name", hasItem(containsString("Matvienko"))))
+                .andExpect(jsonPath("$..email", hasItem(containsString("mvi@gov.ru"))))
+                .andExpect(jsonPath("$.*", hasSize(greaterThan(0))))
                 .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
     @Transactional
     public void read() throws Exception {
-        String uri = "/client/1";
-        mockMvc.perform(get(uri))
+        String uri = "/client/{id}";
+        mockMvc.perform(get(uri, "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Matvienko Valentina Ivanovna"));

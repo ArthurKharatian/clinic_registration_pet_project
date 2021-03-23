@@ -21,8 +21,11 @@ public class ClinicLabService {
         this.labRepository = labRepository;
         this.objectMapper = objectMapper;
     }
+
     public void create(ClinicLab brach) {
-        if(brach == null){throw new ClinicServiceException("laboratory is null", ErrorMessage.UNKNOWN);}
+        if (brach == null) {
+            throw new ClinicServiceException("laboratory is null", ErrorMessage.BAD_REQUEST);
+        }
         ClinicLabEntity labEntity = objectMapper.convertValue(brach, ClinicLabEntity.class);
         labRepository.save(labEntity);
     }
@@ -33,7 +36,7 @@ public class ClinicLabService {
     }
 
     public ClinicLab read(Long id) {
-        ClinicLabEntity labEntity = labRepository.findById(id).orElseThrow(()->
+        ClinicLabEntity labEntity = labRepository.findById(id).orElseThrow(() ->
                 new ClinicServiceException(String.format("The laboratory with id %d is not found", id), ErrorMessage.NOT_FOUND));
         return objectMapper.convertValue(labEntity, ClinicLab.class);
     }
@@ -47,8 +50,11 @@ public class ClinicLabService {
         }
 
     }
+
     public void delete(Long id) {
-        if(!labRepository.existsById(id)){throw new ClinicServiceException(String.format("The laboratory with id %d is not found", id), ErrorMessage.NOT_FOUND);}
+        if (!labRepository.existsById(id)) {
+            throw new ClinicServiceException(String.format("The laboratory with id %d is not found", id), ErrorMessage.NOT_FOUND);
+        }
         labRepository.deleteById(id);
     }
 }
