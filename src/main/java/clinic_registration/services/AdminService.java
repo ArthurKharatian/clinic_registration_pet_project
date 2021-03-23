@@ -6,21 +6,27 @@ import clinic_registration.dto.Admin;
 import clinic_registration.exceptions.ClinicServiceException;
 import clinic_registration.exceptions.ErrorMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class AdminService {
     private final AdminRepository adminRepository;
     private final ObjectMapper objectMapper;
+    private final SessionFactory sessionFactory;
 
-
-    public AdminService(AdminRepository adminRepository, ObjectMapper objectMapper) {
-        this.adminRepository = adminRepository;
-        this.objectMapper = objectMapper;
-    }
+//    public AdminService(AdminRepository adminRepository, ObjectMapper objectMapper) {
+//        this.adminRepository = adminRepository;
+//        this.objectMapper = objectMapper;
+//
+//    }
 
     public Admin create(Admin admin) {
         if (admin == null) {
@@ -44,10 +50,19 @@ public class AdminService {
 
     public void update(Admin admin) {
 
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+
         if (!adminRepository.existsById(admin.getId())) {
-            throw new ClinicServiceException(String.format("Admin with id %d is not found", admin.getId()), ErrorMessage.NOT_FOUND);
+            throw new ClinicServiceException(String.format("Admin with id %d is not found", admin.getId()),
+                                             ErrorMessage.NOT_FOUND);
         }
-        adminRepository.save(objectMapper.convertValue(admin, AdminEntity.class));
+        AdminEntity save = adminRepository.save(objectMapper.convertValue(admin, AdminEntity.class));
+        session.update(save);
+        session.flush();
+        transaction.commit();
+
+        session.close();
     }
 
     public void delete(Long id) {
