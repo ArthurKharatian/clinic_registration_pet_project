@@ -23,11 +23,11 @@ public class ClinicProcedureController {
                 "Procedure is created!"), HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public ResponseEntity<ServiceMessageDto> update(@PathVariable Long id, @RequestBody ClinicProcedure procedure){
-        procedureService.update(id, procedure);
+    @PutMapping(headers = "Accept=application/json")
+    public ResponseEntity<ServiceMessageDto> update(@RequestBody ClinicProcedure procedure){
+        procedureService.update(procedure);
         return new ResponseEntity<>(new ServiceMessageDto(555,
-                String.format("Procedure with id %d is updated!", id)), HttpStatus.ACCEPTED);
+                String.format("Procedure with id %d is updated!", procedure.getId())), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")

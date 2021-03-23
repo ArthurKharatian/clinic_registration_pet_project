@@ -39,13 +39,11 @@ public class ClinicProcedureService {
         return objectMapper.convertValue(procedureEntity, ClinicProcedure.class);
     }
 
-    public void update(Long id, ClinicProcedure procedure) {
-        if (procedureRepository.existsById(id)) {
-            procedure.setId(id);
-            procedureRepository.save(objectMapper.convertValue(procedure, ClinicProcedureEntity.class));
-        } else {
-            throw new ClinicServiceException(String.format("The procedure with id %d is not found", id), ErrorMessage.NOT_FOUND);
+    public void update(ClinicProcedure procedure) {
+        if (!procedureRepository.existsById(procedure.getId())) {
+            throw new ClinicServiceException(String.format("The procedure with id %d is not found", procedure.getId()), ErrorMessage.NOT_FOUND);
         }
+        procedureRepository.save(objectMapper.convertValue(procedure, ClinicProcedureEntity.class));
 
     }
     public void delete(Long id) {

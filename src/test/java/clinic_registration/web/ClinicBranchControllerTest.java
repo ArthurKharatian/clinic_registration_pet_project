@@ -104,8 +104,8 @@ public class ClinicBranchControllerTest {
     public void update() throws Exception {
         String content = objectMapper.writeValueAsString(brach);
         System.out.println(content);
-        String uri = "/clinic/{id}";
-        mockMvc.perform(put(uri, "1")
+        String uri = "/clinic";
+        mockMvc.perform(put(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andDo(print())

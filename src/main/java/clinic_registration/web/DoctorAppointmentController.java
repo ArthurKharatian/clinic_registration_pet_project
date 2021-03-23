@@ -24,11 +24,11 @@ public class DoctorAppointmentController {
                 "Appointment to doctor is created!"), HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public ResponseEntity<ServiceMessageDto> update(@PathVariable Long id, @RequestBody DoctorAppointment appointment){
-        appointmentService.update(id, appointment);
+    @PutMapping(headers = "Accept=application/json")
+    public ResponseEntity<ServiceMessageDto> update(@RequestBody DoctorAppointment appointment){
+        appointmentService.update(appointment);
         return new ResponseEntity<>(new ServiceMessageDto(555,
-                String.format("Appointment to doctor with id %d is updated!", id)), HttpStatus.ACCEPTED);
+                String.format("Appointment to doctor with id %d is updated!", appointment.getId())), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")

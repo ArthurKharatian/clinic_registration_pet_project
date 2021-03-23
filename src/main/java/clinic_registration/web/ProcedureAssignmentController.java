@@ -23,11 +23,11 @@ public class ProcedureAssignmentController {
                 "Procedure assignment is created!"), HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public ResponseEntity<ServiceMessageDto> update(@PathVariable Long id, @RequestBody ProcedureAssignment procedure){
-        procedureService.update(id, procedure);
+    @PutMapping(headers = "Accept=application/json")
+    public ResponseEntity<ServiceMessageDto> update(@RequestBody ProcedureAssignment procedure){
+        procedureService.update(procedure);
         return new ResponseEntity<>(new ServiceMessageDto(555,
-                String.format("Procedure assignment with id %d is updated!", id)), HttpStatus.ACCEPTED);
+                String.format("Procedure assignment with id %d is updated!", procedure.getId())), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")

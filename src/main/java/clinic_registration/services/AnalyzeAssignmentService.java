@@ -38,14 +38,12 @@ public class AnalyzeAssignmentService {
         return objectMapper.convertValue(assignmentEntity, AnalyzeAssignment.class);
     }
 
-    public void update(Long id, AnalyzeAssignment assignment) {
+    public void update(AnalyzeAssignment assignment) {
 
-        if (testRepository.existsById(id)) {
-            assignment.setId(id);
-            testRepository.save(objectMapper.convertValue(assignment, AnalyzeAssignmentEntity.class));
-        } else {
-            throw new ClinicServiceException(String.format("The assignment with id %d is not found", id), ErrorMessage.NOT_FOUND);
+        if (!testRepository.existsById(assignment.getId())) {
+            throw new ClinicServiceException(String.format("The assignment with id %d is not found", assignment.getId()), ErrorMessage.NOT_FOUND);
         }
+        testRepository.save(objectMapper.convertValue(assignment, AnalyzeAssignmentEntity.class));
 
     }
     public void delete(Long id) {

@@ -39,13 +39,11 @@ public class ClinicBranchService {
         return objectMapper.convertValue(branchEntity, ClinicBranch.class);
     }
 
-    public void update(Long id, ClinicBranch brach) {
-        if (branchRepository.existsById(id)) {
-            brach.setId(id);
-            branchRepository.save(objectMapper.convertValue(brach, ClinicBranchEntity.class));
-        } else {
-            throw new ClinicServiceException(String.format("The branch with id %d is not found", id), ErrorMessage.NOT_FOUND);
+    public void update(ClinicBranch brach) {
+        if (!branchRepository.existsById(brach.getId())) {
+            throw new ClinicServiceException(String.format("The branch with id %d is not found", brach.getId()), ErrorMessage.NOT_FOUND);
         }
+        branchRepository.save(objectMapper.convertValue(brach, ClinicBranchEntity.class));
 
     }
     public void delete(Long id) {

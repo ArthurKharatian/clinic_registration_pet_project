@@ -38,13 +38,11 @@ public class DoctorAppointmentService {
         return objectMapper.convertValue(appointmentEntity, DoctorAppointment.class);
     }
 
-    public void update(Long id, DoctorAppointment appointment) {
-        if (appointmentRepository.existsById(id)) {
-            appointment.setId(id);
-            appointmentRepository.save(objectMapper.convertValue(appointment, DoctorAppointmentEntity.class));
-        } else {
-            throw new ClinicServiceException(String.format("The appointment with id %d is not found", id), ErrorMessage.NOT_FOUND);
+    public void update(DoctorAppointment appointment) {
+        if (!appointmentRepository.existsById(appointment.getId())) {
+            throw new ClinicServiceException(String.format("The appointment with id %d is not found", appointment.getId()), ErrorMessage.NOT_FOUND);
         }
+        appointmentRepository.save(objectMapper.convertValue(appointment, DoctorAppointmentEntity.class));
 
     }
     public void delete(Long id) {

@@ -1,7 +1,12 @@
 package clinic_registration.web;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 class ServiceMessageDto {
 
     int code;
@@ -13,46 +18,6 @@ class ServiceMessageDto {
 
     public ServiceMessageDto(int code, String message) {
         this.code = code;
-        this.message = message;
-    }
-
-    public Object getDto() {
-        return dto;
-    }
-
-    public void setDto(Object dto) {
-        this.dto = dto;
-    }
-
-    public LocalDateTime getRequestTime() {
-        return requestTime;
-    }
-
-    public void setRequestTime(LocalDateTime requestTime) {
-        this.requestTime = requestTime;
-    }
-
-    public LocalDateTime getResponseTime() {
-        return responseTime;
-    }
-
-    public void setResponseTime(LocalDateTime responseTime) {
-        this.responseTime = responseTime;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
         this.message = message;
     }
 }

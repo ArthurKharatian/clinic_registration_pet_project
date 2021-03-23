@@ -24,11 +24,11 @@ public class ClinicBranchController {
                 "Branch is created!"), HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public ResponseEntity<ServiceMessageDto> update(@PathVariable Long id, @RequestBody ClinicBranch branch){
-        branchService.update(id, branch);
+    @PutMapping(headers = "Accept=application/json")
+    public ResponseEntity<ServiceMessageDto> update(@RequestBody ClinicBranch branch){
+        branchService.update(branch);
         return new ResponseEntity<>(new ServiceMessageDto(555,
-                String.format("Branch with id %d is updated!", id)), HttpStatus.ACCEPTED);
+                String.format("Branch with id %d is updated!", branch.getId())), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")

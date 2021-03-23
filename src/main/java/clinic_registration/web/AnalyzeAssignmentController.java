@@ -24,11 +24,11 @@ public class AnalyzeAssignmentController {
                 "Analyze assignment is created!"), HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public ResponseEntity<ServiceMessageDto> update(@PathVariable Long id, @RequestBody AnalyzeAssignment assignment){
-        assigmentService.update(id, assignment);
+    @PutMapping(headers = "Accept=application/json")
+    public ResponseEntity<ServiceMessageDto> update( @RequestBody AnalyzeAssignment assignment){
+        assigmentService.update(assignment);
         return new ResponseEntity<>(new ServiceMessageDto(555,
-                String.format("Analyze assignment with id %d is updated!", id)), HttpStatus.ACCEPTED);
+                String.format("Analyze assignment with id %d is updated!", assignment.getId())), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
