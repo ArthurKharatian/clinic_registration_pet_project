@@ -22,10 +22,11 @@ public class ClientService {
         this.objectMapper = objectMapper;
     }
 
-    public void create(Client client) {
-        if(client == null){throw new ClinicServiceException("client is null", ErrorMessage.UNKNOWN);}
+    public Client create(Client client) {
+        if(client == null){throw new ClinicServiceException("client is null", ErrorMessage.BAD_REQUEST);}
         ClientEntity clientEntity = objectMapper.convertValue(client, ClientEntity.class);
-        clientRepository.save(clientEntity);
+        ClientEntity save = clientRepository.save(clientEntity);
+        return objectMapper.convertValue(save, Client.class);
     }
 
     public List<Client> readAll() {
@@ -39,14 +40,11 @@ public class ClientService {
         return objectMapper.convertValue(clientEntity, Client.class);
     }
 
-    public void update(Long id, Client client) {
-        if (clientRepository.existsById(id)) {
-            client.setId(id);
-            clientRepository.save(objectMapper.convertValue(client, ClientEntity.class));
-        } else {
-            throw new ClinicServiceException(String.format("Client with id %d is not found", id), ErrorMessage.NOT_FOUND);
+    public void update(Client client) {
+        if (!clientRepository.existsById(client.getId())) {
+            throw new ClinicServiceException(String.format("Client with id %d is not found", client.getId()), ErrorMessage.NOT_FOUND);
         }
-
+        clientRepository.save(objectMapper.convertValue(client, ClientEntity.class));
     }
     public void delete(Long id) {
         if(!clientRepository.existsById(id)){throw new ClinicServiceException(String.format("Client with id %d is not found", id), ErrorMessage.NOT_FOUND);}

@@ -1,7 +1,7 @@
 package clinic_registration.web;
 
 import clinic_registration.dto.Client;
-import clinic_registration.dto.ClinicBrach;
+import clinic_registration.dto.ClinicBranch;
 import clinic_registration.dto.Doctor;
 import clinic_registration.dto.DoctorAppointment;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,6 +25,8 @@ import org.springframework.web.context.WebApplicationContext;
 import java.time.LocalDate;
 import java.time.Month;
 
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -38,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 public class DoctorAppointmentControllerTest {
     Client client = new Client();
-    ClinicBrach branch = new ClinicBrach();
+    ClinicBranch branch = new ClinicBranch();
     Doctor doctor = new Doctor();
     DoctorAppointment appointment = new DoctorAppointment();
 
@@ -46,7 +48,6 @@ public class DoctorAppointmentControllerTest {
         client.setId(1L);
         branch.setId(1L);
         doctor.setId(1L);
-
         appointment.setId(1L);
         appointment.setClient(client);
         appointment.setDoctor(doctor);
@@ -83,8 +84,8 @@ public class DoctorAppointmentControllerTest {
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"code\":777,\"message\":\"Appointment to doctor is created!\"}"))
+                .andExpect(jsonPath("$.message").value("Appointment to doctor is created!"))
+                .andExpect(jsonPath("$.code").value("777"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 
@@ -94,14 +95,17 @@ public class DoctorAppointmentControllerTest {
         String uri = "/signToDoc/all";
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$..client.name", hasItem(containsString("Valentina"))))
+                .andExpect(jsonPath("$..visit_date", hasItem(containsString("2022-04-22"))))
+                .andExpect(jsonPath("$.*", hasSize(greaterThan(0))))
                 .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
     @Transactional
     public void read() throws Exception {
-        String uri = "/signToDoc/1";
-        mockMvc.perform(get(uri))
+        String uri = "/signToDoc/{id}";
+        mockMvc.perform(get(uri, "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.visit_date").value("2022-04-22"))
@@ -113,26 +117,26 @@ public class DoctorAppointmentControllerTest {
     public void update() throws Exception {
         String content = objectMapper.writeValueAsString(appointment);
         System.out.println(content);
-        String uri = "/signToDoc/1";
-        mockMvc.perform(put(uri)
+        String uri = "/signToDoc/{id}";
+        mockMvc.perform(put(uri, "1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isAccepted())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"code\":555,\"message\":\"Appointment to doctor with id 1 is updated!\"}"))
+                .andExpect(jsonPath("$.message").value("Appointment to doctor with id 1 is updated!"))
+                .andExpect(jsonPath("$.code").value("555"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
     @Transactional
     public void delete() throws Exception {
-        String uri = "/signToDoc/1";
-        mockMvc.perform(MockMvcRequestBuilders.delete(uri))
+        String uri = "/signToDoc/{id}";
+        mockMvc.perform(MockMvcRequestBuilders.delete(uri, "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"code\":666,\"message\":\"Appointment to doctor with id 1 is deleted!\"}"))
+                .andExpect(jsonPath("$.message").value("Appointment to doctor with id 1 is deleted!"))
+                .andExpect(jsonPath("$.code").value("666"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 

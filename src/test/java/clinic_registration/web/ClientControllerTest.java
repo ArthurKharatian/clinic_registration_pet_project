@@ -23,6 +23,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.time.LocalDate;
 import java.time.Month;
 
+import static org.hamcrest.Matchers.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -73,8 +74,8 @@ public class ClientControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isCreated())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"code\":777,\"message\":\"Client is created!\"}"))
+                .andExpect(jsonPath("$.message").value("Client is created!"))
+                .andExpect(jsonPath("$.code").value("777"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 
@@ -102,26 +103,26 @@ public class ClientControllerTest {
     public void update() throws Exception {
         String content = objectMapper.writeValueAsString(client);
         System.out.println(content);
-        String uri = "/client/1";
+        String uri = "/client";
         mockMvc.perform(put(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isAccepted())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"code\":555,\"message\":\"Client with id 1 is updated!\"}"))
+                .andExpect(jsonPath("$.message").value("Client with id 1 is updated!"))
+                .andExpect(jsonPath("$.code").value("555"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
     @Transactional
     public void delete() throws Exception {
-        String uri = "/client/1";
-        mockMvc.perform(MockMvcRequestBuilders.delete(uri))
+        String uri = "/client/{id}";
+        mockMvc.perform(MockMvcRequestBuilders.delete(uri, "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"code\":666,\"message\":\"Client with id 1 is deleted!\"}"))
+                .andExpect(jsonPath("$.message").value("Client with id 1 is deleted!"))
+                .andExpect(jsonPath("$.code").value("666"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 

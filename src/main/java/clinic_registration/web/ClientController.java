@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -22,16 +24,20 @@ public class ClientController {
 
     @PostMapping
     public ResponseEntity<ServiceMessageDto> addClient(@RequestBody Client client){
-        clientService.create(client);
-        return new ResponseEntity<>(new ServiceMessageDto(777,
-                "Client is created!"), HttpStatus.CREATED);
+        LocalDateTime requestTime = LocalDateTime.now();
+        Client clientCreated = clientService.create(client);
+        ServiceMessageDto serviceMessageDto = new ServiceMessageDto(777,
+                "Client is created!");
+        serviceMessageDto.setRequestTime(requestTime);
+        serviceMessageDto.setDto(clientCreated);
+        return new ResponseEntity<>(serviceMessageDto, HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public ResponseEntity<ServiceMessageDto> update(@PathVariable Long id, @RequestBody Client client){
-        clientService.update(id, client);
+    @PutMapping(headers = "Accept=application/json")
+    public ResponseEntity<ServiceMessageDto> update( @RequestBody Client client){
+        clientService.update(client);
         return new ResponseEntity<>(new ServiceMessageDto(555,
-                String.format("Client with id %d is updated!", id)), HttpStatus.ACCEPTED);
+                String.format("Client with id %d is updated!", client.getId())), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")

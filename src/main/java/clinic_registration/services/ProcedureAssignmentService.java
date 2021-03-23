@@ -22,7 +22,7 @@ public class ProcedureAssignmentService {
     }
 
     public void create(ProcedureAssignment procedure) {
-        if(procedure == null){throw new ClinicServiceException("procedure is null", ErrorMessage.UNKNOWN);}
+        if(procedure == null){throw new ClinicServiceException("procedure is null", ErrorMessage.BAD_REQUEST);}
         ProcedureAssignmentEntity appointmentEntity = objectMapper.convertValue(procedure, ProcedureAssignmentEntity.class);
         procedureRepository.save(appointmentEntity);
     }

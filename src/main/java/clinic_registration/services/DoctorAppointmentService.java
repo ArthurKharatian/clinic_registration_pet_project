@@ -22,7 +22,7 @@ public class DoctorAppointmentService {
     }
 
     public void create(DoctorAppointment appointment) {
-        if(appointment == null){throw new ClinicServiceException("appointment is null", ErrorMessage.UNKNOWN);}
+        if(appointment == null){throw new ClinicServiceException("appointment is null", ErrorMessage.BAD_REQUEST);}
         DoctorAppointmentEntity appointmentEntity = objectMapper.convertValue(appointment, DoctorAppointmentEntity.class);
         appointmentRepository.save(appointmentEntity);
     }

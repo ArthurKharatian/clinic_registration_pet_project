@@ -15,6 +15,6 @@ public class ProcedureAssignment {
     private Long id;
     private ClinicProcedure procedure;
     private Client client;
-    private ClinicBrach branch;
+    private ClinicBranch branch;
     private LocalDate visit_date;
 }

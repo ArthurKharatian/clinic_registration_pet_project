@@ -22,7 +22,7 @@ public class AnalyzeAssignmentService {
     }
 
     public void create(AnalyzeAssignment assigment) {
-        if(assigment == null){throw new ClinicServiceException("assigment is null", ErrorMessage.UNKNOWN);}
+        if(assigment == null){throw new ClinicServiceException("assigment is null", ErrorMessage.BAD_REQUEST);}
         AnalyzeAssignmentEntity assignmentEntity = objectMapper.convertValue(assigment, AnalyzeAssignmentEntity.class);
         testRepository.save(assignmentEntity);
     }

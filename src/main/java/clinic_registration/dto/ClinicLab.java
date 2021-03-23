@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class ClinicLab {
     private Long id;
-    private ClinicBrach branch;
+    private ClinicBranch branch;
     private String worker_name;
     private String position_name;
     private String open_time;

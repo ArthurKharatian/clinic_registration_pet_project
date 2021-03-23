@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ClinicBrach {
+public class ClinicBranch {
     private Long id;
     private Admin admin;
     private String name;

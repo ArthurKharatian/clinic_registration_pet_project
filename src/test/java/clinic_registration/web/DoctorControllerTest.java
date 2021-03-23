@@ -22,6 +22,8 @@ import org.springframework.web.context.WebApplicationContext;
 import java.time.LocalDate;
 import java.time.Month;
 
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -72,8 +74,8 @@ public class DoctorControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isCreated())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"code\":777,\"message\":\"Doctor is created!\"}"))
+                .andExpect(jsonPath("$.message").value("Doctor is created!"))
+                .andExpect(jsonPath("$.code").value("777"))
                 .andDo(document(uri.replace("/", "\\")));
     }
     @Test
@@ -82,14 +84,17 @@ public class DoctorControllerTest {
         String uri = "/doctor/all";
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$..name", hasItem(containsString("Watson"))))
+                .andExpect(jsonPath("$..position_name", hasItem(containsString("military"))))
+                .andExpect(jsonPath("$.*", hasSize(greaterThan(0))))
                 .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
     @Transactional
     public void read() throws Exception {
-        String uri = "/doctor/1";
-        mockMvc.perform(get(uri))
+        String uri = "/doctor/{id}";
+        mockMvc.perform(get(uri, "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("John H. Watson"))
@@ -101,26 +106,26 @@ public class DoctorControllerTest {
     public void update() throws Exception {
         String content = objectMapper.writeValueAsString(doctor);
         System.out.println(content);
-        String uri = "/doctor/1";
-        mockMvc.perform(put(uri)
+        String uri = "/doctor/{id}";
+        mockMvc.perform(put(uri, "1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isAccepted())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"code\":555,\"message\":\"Doctor with id 1 is updated!\"}"))
+                .andExpect(jsonPath("$.message").value("Doctor with id 1 is updated!"))
+                .andExpect(jsonPath("$.code").value("555"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
     @Transactional
     public void delete() throws Exception {
-        String uri = "/doctor/1";
-        mockMvc.perform(MockMvcRequestBuilders.delete(uri))
+        String uri = "/doctor/{id}";
+        mockMvc.perform(MockMvcRequestBuilders.delete(uri, "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"code\":666,\"message\":\"Doctor with id 1 is deleted!\"}"))
+                .andExpect(jsonPath("$.message").value("Doctor with id 1 is deleted!"))
+                .andExpect(jsonPath("$.code").value("666"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 }

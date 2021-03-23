@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 public enum ErrorMessage {
 
     UNKNOWN(10001, "Ooops. Unknown exception!", HttpStatus.INTERNAL_SERVER_ERROR),
+    BAD_REQUEST(10001, "Bad request!", HttpStatus.BAD_REQUEST),
     NOT_FOUND(10001, "Can't find!", HttpStatus.NOT_FOUND);
 
 

@@ -1,6 +1,6 @@
 package clinic_registration.web;
 
-import clinic_registration.dto.ClinicBrach;
+import clinic_registration.dto.ClinicBranch;
 import clinic_registration.dto.ClinicLab;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
@@ -20,6 +20,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -32,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @RunWith(SpringRunner.class)
 public class ClinicLabControllerTest {
-    ClinicBrach branch = new ClinicBrach();
+    ClinicBranch branch = new ClinicBranch();
     ClinicLab lab = new ClinicLab();
     {
         branch.setId(1L);
@@ -74,8 +76,8 @@ public class ClinicLabControllerTest {
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"code\":777,\"message\":\"Laboratory is created!\"}"))
+                .andExpect(jsonPath("$.message").value("Laboratory is created!"))
+                .andExpect(jsonPath("$.code").value("777"))
                 .andDo(document(uri.replace("/", "\\")));
     }
     @Test
@@ -84,14 +86,17 @@ public class ClinicLabControllerTest {
         String uri = "/lab/all";
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$..worker_name", hasItem(containsString("Petrovich"))))
+                .andExpect(jsonPath("$..position_name", hasItem(containsString("assistant"))))
+                .andExpect(jsonPath("$.*", hasSize(greaterThan(0))))
                 .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
     @Transactional
     public void read() throws Exception {
-        String uri = "/lab/1";
-        mockMvc.perform(get(uri))
+        String uri = "/lab/{id}";
+        mockMvc.perform(get(uri, "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.worker_name").value("Borisov Aleksandr Petrovich"));
@@ -102,26 +107,26 @@ public class ClinicLabControllerTest {
     public void update() throws Exception {
         String content = objectMapper.writeValueAsString(lab);
         System.out.println(content);
-        String uri = "/lab/1";
-        mockMvc.perform(put(uri)
+        String uri = "/lab/{id}";
+        mockMvc.perform(put(uri, "1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isAccepted())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"code\":555,\"message\":\"Laboratory with id 1 is updated!\"}"))
+                .andExpect(jsonPath("$.message").value("Laboratory with id 1 is updated!"))
+                .andExpect(jsonPath("$.code").value("555"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
     @Transactional
     public void delete() throws Exception {
-        String uri = "/lab/1";
-        mockMvc.perform(MockMvcRequestBuilders.delete(uri))
+        String uri = "/lab/{id}";
+        mockMvc.perform(MockMvcRequestBuilders.delete(uri, "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"code\":666,\"message\":\"Laboratory with id 1 is deleted!\"}"))
+                .andExpect(jsonPath("$.message").value("Laboratory with id 1 is deleted!"))
+                .andExpect(jsonPath("$.code").value("666"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 }

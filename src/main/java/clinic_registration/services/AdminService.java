@@ -7,6 +7,7 @@ import clinic_registration.exceptions.ClinicServiceException;
 import clinic_registration.exceptions.ErrorMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,10 +23,13 @@ public class AdminService {
         this.objectMapper = objectMapper;
     }
 
-    public void create(Admin admin) {
-        if(admin == null){throw new ClinicServiceException("admin is null", ErrorMessage.UNKNOWN);}
+    public Admin create(Admin admin) {
+        if (admin == null) {
+            throw new ClinicServiceException("admin is null", ErrorMessage.BAD_REQUEST);
+        }
         AdminEntity adminEntity = objectMapper.convertValue(admin, AdminEntity.class);
-        adminRepository.save(adminEntity);
+        AdminEntity save = adminRepository.save(adminEntity);
+        return objectMapper.convertValue(save, Admin.class);
     }
 
     public List<Admin> readAll() {
@@ -34,22 +38,23 @@ public class AdminService {
     }
 
     public Admin read(Long id) {
-      AdminEntity adminEntity = adminRepository.findById(id).orElseThrow(()->
-               new ClinicServiceException(String.format("Admin with id %d is not found", id), ErrorMessage.NOT_FOUND));
-      return objectMapper.convertValue(adminEntity, Admin.class);
+        AdminEntity adminEntity = adminRepository.findById(id).orElseThrow(() ->
+                new ClinicServiceException(String.format("Admin with id %d is not found", id), ErrorMessage.NOT_FOUND));
+        return objectMapper.convertValue(adminEntity, Admin.class);
     }
 
-    public void update(Long id, Admin admin) {
-        if (adminRepository.existsById(id)) {
-            admin.setId(id);
-            adminRepository.save(objectMapper.convertValue(admin, AdminEntity.class));
-        } else {
+    public void update(Admin admin) {
+
+        if (!adminRepository.existsById(admin.getId())) {
+            throw new ClinicServiceException(String.format("Admin with id %d is not found", admin.getId()), ErrorMessage.NOT_FOUND);
+        }
+        adminRepository.save(objectMapper.convertValue(admin, AdminEntity.class));
+    }
+
+    public void delete(Long id) {
+        if (!adminRepository.existsById(id)) {
             throw new ClinicServiceException(String.format("Admin with id %d is not found", id), ErrorMessage.NOT_FOUND);
         }
-
-    }
-    public void delete(Long id) {
-            if(!adminRepository.existsById(id)){throw new ClinicServiceException(String.format("Admin with id %d is not found", id), ErrorMessage.NOT_FOUND);}
-            adminRepository.deleteById(id);
+        adminRepository.deleteById(id);
     }
 }

@@ -1,7 +1,7 @@
 package clinic_registration.web;
 
 import clinic_registration.dto.Admin;
-import clinic_registration.dto.ClinicBrach;
+import clinic_registration.dto.ClinicBranch;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Rule;
@@ -14,12 +14,12 @@ import org.springframework.restdocs.JUnitRestDocumentation;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.ConfigurableMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.hamcrest.Matchers.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -34,10 +34,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ClinicBranchControllerTest {
 
     Admin admin = new Admin();
-    ClinicBrach brach = new ClinicBrach();
+    ClinicBranch brach = new ClinicBranch();
     {
         admin.setId(1L);
-
         brach.setId(1L);
         brach.setName("Petrogradsky");
         brach.setAddress("B.P. 110");
@@ -74,8 +73,8 @@ public class ClinicBranchControllerTest {
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"code\":777,\"message\":\"Brach is created!\"}"))
+                .andExpect(jsonPath("$.message").value("Branch is created!"))
+                .andExpect(jsonPath("$.code").value("777"))
                 .andDo(document(uri.replace("/", "\\")));
     }
     @Test
@@ -84,14 +83,17 @@ public class ClinicBranchControllerTest {
         String uri = "/clinic/all";
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$..name", hasItem(containsString("Petrogradsky"))))
+                .andExpect(jsonPath("$..address", hasItem(containsString("B.P. 110"))))
+                .andExpect(jsonPath("$.*", hasSize(greaterThan(0))))
                 .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
     @Transactional
     public void read() throws Exception {
-        String uri = "/clinic/1";
-        mockMvc.perform(get(uri))
+        String uri = "/clinic/{id}";
+        mockMvc.perform(get(uri, "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Petrogradsky"));
@@ -102,26 +104,26 @@ public class ClinicBranchControllerTest {
     public void update() throws Exception {
         String content = objectMapper.writeValueAsString(brach);
         System.out.println(content);
-        String uri = "/clinic/1";
-        mockMvc.perform(put(uri)
+        String uri = "/clinic/{id}";
+        mockMvc.perform(put(uri, "1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isAccepted())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"code\":555,\"message\":\"Brach with id 1 is updated!\"}"))
+                .andExpect(jsonPath("$.message").value("Branch with id 1 is updated!"))
+                .andExpect(jsonPath("$.code").value("555"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
     @Transactional
     public void delete() throws Exception {
-        String uri = "/clinic/1";
-        mockMvc.perform(MockMvcRequestBuilders.delete(uri))
+        String uri = "/clinic/{id}";
+        mockMvc.perform(MockMvcRequestBuilders.delete(uri, "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"code\":666,\"message\":\"Brach with id 1 is deleted!\"}"))
+                .andExpect(jsonPath("$.message").value("Branch with id 1 is deleted!"))
+                .andExpect(jsonPath("$.code").value("666"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 }

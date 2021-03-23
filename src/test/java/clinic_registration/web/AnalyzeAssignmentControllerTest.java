@@ -24,6 +24,8 @@ import org.springframework.web.context.WebApplicationContext;
 import java.time.LocalDate;
 import java.time.Month;
 
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -77,8 +79,8 @@ public class AnalyzeAssignmentControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isCreated())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"code\":777,\"message\":\"Analyze assignment is created!\"}"))
+                .andExpect(jsonPath("$.message").value("Analyze assignment is created!"))
+                .andExpect(jsonPath("$.code").value("777"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 
@@ -88,14 +90,17 @@ public class AnalyzeAssignmentControllerTest {
         String uri = "/signToTest/all";
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$..name", hasItem(containsString("Blood"))))
+                .andExpect(jsonPath("$..visit_date", hasItem(containsString("2022-04-22"))))
+                .andExpect(jsonPath("$.*", hasSize(greaterThan(0))))
                 .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
     @Transactional
     public void read() throws Exception {
-        String uri = "/signToTest/1";
-        mockMvc.perform(get(uri))
+        String uri = "/signToTest/{id}";
+        mockMvc.perform(get(uri, "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Blood test"));
@@ -106,26 +111,26 @@ public class AnalyzeAssignmentControllerTest {
     public void update() throws Exception {
         String content = objectMapper.writeValueAsString(assignment);
         System.out.println(content);
-        String uri = "/signToTest/1";
-        mockMvc.perform(put(uri)
+        String uri = "/signToTest/{id}";
+        mockMvc.perform(put(uri, "1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andDo(print())
                 .andExpect(status().isAccepted())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"code\":555,\"message\":\"Analyze assignment with id 1 is updated!\"}"))
+                .andExpect(jsonPath("$.message").value("Analyze assignment with id 1 is updated!"))
+                .andExpect(jsonPath("$.code").value("555"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
     @Transactional
     public void delete() throws Exception {
-        String uri = "/signToTest/1";
-        mockMvc.perform(MockMvcRequestBuilders.delete(uri))
+        String uri = "/signToTest/{id}";
+        mockMvc.perform(MockMvcRequestBuilders.delete(uri, "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"code\":666,\"message\":\"Analyze assignment with id 1 is deleted!\"}"))
+                .andExpect(jsonPath("$.message").value("Analyze assignment with id 1 is deleted!"))
+                .andExpect(jsonPath("$.code").value("666"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 

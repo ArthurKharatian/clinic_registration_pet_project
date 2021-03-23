@@ -15,7 +15,7 @@ public class DoctorAppointment {
     private Long id;
     private Doctor doctor;
     private Client client;
-    private ClinicBrach branch;
+    private ClinicBranch branch;
     private LocalDate visit_date;
 
 }

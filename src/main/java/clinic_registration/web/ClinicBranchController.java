@@ -1,6 +1,6 @@
 package clinic_registration.web;
 
-import clinic_registration.dto.ClinicBrach;
+import clinic_registration.dto.ClinicBranch;
 import clinic_registration.services.ClinicBranchService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,35 +18,35 @@ public class ClinicBranchController {
     }
 
     @PostMapping
-    public ResponseEntity<ServiceMessageDto> addBranch(@RequestBody ClinicBrach brach){
-        branchService.create(brach);
+    public ResponseEntity<ServiceMessageDto> addBranch(@RequestBody ClinicBranch branch){
+        branchService.create(branch);
         return new ResponseEntity<>(new ServiceMessageDto(777,
-                "Brach is created!"), HttpStatus.CREATED);
+                "Branch is created!"), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public ResponseEntity<ServiceMessageDto> update(@PathVariable Long id, @RequestBody ClinicBrach brach){
-        branchService.update(id, brach);
+    public ResponseEntity<ServiceMessageDto> update(@PathVariable Long id, @RequestBody ClinicBranch branch){
+        branchService.update(id, branch);
         return new ResponseEntity<>(new ServiceMessageDto(555,
-                String.format("Brach with id %d is updated!", id)), HttpStatus.ACCEPTED);
+                String.format("Branch with id %d is updated!", id)), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ServiceMessageDto> delete(@PathVariable("id") Long id){
         branchService.delete(id);
         return new ResponseEntity<>(new ServiceMessageDto(666,
-                String.format("Brach with id %d is deleted!", id)), HttpStatus.OK);
+                String.format("Branch with id %d is deleted!", id)), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<ClinicBrach>> readAll(){
+    public ResponseEntity<List<ClinicBranch>> readAll(){
         return new ResponseEntity<>(branchService.readAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClinicBrach> read(@PathVariable("id") Long id){
-        ClinicBrach brach = branchService.read(id);
-        return new ResponseEntity<>(brach, HttpStatus.OK);
+    public ResponseEntity<ClinicBranch> read(@PathVariable("id") Long id){
+        ClinicBranch branch = branchService.read(id);
+        return new ResponseEntity<>(branch, HttpStatus.OK);
     }
 }
 

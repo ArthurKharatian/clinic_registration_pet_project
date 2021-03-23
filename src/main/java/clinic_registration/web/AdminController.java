@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -20,16 +21,23 @@ public class AdminController {
 
     @PostMapping
     public ResponseEntity<ServiceMessageDto> addAdmin(@RequestBody Admin admin){
-         adminService.create(admin);
-         return new ResponseEntity<>(new ServiceMessageDto(777,
-                 "Admin is created!"), HttpStatus.CREATED);
+        LocalDateTime requestTime = LocalDateTime.now();
+        Admin adminCreated = adminService.create(admin);
+        ServiceMessageDto serviceMessageDto = new ServiceMessageDto(777,
+                "Admin is created!");
+        serviceMessageDto.setRequestTime(requestTime);
+        serviceMessageDto.setDto(adminCreated);
+        return new ResponseEntity<>(serviceMessageDto, HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/{id}", headers = "Accept=application/json")
-    public ResponseEntity<ServiceMessageDto> update(@PathVariable Long id, @RequestBody Admin admin){
-        adminService.update(id, admin);
-        return new ResponseEntity<>(new ServiceMessageDto(555,
-                String.format("Admin with id %d is updated!", id)), HttpStatus.ACCEPTED);
+    @PutMapping( headers = "Accept=application/json")
+    public ResponseEntity<ServiceMessageDto> update( @RequestBody Admin admin){
+        LocalDateTime requestTime = LocalDateTime.now();
+        adminService.update( admin);
+        ServiceMessageDto serviceMessageDto = new ServiceMessageDto(555,
+                String.format("Admin with id %d is updated!", admin.getId()));
+        serviceMessageDto.setRequestTime(requestTime);
+        return new ResponseEntity<>(serviceMessageDto, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
@@ -45,7 +53,7 @@ public class AdminController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Admin> read(@PathVariable("id") Long id){
+    public ResponseEntity<Admin> read(@PathVariable("id") Long id)throws ClinicServiceException{
         Admin admin = adminService.read(id);
         return new ResponseEntity<>(admin, HttpStatus.OK);
     }

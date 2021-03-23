@@ -19,6 +19,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.greaterThan;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -64,8 +66,8 @@ public class ClinicProcedureControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isCreated())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"code\":777,\"message\":\"Procedure is created!\"}"))
+                .andExpect(jsonPath("$.message").value("Procedure is created!"))
+                .andExpect(jsonPath("$.code").value("777"))
                 .andDo(document(uri.replace("/", "\\")));
     }
     @Test
@@ -74,6 +76,8 @@ public class ClinicProcedureControllerTest {
         String uri = "/procedure/all";
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$..name", hasItem(containsString("GYM"))))
+                .andExpect(jsonPath("$.*", hasSize(greaterThan(0))))
                 .andDo(document(uri.replace("/", "\\")));
     }
 
@@ -82,8 +86,8 @@ public class ClinicProcedureControllerTest {
     public void read() throws Exception {
         String content = objectMapper.writeValueAsString(procedure);
         System.out.println(content);
-        String uri = "/procedure/1";
-        mockMvc.perform(get(uri)
+        String uri = "/procedure/{id}";
+        mockMvc.perform(get(uri, "1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isOk())
@@ -96,24 +100,24 @@ public class ClinicProcedureControllerTest {
     public void update() throws Exception {
         String content = objectMapper.writeValueAsString(procedure);
         System.out.println(content);
-        String uri = "/procedure/1";
-        mockMvc.perform(put(uri)
+        String uri = "/procedure/{id}";
+        mockMvc.perform(put(uri, "1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(content))
                 .andExpect(status().isAccepted())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"code\":555,\"message\":\"Procedure with id 1 is updated!\"}"))
+                .andExpect(jsonPath("$.message").value("Procedure with id 1 is updated!"))
+                .andExpect(jsonPath("$.code").value("555"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 
     @Test
     @Transactional
     public void delete() throws Exception {
-        String uri = "/procedure/1";
-        mockMvc.perform(MockMvcRequestBuilders.delete(uri))
+        String uri = "/procedure/{id}";
+        mockMvc.perform(MockMvcRequestBuilders.delete(uri, "1"))
                 .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("{\"code\":666,\"message\":\"Procedure with id 1 is deleted!\"}"))
+                .andExpect(jsonPath("$.message").value("Procedure with id 1 is deleted!"))
+                .andExpect(jsonPath("$.code").value("666"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 }

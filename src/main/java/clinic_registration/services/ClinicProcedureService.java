@@ -23,7 +23,7 @@ public class ClinicProcedureService {
     }
 
     public void create(ClinicProcedure procedure) {
-        if(procedure == null){throw new ClinicServiceException("procedure is null", ErrorMessage.UNKNOWN);}
+        if(procedure == null){throw new ClinicServiceException("procedure is null", ErrorMessage.BAD_REQUEST);}
         ClinicProcedureEntity procedureEntity = objectMapper.convertValue(procedure, ClinicProcedureEntity.class);
         procedureRepository.save(procedureEntity);
     }
