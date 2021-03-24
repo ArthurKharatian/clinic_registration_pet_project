@@ -22,12 +22,6 @@ public class AdminService {
     private final ObjectMapper objectMapper;
     private final SessionFactory sessionFactory;
 
-//    public AdminService(AdminRepository adminRepository, ObjectMapper objectMapper) {
-//        this.adminRepository = adminRepository;
-//        this.objectMapper = objectMapper;
-//
-//    }
-
     public Admin create(Admin admin) {
         if (admin == null) {
             throw new ClinicServiceException("admin is null", ErrorMessage.BAD_REQUEST);
@@ -55,7 +49,7 @@ public class AdminService {
 
         if (!adminRepository.existsById(admin.getId())) {
             throw new ClinicServiceException(String.format("Admin with id %d is not found", admin.getId()),
-                                             ErrorMessage.NOT_FOUND);
+                    ErrorMessage.NOT_FOUND);
         }
         AdminEntity save = adminRepository.save(objectMapper.convertValue(admin, AdminEntity.class));
         session.update(save);
