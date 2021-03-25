@@ -1,19 +1,14 @@
 package clinic_registration.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
 public class ClinicBranch {
     private Long id;
     private Admin admin;
     private String name;
     private String address;
-    private String open_time;
-    private String close_time;
+    private String openTime;
+    private String closeTime;
 }

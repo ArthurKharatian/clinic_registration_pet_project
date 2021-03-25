@@ -1,29 +1,27 @@
 package clinic_registration.db.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@Data
 @Entity
-@Table(schema = "public", name = "procedure_appointment")
-@Getter
-@Setter
 @NoArgsConstructor
-@ToString
+@Table(schema = "public", name = "procedure_appointment")
 public class ProcedureAssignmentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDate visit_date;
+    @Column(name = "visit_date")
+    private LocalDate visitDate;
 
     @OneToOne(fetch = FetchType.EAGER)
     private ClinicProcedureEntity procedure;
+
     @OneToOne(fetch = FetchType.EAGER)
     private ClientEntity client;
+
     @OneToOne(fetch = FetchType.EAGER)
     private ClinicBranchEntity branch;
 }

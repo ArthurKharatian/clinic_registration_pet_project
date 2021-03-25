@@ -50,7 +50,7 @@ public class DoctorAppointmentControllerTest {
         appointment.setClient(client);
         appointment.setDoctor(doctor);
         appointment.setBranch(branch);
-        appointment.setVisit_date(LocalDate.of(2022, Month.APRIL, 22));
+        appointment.setVisitDate(LocalDate.of(2022, Month.APRIL, 22));
     }
 
     MockMvc mockMvc;

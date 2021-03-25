@@ -1,22 +1,16 @@
 package clinic_registration.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
-
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
 public class Doctor {
     private Long id;
     private String name;
-    private String position_name;
-    private String add_position_name;
+    private String positionName;
+    private String addPositionName;
     private String email;
-    private Integer phone_number;
+    private Integer phoneNumber;
     private LocalDate birthdate;
 }

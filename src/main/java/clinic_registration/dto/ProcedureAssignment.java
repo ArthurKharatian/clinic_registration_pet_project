@@ -1,20 +1,14 @@
 package clinic_registration.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
-
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
 public class ProcedureAssignment {
     private Long id;
     private ClinicProcedure procedure;
     private Client client;
     private ClinicBranch branch;
-    private LocalDate visit_date;
+    private LocalDate visitDate;
 }

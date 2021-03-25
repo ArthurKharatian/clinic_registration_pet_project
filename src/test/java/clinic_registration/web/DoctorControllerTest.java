@@ -38,10 +38,10 @@ public class DoctorControllerTest {
     {
         doctor.setId(1L);
         doctor.setName("John H. Watson");
-        doctor.setPosition_name("military doctor");
-        doctor.setAdd_position_name("medical doctor");
+        doctor.setPositionName("military doctor");
+        doctor.setAddPositionName("medical doctor");
         doctor.setEmail("watson@gmail.com");
-        doctor.setPhone_number(911);
+        doctor.setPhoneNumber(911);
         doctor.setBirthdate(LocalDate.of(1850, Month.JULY, 7));
     }
 

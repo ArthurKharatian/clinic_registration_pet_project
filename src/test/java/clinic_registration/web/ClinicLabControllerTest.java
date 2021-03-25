@@ -37,10 +37,10 @@ public class ClinicLabControllerTest {
     {
         branch.setId(1L);
         lab.setId(1L);
-        lab.setWorker_name("Borisov Aleksandr Petrovich");
-        lab.setPosition_name("Laboratory assistant");
-        lab.setOpen_time("7:00");
-        lab.setClose_time("16:00");
+        lab.setWorkerName("Borisov Aleksandr Petrovich");
+        lab.setPositionName("Laboratory assistant");
+        lab.setOpenTime("7:00");
+        lab.setCloseTime("16:00");
         lab.setBranch(branch);
     }
 

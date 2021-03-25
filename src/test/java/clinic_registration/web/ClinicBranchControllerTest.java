@@ -40,8 +40,8 @@ public class ClinicBranchControllerTest {
         brach.setId(1L);
         brach.setName("Petrogradsky");
         brach.setAddress("B.P. 110");
-        brach.setOpen_time("9:00");
-        brach.setClose_time("21:00");
+        brach.setOpenTime("9:00");
+        brach.setCloseTime("21:00");
         brach.setAdmin(admin);
     }
 

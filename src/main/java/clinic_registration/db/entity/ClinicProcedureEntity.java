@@ -1,18 +1,13 @@
 package clinic_registration.db.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
+@Data
 @Entity
-@Table(schema = "public", name = "clinic_procedure")
-@Getter
-@Setter
 @NoArgsConstructor
-@ToString
+@Table(schema = "public", name = "clinic_procedure")
 public class ClinicProcedureEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

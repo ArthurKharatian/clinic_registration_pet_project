@@ -1,26 +1,29 @@
 package clinic_registration.db.entity;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
+@Data
 @Entity
-@Table(schema = "public", name = "clinic_lab")
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Table(schema = "public", name = "clinic_lab")
 public class ClinicLabEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String worker_name;
-    private String position_name;
-    private String open_time;
-    private String close_time;
+
+    @Column(name = "worker_name")
+    private String workerName;
+
+    @Column(name = "position_name")
+    private String positionName;
+
+    @Column(name = "open_time")
+    private String openTime;
+
+    @Column(name = "close_time")
+    private String closeTime;
 
     @OneToOne(fetch = FetchType.EAGER)
     private ClinicBranchEntity branch;

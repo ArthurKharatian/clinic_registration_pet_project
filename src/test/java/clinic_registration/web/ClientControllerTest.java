@@ -41,10 +41,10 @@ public class ClientControllerTest {
     {
         client.setId(1L);
         client.setName("Matvienko Valentina Ivanovna");
-        client.setClient_gender(ClientGender.FEMALE);
+        client.setClientGender(ClientGender.FEMALE);
         client.setBirthdate(LocalDate.of(1949, Month.APRIL, 7));
         client.setEmail("mvi@gov.ru");
-        client.setPhone_number(777555);
+        client.setPhoneNumber(777555);
     }
 
     MockMvc mockMvc;

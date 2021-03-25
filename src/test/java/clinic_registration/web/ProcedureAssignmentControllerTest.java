@@ -50,7 +50,7 @@ public class ProcedureAssignmentControllerTest {
         assignment.setProcedure(procedure);
         assignment.setBranch(branch);
         assignment.setClient(client);
-        assignment.setVisit_date(LocalDate.of(2122, Month.SEPTEMBER, 1));
+        assignment.setVisitDate(LocalDate.of(2122, Month.SEPTEMBER, 1));
     }
     MockMvc mockMvc;
     @Autowired

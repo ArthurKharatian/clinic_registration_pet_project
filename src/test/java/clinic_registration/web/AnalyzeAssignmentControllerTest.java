@@ -45,7 +45,7 @@ public class AnalyzeAssignmentControllerTest {
 
         assignment.setId(1L);
         assignment.setName("Blood test");
-        assignment.setVisit_date(LocalDate.of(2022, Month.APRIL, 22));
+        assignment.setVisitDate(LocalDate.of(2022, Month.APRIL, 22));
         assignment.setClient(client);
         assignment.setLab(lab);
     }

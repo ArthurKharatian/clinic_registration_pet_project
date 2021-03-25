@@ -1,20 +1,14 @@
 package clinic_registration.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
-
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
 public class AnalyzeAssignment {
     private Long id;
     private String name;
     private ClinicLab lab;
     private Client client;
-    private LocalDate visit_date;
+    private LocalDate visitDate;
 }

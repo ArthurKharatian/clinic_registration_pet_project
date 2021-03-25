@@ -1,20 +1,15 @@
 package clinic_registration.db.entity;
 
 import clinic_registration.dto.ClientGender;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@Data
 @Entity
-@Table(schema = "public", name = "client")
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
+@Table(schema = "public", name = "client")
 public class ClientEntity {
 
     @Id
@@ -23,7 +18,11 @@ public class ClientEntity {
 
     private String name;
     private LocalDate birthdate;
-    private int phone_number;
+
+    @Column(name = "phone_number")
+    private int phoneNumber;
     private String email;
-    private ClientGender client_gender;
+
+    @Column(name = "client_gender")
+    private ClientGender clientGender;
 }

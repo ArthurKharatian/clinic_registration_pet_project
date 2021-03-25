@@ -38,8 +38,8 @@ public class AdminControllerTest {
         admin.setId(1L);
         admin.setName("Amigo");
         admin.setEmail("Amigo@mail.ag");
-        admin.setStaff_name("SysAdmin");
-        admin.setPhone_number(112);
+        admin.setStaffName("SysAdmin");
+        admin.setPhoneNumber(112);
     }
 
     MockMvc mockMvc;
