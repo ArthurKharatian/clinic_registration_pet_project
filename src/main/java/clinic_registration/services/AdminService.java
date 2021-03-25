@@ -50,7 +50,7 @@ public class AdminService {
         }
         adminRepository.save(objectMapper.convertValue(admin, AdminEntity.class));
     }
-
+    @Transactional
     public void delete(Long id) {
         if (!adminRepository.existsById(id)) {
             throw new ClinicServiceException(String.format(EXC_MESSAGE, id), ErrorMessage.NOT_FOUND);

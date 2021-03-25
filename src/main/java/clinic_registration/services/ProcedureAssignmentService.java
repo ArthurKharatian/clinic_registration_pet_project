@@ -7,6 +7,7 @@ import clinic_registration.exceptions.ClinicServiceException;
 import clinic_registration.exceptions.ErrorMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,13 +39,14 @@ public class ProcedureAssignmentService {
                 new ClinicServiceException(String.format(EXC_MESSAGE, id), ErrorMessage.NOT_FOUND));
         return objectMapper.convertValue(procedureEntity, ProcedureAssignment.class);
     }
-
+    @Transactional
     public void update(ProcedureAssignment procedure) {
         if (!procedureRepository.existsById(procedure.getId())) {
             throw new ClinicServiceException(String.format(EXC_MESSAGE, procedure.getId()), ErrorMessage.NOT_FOUND);
         }
         procedureRepository.save(objectMapper.convertValue(procedure, ProcedureAssignmentEntity.class));
     }
+    @Transactional
     public void delete(Long id) {
         if(!procedureRepository.existsById(id)){throw new ClinicServiceException(String.format(EXC_MESSAGE, id), ErrorMessage.NOT_FOUND);}
         procedureRepository.deleteById(id);
