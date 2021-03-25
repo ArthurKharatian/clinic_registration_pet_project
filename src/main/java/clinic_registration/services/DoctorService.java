@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class DoctorService {
     private final DoctorRepository doctorRepository;
     private final ObjectMapper objectMapper;
-
+    private static final String EXC_MESSAGE = "Doctor with id %d is not found";
 
     public DoctorService(DoctorRepository doctorRepository, ObjectMapper objectMapper) {
         this.doctorRepository = doctorRepository;
@@ -35,20 +35,20 @@ public class DoctorService {
 
     public Doctor read(Long id) {
         DoctorEntity doctorEntity = doctorRepository.findById(id).orElseThrow(()->
-                new ClinicServiceException(String.format("Doctor with id %d is not found", id), ErrorMessage.NOT_FOUND));
+                new ClinicServiceException(String.format(EXC_MESSAGE, id), ErrorMessage.NOT_FOUND));
         return objectMapper.convertValue(doctorEntity, Doctor.class);
     }
 
     public void update(Doctor doctor) {
         if (!doctorRepository.existsById(doctor.getId())) {
-            throw new ClinicServiceException(String.format("Doctor with id %d is not found", doctor.getId()), ErrorMessage.NOT_FOUND);
+            throw new ClinicServiceException(String.format(EXC_MESSAGE, doctor.getId()), ErrorMessage.NOT_FOUND);
         }
         doctorRepository.save(objectMapper.convertValue(doctor, DoctorEntity.class));
 
 
     }
     public void delete(Long id) {
-        if(!doctorRepository.existsById(id)){throw new ClinicServiceException(String.format("Doctor with id %d is not found", id), ErrorMessage.NOT_FOUND);}
+        if(!doctorRepository.existsById(id)){throw new ClinicServiceException(String.format(EXC_MESSAGE, id), ErrorMessage.NOT_FOUND);}
         doctorRepository.deleteById(id);
     }
 }

@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class ClinicLabService {
     private final ClinicLabRepository labRepository;
     private final ObjectMapper objectMapper;
-
+    private static final String EXC_MESSAGE = "The laboratory with id %d is not found";
 
     public ClinicLabService(ClinicLabRepository labRepository, ObjectMapper objectMapper) {
         this.labRepository = labRepository;
@@ -37,20 +37,20 @@ public class ClinicLabService {
 
     public ClinicLab read(Long id) {
         ClinicLabEntity labEntity = labRepository.findById(id).orElseThrow(() ->
-                new ClinicServiceException(String.format("The laboratory with id %d is not found", id), ErrorMessage.NOT_FOUND));
+                new ClinicServiceException(String.format(EXC_MESSAGE, id), ErrorMessage.NOT_FOUND));
         return objectMapper.convertValue(labEntity, ClinicLab.class);
     }
 
     public void update(ClinicLab lab) {
         if (!labRepository.existsById(lab.getId())) {
-            throw new ClinicServiceException(String.format("The laboratory with id %d is not found", lab.getId()), ErrorMessage.NOT_FOUND);
+            throw new ClinicServiceException(String.format(EXC_MESSAGE, lab.getId()), ErrorMessage.NOT_FOUND);
         }
         labRepository.save(objectMapper.convertValue(lab, ClinicLabEntity.class));
     }
 
     public void delete(Long id) {
         if (!labRepository.existsById(id)) {
-            throw new ClinicServiceException(String.format("The laboratory with id %d is not found", id), ErrorMessage.NOT_FOUND);
+            throw new ClinicServiceException(String.format(EXC_MESSAGE, id), ErrorMessage.NOT_FOUND);
         }
         labRepository.deleteById(id);
     }

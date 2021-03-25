@@ -21,6 +21,7 @@ public class AdminService {
     private final AdminRepository adminRepository;
     private final ObjectMapper objectMapper;
     private final SessionFactory sessionFactory;
+    private static final String EXC_MESSAGE = "Admin with id %d is not found";
 
     public Admin create(Admin admin) {
         if (admin == null) {
@@ -38,7 +39,7 @@ public class AdminService {
 
     public Admin read(Long id) {
         AdminEntity adminEntity = adminRepository.findById(id).orElseThrow(() ->
-                new ClinicServiceException(String.format("Admin with id %d is not found", id), ErrorMessage.NOT_FOUND));
+                new ClinicServiceException(String.format(EXC_MESSAGE, id), ErrorMessage.NOT_FOUND));
         return objectMapper.convertValue(adminEntity, Admin.class);
     }
 
@@ -48,7 +49,7 @@ public class AdminService {
         Transaction transaction = session.beginTransaction();
 
         if (!adminRepository.existsById(admin.getId())) {
-            throw new ClinicServiceException(String.format("Admin with id %d is not found", admin.getId()),
+            throw new ClinicServiceException(String.format(EXC_MESSAGE, admin.getId()),
                     ErrorMessage.NOT_FOUND);
         }
         AdminEntity save = adminRepository.save(objectMapper.convertValue(admin, AdminEntity.class));
@@ -61,7 +62,7 @@ public class AdminService {
 
     public void delete(Long id) {
         if (!adminRepository.existsById(id)) {
-            throw new ClinicServiceException(String.format("Admin with id %d is not found", id), ErrorMessage.NOT_FOUND);
+            throw new ClinicServiceException(String.format(EXC_MESSAGE, id), ErrorMessage.NOT_FOUND);
         }
         adminRepository.deleteById(id);
     }

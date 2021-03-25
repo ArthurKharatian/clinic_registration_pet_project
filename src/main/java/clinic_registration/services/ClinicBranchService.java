@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class ClinicBranchService {
     private final ClinicBranchRepository branchRepository;
     private final ObjectMapper objectMapper;
-
+    private static final String EXC_MESSAGE = "The branch with id %d is not found";
 
     public ClinicBranchService(ClinicBranchRepository branchRepository, ObjectMapper objectMapper) {
         this.branchRepository = branchRepository;
@@ -35,19 +35,19 @@ public class ClinicBranchService {
 
     public ClinicBranch read(Long id) {
         ClinicBranchEntity branchEntity = branchRepository.findById(id).orElseThrow(()->
-                new ClinicServiceException(String.format("The branch with id %d is not found", id), ErrorMessage.NOT_FOUND));
+                new ClinicServiceException(String.format(EXC_MESSAGE, id), ErrorMessage.NOT_FOUND));
         return objectMapper.convertValue(branchEntity, ClinicBranch.class);
     }
 
     public void update(ClinicBranch brach) {
         if (!branchRepository.existsById(brach.getId())) {
-            throw new ClinicServiceException(String.format("The branch with id %d is not found", brach.getId()), ErrorMessage.NOT_FOUND);
+            throw new ClinicServiceException(String.format(EXC_MESSAGE, brach.getId()), ErrorMessage.NOT_FOUND);
         }
         branchRepository.save(objectMapper.convertValue(brach, ClinicBranchEntity.class));
 
     }
     public void delete(Long id) {
-        if(!branchRepository.existsById(id)){throw new ClinicServiceException(String.format("The branch with id %d is not found", id), ErrorMessage.NOT_FOUND);}
+        if(!branchRepository.existsById(id)){throw new ClinicServiceException(String.format(EXC_MESSAGE, id), ErrorMessage.NOT_FOUND);}
         branchRepository.deleteById(id);
     }
 }

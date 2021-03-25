@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public class AnalyzeAssignmentService {
     private final AnalyzeAssignmentEntityRepository testRepository;
     private final ObjectMapper objectMapper;
+    private static final String EXC_MESSAGE = "The assignment with id %d is not found";
 
     public AnalyzeAssignmentService(AnalyzeAssignmentEntityRepository testRepository, ObjectMapper objectMapper) {
         this.testRepository = testRepository;
@@ -34,20 +35,20 @@ public class AnalyzeAssignmentService {
 
     public AnalyzeAssignment read(Long id) {
         AnalyzeAssignmentEntity assignmentEntity = testRepository.findById(id).orElseThrow(()->
-                new ClinicServiceException(String.format("The assignment with id %d is not found", id), ErrorMessage.NOT_FOUND));
+                new ClinicServiceException(String.format(EXC_MESSAGE, id), ErrorMessage.NOT_FOUND));
         return objectMapper.convertValue(assignmentEntity, AnalyzeAssignment.class);
     }
 
     public void update(AnalyzeAssignment assignment) {
 
         if (!testRepository.existsById(assignment.getId())) {
-            throw new ClinicServiceException(String.format("The assignment with id %d is not found", assignment.getId()), ErrorMessage.NOT_FOUND);
+            throw new ClinicServiceException(String.format(EXC_MESSAGE, assignment.getId()), ErrorMessage.NOT_FOUND);
         }
         testRepository.save(objectMapper.convertValue(assignment, AnalyzeAssignmentEntity.class));
 
     }
     public void delete(Long id) {
-        if(!testRepository.existsById(id)){throw new ClinicServiceException(String.format("The assignment with id %d is not found", id), ErrorMessage.NOT_FOUND);}
+        if(!testRepository.existsById(id)){throw new ClinicServiceException(String.format(EXC_MESSAGE, id), ErrorMessage.NOT_FOUND);}
         testRepository.deleteById(id);
     }
 }

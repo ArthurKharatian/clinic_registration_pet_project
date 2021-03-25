@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 public class DoctorAppointmentService {
     private final DoctorAppointmentRepository appointmentRepository;
     private final ObjectMapper objectMapper;
+    private static final String EXC_MESSAGE = "The appointment with id %d is not found";
+
 
     public DoctorAppointmentService(DoctorAppointmentRepository appointmentRepository, ObjectMapper objectMapper) {
         this.appointmentRepository = appointmentRepository;
@@ -34,19 +36,19 @@ public class DoctorAppointmentService {
 
     public DoctorAppointment read(Long id) {
         DoctorAppointmentEntity appointmentEntity = appointmentRepository.findById(id).orElseThrow(()->
-                new ClinicServiceException(String.format("The appointment with id %d is not found", id), ErrorMessage.NOT_FOUND));
+                new ClinicServiceException(String.format(EXC_MESSAGE, id), ErrorMessage.NOT_FOUND));
         return objectMapper.convertValue(appointmentEntity, DoctorAppointment.class);
     }
 
     public void update(DoctorAppointment appointment) {
         if (!appointmentRepository.existsById(appointment.getId())) {
-            throw new ClinicServiceException(String.format("The appointment with id %d is not found", appointment.getId()), ErrorMessage.NOT_FOUND);
+            throw new ClinicServiceException(String.format(EXC_MESSAGE, appointment.getId()), ErrorMessage.NOT_FOUND);
         }
         appointmentRepository.save(objectMapper.convertValue(appointment, DoctorAppointmentEntity.class));
 
     }
     public void delete(Long id) {
-        if(!appointmentRepository.existsById(id)){throw new ClinicServiceException(String.format("The appointment with id %d is not found", id), ErrorMessage.NOT_FOUND);}
+        if(!appointmentRepository.existsById(id)){throw new ClinicServiceException(String.format(EXC_MESSAGE, id), ErrorMessage.NOT_FOUND);}
         appointmentRepository.deleteById(id);
     }
 }

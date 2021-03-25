@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public class ClientService {
     private final ClientRepository clientRepository;
     private final ObjectMapper objectMapper;
+    private static final String EXC_MESSAGE = "Client with id %d is not found";
 
 
     public ClientService(ClientRepository clientRepository, ObjectMapper objectMapper) {
@@ -36,18 +37,18 @@ public class ClientService {
 
     public Client read(Long id) {
         ClientEntity clientEntity = clientRepository.findById(id).orElseThrow(()->
-                new ClinicServiceException(String.format("Client with id %d is not found", id), ErrorMessage.NOT_FOUND));
+                new ClinicServiceException(String.format(EXC_MESSAGE, id), ErrorMessage.NOT_FOUND));
         return objectMapper.convertValue(clientEntity, Client.class);
     }
 
     public void update(Client client) {
         if (!clientRepository.existsById(client.getId())) {
-            throw new ClinicServiceException(String.format("Client with id %d is not found", client.getId()), ErrorMessage.NOT_FOUND);
+            throw new ClinicServiceException(String.format(EXC_MESSAGE, client.getId()), ErrorMessage.NOT_FOUND);
         }
         clientRepository.save(objectMapper.convertValue(client, ClientEntity.class));
     }
     public void delete(Long id) {
-        if(!clientRepository.existsById(id)){throw new ClinicServiceException(String.format("Client with id %d is not found", id), ErrorMessage.NOT_FOUND);}
+        if(!clientRepository.existsById(id)){throw new ClinicServiceException(String.format(EXC_MESSAGE, id), ErrorMessage.NOT_FOUND);}
         clientRepository.deleteById(id);
     }
 

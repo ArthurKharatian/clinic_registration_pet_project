@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public class ClinicProcedureService {
     private final ClinicProcedureRepository procedureRepository;
     private final ObjectMapper objectMapper;
+    private static final String EXC_MESSAGE = "The procedure with id %d is not found";
 
 
     public ClinicProcedureService(ClinicProcedureRepository procedureRepository, ObjectMapper objectMapper) {
@@ -35,19 +36,19 @@ public class ClinicProcedureService {
 
     public ClinicProcedure read(Long id) {
         ClinicProcedureEntity procedureEntity = procedureRepository.findById(id).orElseThrow(()->
-                new ClinicServiceException(String.format("The procedure with id %d is not found", id), ErrorMessage.NOT_FOUND));
+                new ClinicServiceException(String.format(EXC_MESSAGE, id), ErrorMessage.NOT_FOUND));
         return objectMapper.convertValue(procedureEntity, ClinicProcedure.class);
     }
 
     public void update(ClinicProcedure procedure) {
         if (!procedureRepository.existsById(procedure.getId())) {
-            throw new ClinicServiceException(String.format("The procedure with id %d is not found", procedure.getId()), ErrorMessage.NOT_FOUND);
+            throw new ClinicServiceException(String.format(EXC_MESSAGE, procedure.getId()), ErrorMessage.NOT_FOUND);
         }
         procedureRepository.save(objectMapper.convertValue(procedure, ClinicProcedureEntity.class));
 
     }
     public void delete(Long id) {
-        if(!procedureRepository.existsById(id)){throw new ClinicServiceException(String.format("The procedure with id %d is not found", id), ErrorMessage.NOT_FOUND);}
+        if(!procedureRepository.existsById(id)){throw new ClinicServiceException(String.format(EXC_MESSAGE, id), ErrorMessage.NOT_FOUND);}
         procedureRepository.deleteById(id);
     }
 
