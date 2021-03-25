@@ -7,10 +7,8 @@ import clinic_registration.exceptions.ClinicServiceException;
 import clinic_registration.exceptions.ErrorMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +18,6 @@ import java.util.stream.Collectors;
 public class AdminService {
     private final AdminRepository adminRepository;
     private final ObjectMapper objectMapper;
-    private final SessionFactory sessionFactory;
     private static final String EXC_MESSAGE = "Admin with id %d is not found";
 
     public Admin create(Admin admin) {
@@ -43,21 +40,15 @@ public class AdminService {
         return objectMapper.convertValue(adminEntity, Admin.class);
     }
 
-    public void update(Admin admin) {
 
-        Session session = sessionFactory.openSession();
-        Transaction transaction = session.beginTransaction();
+    @Transactional
+    public void update(Admin admin) {
 
         if (!adminRepository.existsById(admin.getId())) {
             throw new ClinicServiceException(String.format(EXC_MESSAGE, admin.getId()),
                     ErrorMessage.NOT_FOUND);
         }
-        AdminEntity save = adminRepository.save(objectMapper.convertValue(admin, AdminEntity.class));
-        session.update(save);
-        session.flush();
-        transaction.commit();
-
-        session.close();
+        adminRepository.save(objectMapper.convertValue(admin, AdminEntity.class));
     }
 
     public void delete(Long id) {

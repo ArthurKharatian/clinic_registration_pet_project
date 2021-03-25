@@ -8,4 +8,5 @@ import java.util.List;
 public interface AdminRepository extends PagingAndSortingRepository<AdminEntity, Long> {
     List<AdminEntity> findAll();
     void deleteById(Long id);
+   List<AdminEntity> findAllByName(String name);
 }

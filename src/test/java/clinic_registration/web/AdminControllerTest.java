@@ -1,7 +1,11 @@
 package clinic_registration.web;
 
+import clinic_registration.db.entity.AdminEntity;
+import clinic_registration.db.repository.AdminRepository;
 import clinic_registration.dto.Admin;
+import clinic_registration.services.AdminService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -17,6 +21,8 @@ import org.springframework.test.web.servlet.setup.ConfigurableMockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -129,5 +135,27 @@ public class AdminControllerTest {
                 .andExpect(jsonPath("$.code").value("666"))
                 .andDo(document(uri.replace("/", "\\")));
     }
+
+
+//    @Autowired
+//    private AdminService adminService;
+//    @Autowired
+//    private AdminRepository adminRepository;
+
+//    @Test
+//    public void someTest() throws Exception {
+//
+//        Thread updateThread = new Thread(() -> adminService.update(admin));
+//        Thread deleteThread = new Thread(() -> adminService.delete(admin.getId()));
+//
+//        deleteThread.start();
+//        updateThread.start();
+//        deleteThread.join();
+//        updateThread.join();
+//
+//        List<AdminEntity> allByName = adminRepository.findAllByName(admin.getName());
+//        System.out.println(allByName);
+//        Assert.assertTrue(allByName.isEmpty());
+//    }
 
 }
