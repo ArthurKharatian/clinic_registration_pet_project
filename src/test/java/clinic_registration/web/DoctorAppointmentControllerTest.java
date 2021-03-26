@@ -94,7 +94,7 @@ public class DoctorAppointmentControllerTest {
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$..client.name", hasItem(containsString("Valentina"))))
-                .andExpect(jsonPath("$..visit_date", hasItem(containsString("2022-04-22"))))
+                .andExpect(jsonPath("$..visitDate", hasItem(containsString("2022-04-22"))))
                 .andExpect(jsonPath("$.*", hasSize(greaterThan(0))))
                 .andDo(document(uri.replace("/", "\\")));
     }
@@ -106,7 +106,7 @@ public class DoctorAppointmentControllerTest {
         mockMvc.perform(get(uri, "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.visit_date").value("2022-04-22"))
+                .andExpect(jsonPath("$.visitDate").value("2022-04-22"))
                 .andDo(document(uri.replace("/", "\\")));
     }
 

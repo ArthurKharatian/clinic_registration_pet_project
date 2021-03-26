@@ -89,7 +89,7 @@ public class AnalyzeAssignmentControllerTest {
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$..name", hasItem(containsString("Blood"))))
-                .andExpect(jsonPath("$..visit_date", hasItem(containsString("2022-04-22"))))
+                .andExpect(jsonPath("$..visitDate", hasItem(containsString("2022-04-22"))))
                 .andExpect(jsonPath("$.*", hasSize(greaterThan(0))))
                 .andDo(document(uri.replace("/", "\\")));
     }

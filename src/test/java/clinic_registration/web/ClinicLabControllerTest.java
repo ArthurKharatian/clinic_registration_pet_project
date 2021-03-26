@@ -84,8 +84,8 @@ public class ClinicLabControllerTest {
         String uri = "/lab/all";
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$..worker_name", hasItem(containsString("Petrovich"))))
-                .andExpect(jsonPath("$..position_name", hasItem(containsString("assistant"))))
+                .andExpect(jsonPath("$..workerName", hasItem(containsString("Petrovich"))))
+                .andExpect(jsonPath("$..positionName", hasItem(containsString("assistant"))))
                 .andExpect(jsonPath("$.*", hasSize(greaterThan(0))))
                 .andDo(document(uri.replace("/", "\\")));
     }
@@ -97,7 +97,7 @@ public class ClinicLabControllerTest {
         mockMvc.perform(get(uri, "1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.worker_name").value("Borisov Aleksandr Petrovich"));
+                .andExpect(jsonPath("$.workerName").value("Borisov Aleksandr Petrovich"));
     }
 
     @Test

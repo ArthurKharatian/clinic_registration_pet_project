@@ -83,7 +83,7 @@ public class DoctorControllerTest {
         mockMvc.perform(get(uri))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$..name", hasItem(containsString("Watson"))))
-                .andExpect(jsonPath("$..position_name", hasItem(containsString("military"))))
+                .andExpect(jsonPath("$..positionName", hasItem(containsString("military"))))
                 .andExpect(jsonPath("$.*", hasSize(greaterThan(0))))
                 .andDo(document(uri.replace("/", "\\")));
     }
