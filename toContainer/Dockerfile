@@ -4,4 +4,4 @@ VOLUME /tmp
 
 ADD /target/clinic-registration-spring-boot.jar clinic-registration-spring-boot.jar
 
-ENTRYPOINT ["java", "-jar", "/clinic-registration-spring-boot.jar"]
+ENTRYPOINT ["java",  "-jar", "/clinic-registration-spring-boot.jar"]
