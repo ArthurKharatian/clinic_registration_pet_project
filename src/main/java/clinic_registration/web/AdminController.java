@@ -2,6 +2,7 @@ package clinic_registration.web;
 
 
 import clinic_registration.dto.Admin;
+import clinic_registration.dto.ServiceMessageDto;
 import clinic_registration.exceptions.ClinicServiceException;
 import clinic_registration.services.AdminService;
 import org.springframework.http.HttpStatus;

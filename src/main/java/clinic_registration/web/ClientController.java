@@ -2,6 +2,7 @@ package clinic_registration.web;
 
 
 import clinic_registration.dto.Client;
+import clinic_registration.dto.ServiceMessageDto;
 import clinic_registration.services.ClientService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

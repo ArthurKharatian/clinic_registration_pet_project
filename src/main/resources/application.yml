@@ -1,16 +1,20 @@
 spring:
   jpa:
     database: postgresql
-    show-sql: true
+    show-sql: false
     generate-ddl: true
     hibernate:
-      ddl-auto: #create-drop
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
   flyway:
     baselineOnMigrate: true
-    locations: filesystem:db/migration
+    enabled: false
+#enabled: true -> fails
   datasource:
     url: jdbc:postgresql://localhost:5432/clinic_registration
     username: postgres
@@ -21,4 +25,13 @@ server:
   error:
     include-message: always
 
+management:
+  endpoint:
+    health:
+      show-details: always
 
+auth:
+  header: Authorization
+  token: >-
+    Basic
+    YTAzZDZjZTYtMmQxNS00MjYzLWEyNWItMTAzODFhYTY2ZTRicGFzc3dvcmQ6ZDhiOTg1MTMtMjljOC00ZWFlLWI5NjgtZWNmZGNmNzQ3MThk

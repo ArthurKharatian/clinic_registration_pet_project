@@ -1,6 +1,7 @@
 package clinic_registration.web;
 
 import clinic_registration.dto.AnalyzeAssignment;
+import clinic_registration.dto.ServiceMessageDto;
 import clinic_registration.services.AnalyzeAssignmentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

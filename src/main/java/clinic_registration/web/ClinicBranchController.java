@@ -1,6 +1,7 @@
 package clinic_registration.web;
 
 import clinic_registration.dto.ClinicBranch;
+import clinic_registration.dto.ServiceMessageDto;
 import clinic_registration.services.ClinicBranchService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

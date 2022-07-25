@@ -1,4 +1,4 @@
-package clinic_registration.web;
+package clinic_registration.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-class ServiceMessageDto {
+public class ServiceMessageDto {
 
     int code;
     String message;
