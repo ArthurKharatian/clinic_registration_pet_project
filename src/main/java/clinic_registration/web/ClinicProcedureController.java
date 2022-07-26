@@ -1,53 +1,44 @@
 package clinic_registration.web;
 
-import clinic_registration.dto.ClinicProcedure;
-import clinic_registration.dto.ServiceMessageDto;
-import clinic_registration.services.ClinicProcedureService;
-import org.springframework.http.HttpStatus;
+import clinic_registration.dto.ClinicProcedureDto;
+import clinic_registration.service.ClinicProcedureService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/procedure")
 public class ClinicProcedureController {
+
     private final ClinicProcedureService procedureService;
 
-    public ClinicProcedureController(ClinicProcedureService procedureService) {
-        this.procedureService = procedureService;
-    }
     @PostMapping
-    public ResponseEntity<ServiceMessageDto> addProcedure(@RequestBody ClinicProcedure procedure){
-        procedureService.create(procedure);
-        return new ResponseEntity<>(new ServiceMessageDto(777,
-                "Procedure is created!"), HttpStatus.CREATED);
-    }
-
-    @PutMapping(headers = "Accept=application/json")
-    public ResponseEntity<ServiceMessageDto> update(@RequestBody ClinicProcedure procedure){
-        procedureService.update(procedure);
-        return new ResponseEntity<>(new ServiceMessageDto(555,
-                String.format("Procedure with id %d is updated!", procedure.getId())), HttpStatus.ACCEPTED);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ServiceMessageDto> delete(@PathVariable("id") Long id){
-        procedureService.delete(id);
-        return new ResponseEntity<>(new ServiceMessageDto(666,
-                String.format("Procedure with id %d is deleted!", id)), HttpStatus.OK);
-    }
-
-    @GetMapping("/all")
-    public ResponseEntity<List<ClinicProcedure>> readAll(){
-        return new ResponseEntity<>(procedureService.readAll(), HttpStatus.OK);
+    public ResponseEntity<String> createDoctor(@RequestBody ClinicProcedureDto clinicProcedureDto) {
+        return procedureService.createProcedure(clinicProcedureDto);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClinicProcedure> read(@PathVariable("id") Long id){
-        ClinicProcedure procedure = procedureService.read(id);
-
-        return new ResponseEntity<>(procedure, HttpStatus.OK);
+    public ResponseEntity<String> read(@PathVariable("id") Long id) {
+        return procedureService.readProcedure(id);
     }
+
+    @PutMapping
+    public ResponseEntity<String> update(@RequestBody ClinicProcedureDto clinicProcedureDto) {
+        return procedureService.updateProcedure(clinicProcedureDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable("id") Long id) {
+        return procedureService.deleteProcedure(id);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<ClinicProcedureDto>> getAllProcedures() {
+        return procedureService.getAllProcedures();
+    }
+
 }
 

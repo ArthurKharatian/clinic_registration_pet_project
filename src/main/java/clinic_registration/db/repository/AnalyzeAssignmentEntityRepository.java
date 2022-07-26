@@ -1,11 +1,11 @@
 package clinic_registration.db.repository;
 
-import clinic_registration.db.entity.AnalyzeAssignmentEntity;
+import clinic_registration.db.entity.AnalyzeAssignment;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
 
-public interface AnalyzeAssignmentEntityRepository extends PagingAndSortingRepository<AnalyzeAssignmentEntity, Long> {
-    List<AnalyzeAssignmentEntity> findAll();
+public interface AnalyzeAssignmentEntityRepository extends PagingAndSortingRepository<AnalyzeAssignment, Long> {
+    List<AnalyzeAssignment> findAll();
     void deleteById(Long id);
 }

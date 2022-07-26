@@ -14,7 +14,7 @@ spring:
   flyway:
     baselineOnMigrate: true
     enabled: false
-#enabled: true -> fails
+
   datasource:
     url: jdbc:postgresql://localhost:5432/clinic_registration
     username: postgres
@@ -33,5 +33,4 @@ management:
 auth:
   header: Authorization
   token: >-
-    Basic
-    YTAzZDZjZTYtMmQxNS00MjYzLWEyNWItMTAzODFhYTY2ZTRicGFzc3dvcmQ6ZDhiOTg1MTMtMjljOC00ZWFlLWI5NjgtZWNmZGNmNzQ3MThk
+    Basic YTAzZDZjZTYtMmQxNS00MjYzLWEyNWItMTAzODFhYTY2ZTRicGFzc3dvcmQ6ZDhiOTg1MTMtMjljOC00ZWFlLWI5NjgtZWNmZGNmNzQ3MThk
