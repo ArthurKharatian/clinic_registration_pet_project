@@ -1,11 +1,10 @@
 package clinic_registration.db.repository;
 
 import clinic_registration.db.entity.ClinicLab;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+@Repository
+public interface ClinicLabRepository extends JpaRepository<ClinicLab, Long> {
 
-public interface ClinicLabRepository extends PagingAndSortingRepository<ClinicLab, Long> {
-    List<ClinicLab> findAll();
-    void deleteById(Long aLong);
 }

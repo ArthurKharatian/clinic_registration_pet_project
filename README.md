@@ -3,21 +3,18 @@
 Deployed on AWS http://54.189.28.84:8080/
 
 The project was performed using a modern stack
-including taking into account the international use of the latest versions of the libraries and the basic framework.
+including taking into account the international use of the latest versions of the libraries and Spring framework.
 
-This makes it easy to customize your application deployment so you can focus on business logic.
+The project has 2 branches. 
+In the main branch(master) I used technologies and libraries  such as:
+Spring Security, CORS, Flyway, PSQL, SLF4J, Lombok, Unit Tests (JUnit + Mockito) for service module testing
 
-A modern implementation of JPA is used, attention is paid to transactionality in working with the database, 
-the initialization of the database goes to the opening of the described entities, the built-in ORM platform, 
-and the schema may be empty at the start of applications. 
+In the second branch in addition to the main branch I used technologies and libraries  such as:
+H2 Database, SpringBootTest for controller module testing
 
-A high degree of coverage with code tests (over 90%), 
-tests can be run in the absence of a pre-installed database. Also, results are documenting. 
+Also, you may follow the link http://localhost:8080/swagger-ui/index.html to get a list of all APIs on your local machine
 
-Checked by SonarLint during development, which allows avoiding frequent flaws in the style and decisions. 
-
-Conciseness was achieved, including thanks to the library Lombok, which eliminates the need to prescribe the accompanying count. 
-
-In the course of the work, the project was hosted on a remote hosting provided by AWS, using Docker, it was built and launched in a container. 
+The project was deployed on a remote hosting which is provided by AWS.
+Thanks to Docker, it was built and launched in a container. 
 
 The project has the potential for scalability and further development in the field of professional applications.

@@ -39,8 +39,8 @@ public class ClientServiceImpl implements ClientService {
 
         Client client = objectMapper.convertValue(clientDto, Client.class);
         client.setStatus(String.valueOf(Status.CREATED));
-        clientRepository.save(client);
-        return clientDto;
+        Client save = clientRepository.save(client);
+        return objectMapper.convertValue(save, ClientDto.class);
     }
 
     @Override
@@ -52,20 +52,22 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientDto update(ClientDto clientDto) {
-        Long doctorId = clientDto.getId();
-        if (doctorId == null || clientRepository.findById(doctorId).isEmpty()) {
-            throw new ClinicServiceException(String.format(EXC_MESSAGE, doctorId));
+        Long id = clientDto.getId();
+        if (id == null) {
+            throw new ClinicServiceException("id is null");
         }
+
+        read(id);
+
         Client client = objectMapper.convertValue(clientDto, Client.class);
         client.setStatus(String.valueOf(Status.UPDATED));
-        clientRepository.save(client);
-        return clientDto;
+        Client save = clientRepository.save(client);
+        return objectMapper.convertValue(save, ClientDto.class);
     }
 
     @Override
     public ClientDto delete(Long id) {
-        Client client = clientRepository.findById(id).orElseThrow(() ->
-                new ClinicServiceException(String.format(EXC_MESSAGE, id)));
+        Client client = objectMapper.convertValue(read(id), Client.class);
         client.setStatus(String.valueOf(Status.DELETED));
         clientRepository.save(client);
         return objectMapper.convertValue(client, ClientDto.class);
@@ -73,9 +75,8 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public List<ClientDto> readAll() {
-        List<Client> clients = clientRepository.findAll();
-        return clients.stream().map(client ->
-                        objectMapper.convertValue(client, ClientDto.class))
+        return clientRepository.findAll().stream()
+                .map(client -> objectMapper.convertValue(client, ClientDto.class))
                 .collect(Collectors.toList());
     }
 

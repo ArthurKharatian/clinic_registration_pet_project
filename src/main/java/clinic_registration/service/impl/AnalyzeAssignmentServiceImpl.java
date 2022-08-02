@@ -2,7 +2,7 @@ package clinic_registration.service.impl;
 
 import clinic_registration.db.entity.AnalyzeAssignment;
 import clinic_registration.db.entity.Status;
-import clinic_registration.db.repository.AnalyzeAssignmentEntityRepository;
+import clinic_registration.db.repository.AnalyzeAssignmentRepository;
 import clinic_registration.dto.AnalyzeAssignmentDto;
 import clinic_registration.exceptions.ClinicServiceException;
 import clinic_registration.service.AnalyzeAssignmentService;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AnalyzeAssignmentServiceImpl implements AnalyzeAssignmentService {
 
-    private final AnalyzeAssignmentEntityRepository analyzeRepository;
+    private final AnalyzeAssignmentRepository analyzeRepository;
     private final ObjectMapper objectMapper;
     private static final String EXC_MESSAGE = "Analyze with id %d is not found";
 
@@ -39,8 +39,8 @@ public class AnalyzeAssignmentServiceImpl implements AnalyzeAssignmentService {
 
         AnalyzeAssignment analyze = objectMapper.convertValue(analyzeAssignmentDto, AnalyzeAssignment.class);
         analyze.setStatus(String.valueOf(Status.CREATED));
-        analyzeRepository.save(analyze);
-        return analyzeAssignmentDto;
+        AnalyzeAssignment save = analyzeRepository.save(analyze);
+        return objectMapper.convertValue(save, AnalyzeAssignmentDto.class);
     }
 
     @Override
@@ -52,20 +52,22 @@ public class AnalyzeAssignmentServiceImpl implements AnalyzeAssignmentService {
 
     @Override
     public AnalyzeAssignmentDto update(AnalyzeAssignmentDto analyzeAssignmentDto) {
-        Long doctorId = analyzeAssignmentDto.getId();
-        if (doctorId == null || analyzeRepository.findById(doctorId).isEmpty()) {
-            throw new ClinicServiceException(String.format(EXC_MESSAGE, doctorId));
+        Long id = analyzeAssignmentDto.getId();
+        if (id == null) {
+            throw new ClinicServiceException("id is null");
         }
+
+        read(id);
+
         AnalyzeAssignment analyze = objectMapper.convertValue(analyzeAssignmentDto, AnalyzeAssignment.class);
         analyze.setStatus(String.valueOf(Status.UPDATED));
-        analyzeRepository.save(analyze);
-        return analyzeAssignmentDto;
+        AnalyzeAssignment save = analyzeRepository.save(analyze);
+        return objectMapper.convertValue(save, AnalyzeAssignmentDto.class);
     }
 
     @Override
     public AnalyzeAssignmentDto delete(Long id) {
-        AnalyzeAssignment analyze = analyzeRepository.findById(id).orElseThrow(() ->
-                new ClinicServiceException(String.format(EXC_MESSAGE, id)));
+        AnalyzeAssignment analyze = objectMapper.convertValue(read(id), AnalyzeAssignment.class);
         analyze.setStatus(String.valueOf(Status.DELETED));
         analyzeRepository.save(analyze);
         return objectMapper.convertValue(analyze, AnalyzeAssignmentDto.class);
@@ -73,9 +75,8 @@ public class AnalyzeAssignmentServiceImpl implements AnalyzeAssignmentService {
 
     @Override
     public List<AnalyzeAssignmentDto> readAll() {
-        List<AnalyzeAssignment> analyzes = analyzeRepository.findAll();
-        return analyzes.stream().map(analyze ->
-                        objectMapper.convertValue(analyze, AnalyzeAssignmentDto.class))
+        return analyzeRepository.findAll().stream()
+                .map(analyze -> objectMapper.convertValue(analyze, AnalyzeAssignmentDto.class))
                 .collect(Collectors.toList());
     }
 

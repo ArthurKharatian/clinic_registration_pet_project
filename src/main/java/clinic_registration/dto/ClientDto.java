@@ -5,10 +5,12 @@ import lombok.*;
 import java.time.LocalDate;
 @Data
 public class ClientDto {
+
     private Long id;
     private String name;
-    private ClientGender clientGender;
+    private String gender;
     private LocalDate birthdate;
-    private int phoneNumber;
+    private Integer phoneNumber;
     private String email;
+    private String status;
 }

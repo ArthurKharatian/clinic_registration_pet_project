@@ -5,6 +5,7 @@ import lombok.*;
 import java.time.LocalDate;
 @Data
 public class DoctorDto {
+
     private Long id;
     private String name;
     private String positionName;
@@ -12,4 +13,6 @@ public class DoctorDto {
     private String email;
     private Integer phoneNumber;
     private LocalDate birthdate;
+    private String status;
+
 }

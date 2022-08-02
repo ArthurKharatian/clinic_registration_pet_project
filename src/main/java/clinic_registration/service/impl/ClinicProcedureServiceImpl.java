@@ -40,8 +40,8 @@ public class ClinicProcedureServiceImpl implements ClinicProcedureService {
 
         ClinicProcedure procedure = objectMapper.convertValue(clinicProcedureDto, ClinicProcedure.class);
         procedure.setStatus(String.valueOf(Status.CREATED));
-        procedureRepository.save(procedure);
-        return clinicProcedureDto;
+        ClinicProcedure save = procedureRepository.save(procedure);
+        return objectMapper.convertValue(save, ClinicProcedureDto.class);
     }
 
     @Override
@@ -53,20 +53,22 @@ public class ClinicProcedureServiceImpl implements ClinicProcedureService {
 
     @Override
     public ClinicProcedureDto update(ClinicProcedureDto clinicProcedureDto) {
-        Long doctorId = clinicProcedureDto.getId();
-        if (doctorId == null || procedureRepository.findById(doctorId).isEmpty()) {
-            throw new ClinicServiceException(String.format(EXC_MESSAGE, doctorId));
+        Long id = clinicProcedureDto.getId();
+        if (id == null) {
+            throw new ClinicServiceException("id is null");
         }
+
+        read(id);
+
         ClinicProcedure procedure = objectMapper.convertValue(clinicProcedureDto, ClinicProcedure.class);
         procedure.setStatus(String.valueOf(Status.UPDATED));
-        procedureRepository.save(procedure);
-        return clinicProcedureDto;
+        ClinicProcedure save = procedureRepository.save(procedure);
+        return objectMapper.convertValue(save, ClinicProcedureDto.class);
     }
 
     @Override
     public ClinicProcedureDto delete(Long id) {
-        ClinicProcedure procedure = procedureRepository.findById(id).orElseThrow(() ->
-                new ClinicServiceException(String.format(EXC_MESSAGE, id)));
+        ClinicProcedure procedure = objectMapper.convertValue(read(id), ClinicProcedure.class);
         procedure.setStatus(String.valueOf(Status.DELETED));
         procedureRepository.save(procedure);
         return objectMapper.convertValue(procedure, ClinicProcedureDto.class);
@@ -74,9 +76,8 @@ public class ClinicProcedureServiceImpl implements ClinicProcedureService {
 
     @Override
     public List<ClinicProcedureDto> readAll() {
-        List<ClinicProcedure> procedures = procedureRepository.findAll();
-        return procedures.stream().map(procedure ->
-                        objectMapper.convertValue(procedure, ClinicProcedureDto.class))
+        return procedureRepository.findAll().stream()
+                .map(procedure -> objectMapper.convertValue(procedure, ClinicProcedureDto.class))
                 .collect(Collectors.toList());
     }
 

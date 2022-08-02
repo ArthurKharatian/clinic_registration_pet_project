@@ -39,8 +39,8 @@ public class AdminServiceImpl implements AdminService {
 
         Admin admin = objectMapper.convertValue(adminDto, Admin.class);
         admin.setStatus(String.valueOf(Status.CREATED));
-        adminRepository.save(admin);
-        return adminDto;
+        Admin save = adminRepository.save(admin);
+        return objectMapper.convertValue(save, AdminDto.class);
     }
 
     @Override
@@ -52,30 +52,31 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public AdminDto update(AdminDto adminDto) {
-        Long doctorId = adminDto.getId();
-        if (doctorId == null || adminRepository.findById(doctorId).isEmpty()) {
-            throw new ClinicServiceException(String.format(EXC_MESSAGE, doctorId));
+        Long id = adminDto.getId();
+        if (id == null) {
+            throw new ClinicServiceException("id is null");
         }
+
+        read(id);
+
         Admin admin = objectMapper.convertValue(adminDto, Admin.class);
         admin.setStatus(String.valueOf(Status.UPDATED));
-        adminRepository.save(admin);
-        return adminDto;
+        Admin save = adminRepository.save(admin);
+        return objectMapper.convertValue(save, AdminDto.class);
     }
 
     @Override
     public AdminDto delete(Long id) {
-        Admin admin = adminRepository.findById(id).orElseThrow(() ->
-                new ClinicServiceException(String.format(EXC_MESSAGE, id)));
+        Admin admin = objectMapper.convertValue(read(id), Admin.class);
         admin.setStatus(String.valueOf(Status.DELETED));
-        adminRepository.save(admin);
-        return objectMapper.convertValue(admin, AdminDto.class);
+        Admin save = adminRepository.save(admin);
+        return objectMapper.convertValue(save, AdminDto.class);
     }
 
     @Override
     public List<AdminDto> readAll() {
-        List<Admin> admins = adminRepository.findAll();
-        return admins.stream().map(admin ->
-                        objectMapper.convertValue(admin, AdminDto.class))
+        return adminRepository.findAll().stream()
+                .map(admin -> objectMapper.convertValue(admin, AdminDto.class))
                 .collect(Collectors.toList());
     }
 

@@ -1,11 +1,10 @@
 package clinic_registration.db.repository;
 
 import clinic_registration.db.entity.ProcedureAssignment;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+@Repository
+public interface ProcedureAssignmentRepository extends JpaRepository<ProcedureAssignment, Long> {
 
-public interface ProcedureAssignmentRepository extends PagingAndSortingRepository<ProcedureAssignment, Long> {
-    List<ProcedureAssignment> findAll();
-    void deleteById(Long id);
 }

@@ -40,8 +40,8 @@ public class DoctorAppointmentServiceImpl implements DoctorAppointmentService {
 
         DoctorAppointment appointment = objectMapper.convertValue(appointmentDto, DoctorAppointment.class);
         appointment.setStatus(String.valueOf(Status.CREATED));
-        appointmentRepository.save(appointment);
-        return appointmentDto;
+        DoctorAppointment save = appointmentRepository.save(appointment);
+        return objectMapper.convertValue(save, DoctorAppointmentDto.class);
     }
 
     @Override
@@ -53,20 +53,22 @@ public class DoctorAppointmentServiceImpl implements DoctorAppointmentService {
 
     @Override
     public DoctorAppointmentDto update(DoctorAppointmentDto appointmentDto) {
-        Long doctorId = appointmentDto.getId();
-        if (doctorId == null || appointmentRepository.findById(doctorId).isEmpty()) {
-            throw new ClinicServiceException(String.format(EXC_MESSAGE, doctorId));
+        Long id = appointmentDto.getId();
+        if (id == null) {
+            throw new ClinicServiceException("id is null");
         }
+
+        read(id);
+
         DoctorAppointment appointment = objectMapper.convertValue(appointmentDto, DoctorAppointment.class);
         appointment.setStatus(String.valueOf(Status.UPDATED));
-        appointmentRepository.save(appointment);
-        return appointmentDto;
+        DoctorAppointment save = appointmentRepository.save(appointment);
+        return objectMapper.convertValue(save, DoctorAppointmentDto.class);
     }
 
     @Override
     public DoctorAppointmentDto delete(Long id) {
-        DoctorAppointment appointment = appointmentRepository.findById(id).orElseThrow(() ->
-                new ClinicServiceException(String.format(EXC_MESSAGE, id)));
+        DoctorAppointment appointment = objectMapper.convertValue(read(id), DoctorAppointment.class);
         appointment.setStatus(String.valueOf(Status.DELETED));
         appointmentRepository.save(appointment);
         return objectMapper.convertValue(appointment, DoctorAppointmentDto.class);
@@ -74,9 +76,8 @@ public class DoctorAppointmentServiceImpl implements DoctorAppointmentService {
 
     @Override
     public List<DoctorAppointmentDto> readAll() {
-        List<DoctorAppointment> appointments = appointmentRepository.findAll();
-        return appointments.stream().map(appointment ->
-                        objectMapper.convertValue(appointment, DoctorAppointmentDto.class))
+        return appointmentRepository.findAll().stream()
+                .map(appointment -> objectMapper.convertValue(appointment, DoctorAppointmentDto.class))
                 .collect(Collectors.toList());
     }
 

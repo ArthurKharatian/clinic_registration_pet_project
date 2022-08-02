@@ -39,8 +39,8 @@ public class DoctorServiceImpl implements DoctorService {
 
         Doctor doctor = objectMapper.convertValue(doctorDto, Doctor.class);
         doctor.setStatus(String.valueOf(Status.CREATED));
-        doctorRepository.save(doctor);
-        return doctorDto;
+        Doctor save = doctorRepository.save(doctor);
+        return objectMapper.convertValue(save, DoctorDto.class);
     }
 
     @Override
@@ -52,33 +52,32 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public DoctorDto update(DoctorDto doctorDto) {
-        Long doctorId = doctorDto.getId();
-        if (doctorId == null || doctorRepository.findById(doctorId).isEmpty()) {
-            throw new ClinicServiceException(String.format(EXC_MESSAGE, doctorId));
+        Long id = doctorDto.getId();
+        if (id == null) {
+            throw new ClinicServiceException("id is null");
         }
+
+        read(id);
+
         Doctor doctor = objectMapper.convertValue(doctorDto, Doctor.class);
         doctor.setStatus(String.valueOf(Status.UPDATED));
-        doctorRepository.save(doctor);
-        return doctorDto;
+        Doctor save = doctorRepository.save(doctor);
+        return objectMapper.convertValue(save, DoctorDto.class);
     }
 
     @Override
     public DoctorDto delete(Long id) {
-        Doctor doctor = doctorRepository.findById(id).orElseThrow(() ->
-                new ClinicServiceException(String.format(EXC_MESSAGE, id)));
+        Doctor doctor = objectMapper.convertValue(read(id), Doctor.class);
         doctor.setStatus(String.valueOf(Status.DELETED));
         doctorRepository.save(doctor);
         return objectMapper.convertValue(doctor, DoctorDto.class);
-
     }
 
     @Override
     public List<DoctorDto> readAll() {
-        List<Doctor> doctors = doctorRepository.findAll();
-        return doctors.stream().map(assignment ->
-                        objectMapper.convertValue(assignment, DoctorDto.class))
+        return doctorRepository.findAll().stream()
+                .map(assignment -> objectMapper.convertValue(assignment, DoctorDto.class))
                 .collect(Collectors.toList());
-
     }
 
     @Override

@@ -1,7 +1,6 @@
 package clinic_registration.db.entity;
 
-import clinic_registration.dto.ClientGender;
-import lombok.*;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -22,8 +21,7 @@ public class Client {
     private int phoneNumber;
     private String email;
 
-    @Column(name = "client_gender")
-    private ClientGender clientGender;
+    private String gender;
 
     private String status;
 }

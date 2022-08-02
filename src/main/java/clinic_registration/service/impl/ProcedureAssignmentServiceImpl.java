@@ -41,8 +41,8 @@ public class ProcedureAssignmentServiceImpl implements ProcedureAssignmentServic
 
         ProcedureAssignment assignment = objectMapper.convertValue(procedure, ProcedureAssignment.class);
         assignment.setStatus(String.valueOf(Status.CREATED));
-        procedureRepository.save(assignment);
-        return procedure;
+        ProcedureAssignment save = procedureRepository.save(assignment);
+        return objectMapper.convertValue(save, ProcedureAssignmentDto.class);
     }
 
     @Override
@@ -54,20 +54,22 @@ public class ProcedureAssignmentServiceImpl implements ProcedureAssignmentServic
 
     @Override
     public ProcedureAssignmentDto update(ProcedureAssignmentDto procedure) {
-        Long procedureId = procedure.getId();
-        if (procedureId == null || procedureRepository.findById(procedureId).isEmpty()) {
-            throw new ClinicServiceException(String.format(EXC_MESSAGE, procedureId));
+        Long id = procedure.getId();
+        if (id == null) {
+            throw new ClinicServiceException("id is null");
         }
+
+        read(id);
+
         ProcedureAssignment assignment = objectMapper.convertValue(procedure, ProcedureAssignment.class);
         assignment.setStatus(String.valueOf(Status.UPDATED));
-        procedureRepository.save(assignment);
-        return procedure;
+        ProcedureAssignment save = procedureRepository.save(assignment);
+        return objectMapper.convertValue(save, ProcedureAssignmentDto.class);
     }
 
     @Override
     public ProcedureAssignmentDto delete(Long id) {
-        ProcedureAssignment assignment = procedureRepository.findById(id).orElseThrow(() ->
-                new ClinicServiceException(String.format(EXC_MESSAGE, id)));
+        ProcedureAssignment assignment = objectMapper.convertValue(read(id), ProcedureAssignment.class);
         assignment.setStatus(String.valueOf(Status.DELETED));
         procedureRepository.save(assignment);
         return objectMapper.convertValue(assignment, ProcedureAssignmentDto.class);
@@ -75,9 +77,8 @@ public class ProcedureAssignmentServiceImpl implements ProcedureAssignmentServic
 
     @Override
     public List<ProcedureAssignmentDto> readAll() {
-        List<ProcedureAssignment> assignments = procedureRepository.findAll();
-        return assignments.stream().map(assignment ->
-                        objectMapper.convertValue(assignment, ProcedureAssignmentDto.class))
+        return procedureRepository.findAll().stream()
+                .map(assignment -> objectMapper.convertValue(assignment, ProcedureAssignmentDto.class))
                 .collect(Collectors.toList());
     }
 

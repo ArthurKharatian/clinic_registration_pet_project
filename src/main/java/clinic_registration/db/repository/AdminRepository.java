@@ -1,12 +1,10 @@
 package clinic_registration.db.repository;
 
 import clinic_registration.db.entity.Admin;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+@Repository
+public interface AdminRepository extends JpaRepository<Admin, Long> {
 
-public interface AdminRepository extends PagingAndSortingRepository<Admin, Long> {
-    List<Admin> findAll();
-    void deleteById(Long id);
-   List<Admin> findAllByName(String name);
 }

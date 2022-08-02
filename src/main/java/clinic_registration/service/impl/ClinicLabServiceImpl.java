@@ -40,8 +40,8 @@ public class ClinicLabServiceImpl implements ClinicLabService {
 
         ClinicLab lab = objectMapper.convertValue(clinicLabDto, ClinicLab.class);
         lab.setStatus(String.valueOf(Status.CREATED));
-        labRepository.save(lab);
-        return clinicLabDto;
+        ClinicLab save = labRepository.save(lab);
+        return objectMapper.convertValue(save, ClinicLabDto.class);
     }
 
     @Override
@@ -54,20 +54,22 @@ public class ClinicLabServiceImpl implements ClinicLabService {
 
     @Override
     public ClinicLabDto update(ClinicLabDto clinicLabDto) {
-        Long doctorId = clinicLabDto.getId();
-        if (doctorId == null || labRepository.findById(doctorId).isEmpty()) {
-            throw new ClinicServiceException(String.format(EXC_MESSAGE, doctorId));
+        Long id = clinicLabDto.getId();
+        if (id == null) {
+            throw new ClinicServiceException("id is null");
         }
+
+        read(id);
+
         ClinicLab lab = objectMapper.convertValue(clinicLabDto, ClinicLab.class);
         lab.setStatus(String.valueOf(Status.UPDATED));
-        labRepository.save(lab);
-        return clinicLabDto;
+        ClinicLab save = labRepository.save(lab);
+        return objectMapper.convertValue(save, ClinicLabDto.class);
     }
 
     @Override
     public ClinicLabDto delete(Long id) {
-        ClinicLab lab = labRepository.findById(id).orElseThrow(() ->
-                new ClinicServiceException(String.format(EXC_MESSAGE, id)));
+        ClinicLab lab = objectMapper.convertValue(read(id), ClinicLab.class);
         lab.setStatus(String.valueOf(Status.DELETED));
         labRepository.save(lab);
         return objectMapper.convertValue(lab, ClinicLabDto.class);
@@ -75,9 +77,8 @@ public class ClinicLabServiceImpl implements ClinicLabService {
 
     @Override
     public List<ClinicLabDto> readAll() {
-        List<ClinicLab> labs = labRepository.findAll();
-        return labs.stream().map(lab ->
-                        objectMapper.convertValue(lab, ClinicLabDto.class))
+        return labRepository.findAll().stream()
+                .map(lab -> objectMapper.convertValue(lab, ClinicLabDto.class))
                 .collect(Collectors.toList());
     }
 

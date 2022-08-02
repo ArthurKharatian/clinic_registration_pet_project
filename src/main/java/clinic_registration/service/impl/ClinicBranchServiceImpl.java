@@ -39,8 +39,8 @@ public class ClinicBranchServiceImpl implements ClinicBranchService {
 
         ClinicBranch branch = objectMapper.convertValue(clinicBranchDto, ClinicBranch.class);
         branch.setStatus(String.valueOf(Status.CREATED));
-        branchRepository.save(branch);
-        return clinicBranchDto;
+        ClinicBranch save = branchRepository.save(branch);
+        return objectMapper.convertValue(save, ClinicBranchDto.class);
     }
 
     @Override
@@ -52,20 +52,22 @@ public class ClinicBranchServiceImpl implements ClinicBranchService {
 
     @Override
     public ClinicBranchDto update(ClinicBranchDto clinicBranchDto) {
-        Long doctorId = clinicBranchDto.getId();
-        if (doctorId == null || branchRepository.findById(doctorId).isEmpty()) {
-            throw new ClinicServiceException(String.format(EXC_MESSAGE, doctorId));
+        Long id = clinicBranchDto.getId();
+        if (id == null) {
+            throw new ClinicServiceException("id is null");
         }
+
+        read(id);
+
         ClinicBranch branch = objectMapper.convertValue(clinicBranchDto, ClinicBranch.class);
         branch.setStatus(String.valueOf(Status.UPDATED));
-        branchRepository.save(branch);
-        return clinicBranchDto;
+        ClinicBranch save = branchRepository.save(branch);
+        return objectMapper.convertValue(save, ClinicBranchDto.class);
     }
 
     @Override
     public ClinicBranchDto delete(Long id) {
-        ClinicBranch branch = branchRepository.findById(id).orElseThrow(() ->
-                new ClinicServiceException(String.format(EXC_MESSAGE, id)));
+        ClinicBranch branch = objectMapper.convertValue(read(id), ClinicBranch.class);
         branch.setStatus(String.valueOf(Status.DELETED));
         branchRepository.save(branch);
         return objectMapper.convertValue(branch, ClinicBranchDto.class);
@@ -73,9 +75,8 @@ public class ClinicBranchServiceImpl implements ClinicBranchService {
 
     @Override
     public List<ClinicBranchDto> readAll() {
-        List<ClinicBranch> branches = branchRepository.findAll();
-        return branches.stream().map(branch ->
-                        objectMapper.convertValue(branch, ClinicBranchDto.class))
+        return branchRepository.findAll().stream()
+                .map(branch -> objectMapper.convertValue(branch, ClinicBranchDto.class))
                 .collect(Collectors.toList());
     }
 
