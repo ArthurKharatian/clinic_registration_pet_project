@@ -1,6 +1,6 @@
 # clinic_registration_pet_project
 
-Deployed on AWS http://54.189.28.84:8080/( expired)
+Deployed on AWS http://54.189.28.84:8080/ (expired)
 
 The project was performed using a modern stack
 including taking into account the international use of the latest versions of the libraries and Spring framework.
