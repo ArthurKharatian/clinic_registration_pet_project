@@ -57,6 +57,7 @@ public class AdminControllerTest {
 
         ConfigurableMockMvcBuilder builder =
                 MockMvcBuilders.webAppContextSetup(this.webApplicationContext)
+                        .alwaysDo(document(" {method-name}/{step}/"))
                         .apply(documentationConfiguration(this.restDocumentation));
         this.mockMvc = builder.build();
     }
